@@ -52,6 +52,10 @@ dependencies {
     testImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
     kaptTest "com.google.dagger:hilt-compiler:$hilt_version"
 
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+
     //logging
     implementation 'com.jakewharton.timber:timber:5.0.1'
 }
