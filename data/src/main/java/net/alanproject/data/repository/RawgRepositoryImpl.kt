@@ -10,7 +10,7 @@ import javax.inject.Inject
 class RawgRepositoryImpl @Inject constructor(
     private val remoteSource: RemoteSourceImpl
 ):RawgRepository {
-    override fun getTopList(): TopList {
+    override suspend fun getTopList(): TopList {
         return remoteSource.getTopList()
     }
 }

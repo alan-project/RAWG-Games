@@ -25,7 +25,7 @@ class TopViewModel @Inject constructor(
         }
     }
 
-    private fun getList(): List<Result> {
+    private suspend fun getList(): List<Result> {
         return getTopList.getTopList()
     }
 }

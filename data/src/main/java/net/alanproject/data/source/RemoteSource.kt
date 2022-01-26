@@ -4,5 +4,5 @@ import net.alanproject.domain.model.list.Result
 import net.alanproject.domain.model.list.TopList
 
 interface RemoteSource {
-    fun getTopList():TopList
+    suspend fun getTopList():TopList
 }
