@@ -1,9 +1,11 @@
 package net.alanproject.rawg_private
 
 import android.app.Application
+import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
-class RawgApp:Application() {
+@HiltAndroidApp
+class RawgApplication:Application() {
 
     override fun onCreate() {
         super.onCreate()
