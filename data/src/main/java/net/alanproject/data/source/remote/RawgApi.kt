@@ -9,6 +9,7 @@ import retrofit2.http.Query
 interface RawgApi {
     @GET("games")
     suspend fun getTopList(
-        @Query("key") apiKey: String = BuildConfig.API_KEY
+        @Query("key") apiKey: String = BuildConfig.API_KEY,
+        @Query("ordering") released: String = "released"
     ):TopList
 }
