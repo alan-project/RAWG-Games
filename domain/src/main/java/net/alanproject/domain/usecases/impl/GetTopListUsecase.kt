@@ -8,7 +8,7 @@ import javax.inject.Inject
 class GetTopListUsecase @Inject constructor(
     private val rawgRepository: RawgRepository
 ):GetTopList {
-    override fun getTopList(): List<Result> {
+    override suspend fun getTopList(): List<Result> {
         return rawgRepository.getTopList().results
     }
 }

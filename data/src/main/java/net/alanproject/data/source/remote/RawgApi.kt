@@ -7,8 +7,8 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface RawgApi {
-    @GET("/games/")
-    fun getTopList(
+    @GET("games")
+    suspend fun getTopList(
         @Query("key") apiKey: String = BuildConfig.API_KEY
     ):TopList
 }
