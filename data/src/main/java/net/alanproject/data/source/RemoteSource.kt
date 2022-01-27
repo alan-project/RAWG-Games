@@ -1,8 +1,7 @@
 package net.alanproject.data.source
 
-import net.alanproject.domain.model.list.Result
-import net.alanproject.domain.model.list.TopList
+import net.alanproject.domain.model.list.GameList
 
 interface RemoteSource {
-    suspend fun getTopList():TopList
+    suspend fun getList(page: Int, order: String, dates: String, platforms: String?): GameList
 }

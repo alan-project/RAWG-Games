@@ -6,7 +6,7 @@ data class Year(
     val to: Int = 0,
     val filter: String = "",
     val decade: Int = 0,
-    val years: List<YearX> = listOf(),
+    val years: List<EachYear> = listOf(),
     val nofollow: Boolean = false,
     val count: Int = 0
 )

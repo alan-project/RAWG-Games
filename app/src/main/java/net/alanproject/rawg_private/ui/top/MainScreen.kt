@@ -17,17 +17,24 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.list.Result
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
+import timber.log.Timber
 
 
 @Composable
-fun TopScreen(){
-    val viewModel: TopViewModel = viewModel()
-    val topGames = viewModel.topListState.value
-    
+fun MainScreen(){
+    val viewModel: MainViewModel = viewModel()
+    val newTrendingList = viewModel.newTrendingState.value
+    val hotList = viewModel.hotState.value
+    val upcomingList = viewModel.upcomingState.value
+
+    Timber.d("newTrendingList: $newTrendingList")
+    Timber.d("hotList: $hotList")
+    Timber.d("upcomingList: $upcomingList")
+
     LazyColumn(){
-        items(topGames){game->
+        items(newTrendingList){ game->
             GameList(game)
-            
+
         }
     }
 }
@@ -70,6 +77,6 @@ fun GameList(game: Result) {
 @Composable
 fun DefaultPreview() {
     Rawg_privateTheme {
-        TopScreen()
+        MainScreen()
     }
 }
