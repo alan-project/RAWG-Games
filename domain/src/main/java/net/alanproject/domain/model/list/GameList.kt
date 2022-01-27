@@ -3,7 +3,7 @@ package net.alanproject.domain.model.list
 
 import com.google.gson.annotations.SerializedName
 
-data class TopList(
+data class GameList(
     val count: Int = 0,
     val next: String = "",
     val previous: Any = Any(),
