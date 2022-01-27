@@ -15,10 +15,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Result
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
 import timber.log.Timber
@@ -41,7 +43,7 @@ fun MainScreen() {
                 .verticalScroll(rememberScrollState())
 
         ) {
-            if (newTrendingList.isNotEmpty()) FullBanner(newTrendingList)
+            if (newTrendingList.isNotEmpty()) FullBanner(newTrendingList, 0)
             if (hotList.isNotEmpty()) VerticalList(hotList, 3)
             if (upcomingList.isNotEmpty()) HorizontalList(upcomingList, 5)
         }
@@ -51,8 +53,9 @@ fun MainScreen() {
 }
 
 @Composable
-fun FullBanner(games: List<Result>) {
-    val game: Result = games[0]
+fun FullBanner(games: List<Result>, index: Int) {
+    val game: Result = games[index]
+    TitleText("New & Trending")
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
@@ -73,12 +76,27 @@ fun FullBanner(games: List<Result>) {
 }
 
 @Composable
+fun TitleText(title: String) {
+    Text(
+        text = title,
+        color = Color.White,
+        style = MaterialTheme.typography.h5,
+        modifier = Modifier.padding(8.dp)
+    )
+}
+
+@Composable
 fun FullImage(game: Result) {
     val scrUrl: String = game.backgroundImage
     Image(
         //loaded asynchronously
         painter = rememberImagePainter(
             data = scrUrl,
+            builder = {
+                transformations(
+                    RoundedCornersTransformation(),
+                )
+            }
         ),
         modifier = Modifier
             .fillMaxWidth()
@@ -96,6 +114,7 @@ fun CustomImageDes(game: Result) {
 @Composable
 fun VerticalList(games: List<Result>, gameCnt: Int) {
 
+    TitleText("What's Hot Now")
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
@@ -115,10 +134,17 @@ fun VerticalList(games: List<Result>, gameCnt: Int) {
                         .padding(4.dp)
                 ) {
                     Image(
-                        painter = rememberImagePainter(games[i].backgroundImage),
+                        painter = rememberImagePainter(
+                            data = games[i].backgroundImage,
+                            builder = {
+                                transformations(
+                                    RoundedCornersTransformation(),
+                                )
+                            }),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(88.dp)
+                            .width(120.dp)
+                            .height(80.dp)
                             .padding(4.dp)
                     )
 
@@ -143,6 +169,7 @@ fun HorizontalList(games: List<Result>, gameCnt: Int) {
 
     val selectedGames = games.subList(0, gameCnt)
 
+    TitleText("Upcoming Games")
     LazyRow {
         items(selectedGames) { game ->
             GameCard(game = game)
@@ -162,10 +189,10 @@ fun GameCard(game: Result) {
             shape = RoundedCornerShape(8.dp),
             elevation = 2.dp,
             modifier = Modifier
-                .width(200.dp)
-                .height(220.dp)
+                .width(240.dp)
+                .wrapContentHeight()
 
-               // .padding(top = 16.dp)
+            // .padding(top = 16.dp)
         ) {
 
             Column(
@@ -174,15 +201,22 @@ fun GameCard(game: Result) {
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Image(
-                    painter = rememberImagePainter(game.backgroundImage),
+                    painter = rememberImagePainter(game.backgroundImage,
+                        builder = {
+                            transformations(
+                                RoundedCornersTransformation(),
+                            )
+                        }),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(180.dp)
+                        .width(220.dp)
+                        .height(160.dp)
                         .padding(4.dp)
                 )
                 Text(
                     text = game.name,
-                    style = MaterialTheme.typography.h6
+                    style = MaterialTheme.typography.h6,
+                    maxLines = 1, overflow = TextOverflow.Ellipsis
                 )
             }
         }
