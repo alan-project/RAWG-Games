@@ -11,9 +11,9 @@ interface RawgApi {
     @GET("games")
     suspend fun getList(
         @Query("key") key: String = BuildConfig.API_KEY,
-        @Query("page") page: Int = 1,
-        @Query("ordering") order: String = "rating",//release, metacritic
-        @Query("dates") dates: String = "",
+        @Query("page") page: Int,
+        @Query("ordering") order: String, // rating, release, metacritic
+        @Query("dates") dates: String,
         @Query("platforms") platforms: String?,
     ):GameList
 }

@@ -30,11 +30,12 @@ class MainViewModel @Inject constructor(
                     getList(dates = "2022-01-01,2022-01-25", platforms =null)
                 }
                 val hotDeferred = async {
-                    getList(dates = "2021-07-01,2022-01-25", platforms =null)
+                    getList(dates = "2021-06-01,2022-01-26", platforms =null)
                 }
                 val upcomingDeferred = async {
                     getList(dates = "2022-01-27,2022-02-27", platforms =null)
                 }
+
 
                 newTrendingState.value = newTrendingDeferred.await()
                 hotState.value = hotDeferred.await()
@@ -49,7 +50,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun getList(
         page: Int = 1,
-        order: String = "rating",
+        order: String = "-added",
         dates: String = "",
         platforms: String?
     ): List<Result> {
