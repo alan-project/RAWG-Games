@@ -4,13 +4,13 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import net.alanproject.domain.usecases.GetList
-import net.alanproject.domain.usecases.impl.GetListUsecase
+import net.alanproject.domain.usecases.GetGames
+import net.alanproject.domain.usecases.impl.GetGamesUsecase
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class Usecases{
 
     @Binds
-    abstract fun bindGetTopList(getTopList: GetListUsecase):GetList
+    abstract fun bindGetTopList(getTopList: GetGamesUsecase):GetGames
 }

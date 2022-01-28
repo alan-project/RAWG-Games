@@ -3,11 +3,11 @@ package net.alanproject.domain.model.list
 
 import com.google.gson.annotations.SerializedName
 
-data class GameList(
+data class Response(
     val count: Int = 0,
     val next: String = "",
     val previous: Any = Any(),
-    val results: List<Result> = listOf(),
+    val results: List<Game> = listOf(),
     @SerializedName("seo_title")
     val seoTitle: String = "",
     @SerializedName("seo_description")

@@ -1,7 +1,12 @@
 package net.alanproject.data.source
 
-import net.alanproject.domain.model.list.GameList
+import net.alanproject.domain.model.list.Response
 
 interface RemoteSource {
-    suspend fun getList(page: Int, order: String, dates: String, platforms: String?): GameList
+    suspend fun getGames(
+        page: Int?,
+        order: String?,
+        dates: String?,
+        platforms: String?
+    ): Response
 }

@@ -23,16 +23,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import net.alanproject.domain.model.list.Result
+import net.alanproject.domain.model.list.Game
+import net.alanproject.rawg_private.common.HORIZONTAL_GAME_NUMBER
+import net.alanproject.rawg_private.common.VERTICAL_GAME_NUMBER
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
 import timber.log.Timber
 
 
 @Composable
 fun MainScreen(viewModel: MainViewModel, navController: NavHostController?) {
-    val newTrendingList = viewModel.listState.value
-    val hotList = viewModel.hotState.value
-    val upcomingList = viewModel.upcomingState.value
+    val newTrendingList = viewModel.newTrendingList.value
+    val hotList = viewModel.hotListState.value
+    val upcomingList = viewModel.upcomingListState.value
 
     Timber.d("newTrendingList: $newTrendingList")
     Timber.d("hotList: $hotList")
@@ -44,16 +46,17 @@ fun MainScreen(viewModel: MainViewModel, navController: NavHostController?) {
                 .verticalScroll(rememberScrollState())
 
         ) {
-            if (newTrendingList.isNotEmpty()) FullContent(newTrendingList, navController, 0)
-            if (hotList.isNotEmpty()) VerticalList(hotList,navController,  3)
-            if (upcomingList.isNotEmpty()) HorizontalList(upcomingList, navController, 5)
+            TopContent(newTrendingList, navController)
+            VerticalList(hotList, navController, VERTICAL_GAME_NUMBER)
+            HorizontalList(upcomingList, navController, HORIZONTAL_GAME_NUMBER)
         }
     }
 }
 
 @Composable
-fun FullContent(games: List<Result>, navController: NavHostController?, index: Int) {
-    val game: Result = games[index]
+fun TopContent(games: List<Game>?, navController: NavHostController?) {
+
+    val displayedGame = games?.firstOrNull()
     TitleText("New & Trending") {
         navController?.navigate("list/1")
     }
@@ -70,11 +73,15 @@ fun FullContent(games: List<Result>, navController: NavHostController?, index: I
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            FullImage(game)
-            CustomImageDes(game)
+            displayedGame?.let { it ->
+                FullImage(it)
+                CustomImageDes(it)
+            }
+
         }
     }
 }
+
 
 @Composable
 fun TitleText(title: String, clickAction: () -> Unit) {
@@ -96,15 +103,12 @@ fun TitleText(title: String, clickAction: () -> Unit) {
             contentDescription = "",
             modifier = Modifier.padding(8.dp),
             tint = Color.White
-
         )
-
     }
-
 }
 
 @Composable
-fun FullImage(game: Result) {
+fun FullImage(game: Game) {
     val scrUrl: String = game.backgroundImage
     Image(
         //loaded asynchronously
@@ -125,12 +129,12 @@ fun FullImage(game: Result) {
 }
 
 @Composable
-fun CustomImageDes(game: Result) {
+fun CustomImageDes(game: Game) {
     Text(text = game.name)
 }
 
 @Composable
-fun VerticalList(games: List<Result>, navController: NavHostController?, gameCnt: Int) {
+fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
 
     TitleText("What's Hot Now") {
         navController?.navigate("list/2")
@@ -140,67 +144,74 @@ fun VerticalList(games: List<Result>, navController: NavHostController?, gameCnt
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Top
     ) {
-        for (i in 0 until gameCnt) {
-            Card(
-                shape = RoundedCornerShape(8.dp),
-                elevation = 2.dp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp)
-            ) {
-                Row(
+        val displayedGames = games?.take(gameCnt)
+        displayedGames?.let { selectedGames ->
+            selectedGames.forEach { game ->
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = 2.dp,
                     modifier = Modifier
-                        .align(Alignment.Start)
-                        .padding(4.dp)
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
                 ) {
-                    Image(
-                        painter = rememberImagePainter(
-                            data = games[i].backgroundImage,
-                            builder = {
-                                transformations(
-                                    RoundedCornersTransformation(),
-                                )
-                            }),
-                        contentDescription = null,
+                    Row(
                         modifier = Modifier
-                            .width(120.dp)
-                            .height(80.dp)
+                            .align(Alignment.Start)
                             .padding(4.dp)
-                    )
-
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .padding(16.dp)
                     ) {
-                        Text(
-                            text = games[i].name,
-                            style = MaterialTheme.typography.h6
+                        Image(
+                            painter = rememberImagePainter(
+                                data = game.backgroundImage,
+                                builder = {
+                                    transformations(
+                                        RoundedCornersTransformation(),
+                                    )
+                                }),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .width(120.dp)
+                                .height(80.dp)
+                                .padding(4.dp)
                         )
+
+                        Column(
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(16.dp)
+                        ) {
+                            Text(
+                                text = game.name,
+                                style = MaterialTheme.typography.h6
+                            )
+                        }
                     }
                 }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun HorizontalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
+
+    val displayedGames = games?.take(gameCnt)
+
+    TitleText("Upcoming Games") {
+        navController?.navigate("list/3")
+    }
+
+    LazyRow {
+        displayedGames?.let {
+            items(it) { game ->
+                GameCard(game = game)
             }
         }
     }
 }
 
 @Composable
-fun HorizontalList(games: List<Result>, navController: NavHostController?, gameCnt: Int) {
-
-    val selectedGames = games.subList(0, gameCnt)
-
-    TitleText("Upcoming Games"){
-        navController?.navigate("list/3")
-    }
-    LazyRow {
-        items(selectedGames) { game ->
-            GameCard(game = game)
-        }
-    }
-}
-
-@Composable
-fun GameCard(game: Result) {
+fun GameCard(game: Game) {
     Row(
         modifier = Modifier.padding(4.dp),
         verticalAlignment = Alignment.Top,
