@@ -7,7 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import dagger.hilt.android.AndroidEntryPoint
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
-import net.alanproject.rawg_private.ui.top.MainScreen
+import net.alanproject.rawg_private.ui.main.MainScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -17,7 +17,8 @@ class MainActivity : ComponentActivity() {
             Rawg_privateTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    MainScreen()
+                    RawgApp()
+//                    MainScreen(navController = null)
                 }
             }
         }
