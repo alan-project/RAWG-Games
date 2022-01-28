@@ -10,6 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGames
+import net.alanproject.rawg_private.common.Constants
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -21,13 +22,21 @@ class ListViewModel @Inject constructor(
 
     val listState: MutableState<List<Game>> = mutableStateOf(listOf())
     private val categoryId: Long? = savedStateHandle.get("categoryId")
+    private val period = when (categoryId?.toInt()) {
+        1 -> Constants.TRENDING_PERIOD
+        2 -> Constants.HOT_PERIOD
+        3 -> Constants.UPCOMING_PERIOD
+        else -> {
+            Constants.TRENDING_PERIOD
+        }
+    }
 
     init {
         Timber.d("categoryId: $categoryId")
         try {
             viewModelScope.launch {
                 val newTrendingDeferred = async {
-                    getGames.get(dates = "2022-01-01,2022-01-25")
+                    getGames.get(dates = period)
                 }
                 listState.value = newTrendingDeferred.await()
             }
