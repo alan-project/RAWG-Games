@@ -8,48 +8,31 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.list.Result
-import net.alanproject.domain.usecases.GetList
+import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.usecases.GetGames
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
-    private val getList: GetList,
+    private val getGames: GetGames,
     savedStateHandle: SavedStateHandle
-):ViewModel(){
+) : ViewModel() {
 
-    val listState: MutableState<List<Result>> = mutableStateOf(listOf())
-    private val categoryId:Long? = savedStateHandle.get("categoryId")
+    val listState: MutableState<List<Game>> = mutableStateOf(listOf())
+    private val categoryId: Long? = savedStateHandle.get("categoryId")
 
-
-
-    init{
+    init {
         Timber.d("categoryId: $categoryId")
-        try{
+        try {
             viewModelScope.launch {
                 val newTrendingDeferred = async {
-                    getList(dates = "2022-01-01,2022-01-25", platforms =null)
+                    getGames.get(dates = "2022-01-01,2022-01-25")
                 }
-
-
-
                 listState.value = newTrendingDeferred.await()
-
             }
-
-        }catch (exception: Exception) {
+        } catch (exception: Exception) {
             Timber.d("throwable: $exception")
         }
-    }
-
-
-    private suspend fun getList(
-        page: Int = 1,
-        order: String = "-added",
-        dates: String = "",
-        platforms: String?
-    ): List<Result> {
-        return getList.getList(page, order, dates, platforms)
     }
 }

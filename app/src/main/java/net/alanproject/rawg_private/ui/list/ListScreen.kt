@@ -1,6 +1,5 @@
 package net.alanproject.rawg_private.ui.list
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,9 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
-import coil.transform.RoundedCornersTransformation
-import net.alanproject.domain.model.list.Result
+import net.alanproject.domain.model.list.Game
 
 @Composable
 fun ListScreen(navController: NavHostController?) {
@@ -49,7 +45,7 @@ fun ListScreen(navController: NavHostController?) {
             LazyColumn {
                 //'items' iterate actual items
                 items(list) { result ->
-                    ProfileCard(result,{})
+                    ProfileCard(result, {})
                 }
             }
         }
@@ -73,7 +69,7 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
 }
 
 @Composable
-fun ProfileCard(game: Result, clickAction: () -> Unit) {
+fun ProfileCard(game: Game, clickAction: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
@@ -100,7 +96,8 @@ fun ProfilePicture(pictureUrl: String, imageSize: Dp) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier
+            .padding(16.dp)
             .width(100.dp),
         elevation = 4.dp
     ) {
@@ -126,10 +123,10 @@ fun ProfileContent(userName: String, alignment: Alignment.Horizontal) {
     ) {
         //transparency
 
-            Text(
-                text = userName,
-                style = MaterialTheme.typography.h5
-            )
+        Text(
+            text = userName,
+            style = MaterialTheme.typography.h5
+        )
 
     }
 

@@ -3,7 +3,7 @@ package net.alanproject.domain.model.list
 
 import com.google.gson.annotations.SerializedName
 
-data class Result(
+data class Game(
     val id: Int = 0,
     val slug: String = "",
     val name: String = "",
