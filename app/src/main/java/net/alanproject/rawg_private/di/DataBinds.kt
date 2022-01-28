@@ -1,4 +1,4 @@
-package net.alanproject.rawg_private.ui.di
+package net.alanproject.rawg_private.di
 
 import dagger.Binds
 import dagger.Module
@@ -8,7 +8,7 @@ import dagger.hilt.components.SingletonComponent
 import net.alanproject.data.source.RemoteSource
 import net.alanproject.data.source.remote.RawgApi
 import net.alanproject.data.source.remote.RemoteSourceImpl
-import net.alanproject.rawg_private.ui.common.BASE_URL
+import net.alanproject.rawg_private.common.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

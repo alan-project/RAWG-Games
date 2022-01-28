@@ -1,6 +1,7 @@
-package net.alanproject.rawg_private.ui.top
+package net.alanproject.rawg_private.ui.main
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -9,6 +10,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Result
@@ -27,9 +29,8 @@ import timber.log.Timber
 
 
 @Composable
-fun MainScreen() {
-    val viewModel: MainViewModel = viewModel()
-    val newTrendingList = viewModel.newTrendingState.value
+fun MainScreen(viewModel: MainViewModel, navController: NavHostController?) {
+    val newTrendingList = viewModel.listState.value
     val hotList = viewModel.hotState.value
     val upcomingList = viewModel.upcomingState.value
 
@@ -43,19 +44,19 @@ fun MainScreen() {
                 .verticalScroll(rememberScrollState())
 
         ) {
-            if (newTrendingList.isNotEmpty()) FullBanner(newTrendingList, 0)
-            if (hotList.isNotEmpty()) VerticalList(hotList, 3)
-            if (upcomingList.isNotEmpty()) HorizontalList(upcomingList, 5)
+            if (newTrendingList.isNotEmpty()) FullContent(newTrendingList, navController, 0)
+            if (hotList.isNotEmpty()) VerticalList(hotList,navController,  3)
+            if (upcomingList.isNotEmpty()) HorizontalList(upcomingList, navController, 5)
         }
     }
-
-
 }
 
 @Composable
-fun FullBanner(games: List<Result>, index: Int) {
+fun FullContent(games: List<Result>, navController: NavHostController?, index: Int) {
     val game: Result = games[index]
-    TitleText("New & Trending")
+    TitleText("New & Trending") {
+        navController?.navigate("list/1")
+    }
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
@@ -76,13 +77,30 @@ fun FullBanner(games: List<Result>, index: Int) {
 }
 
 @Composable
-fun TitleText(title: String) {
-    Text(
-        text = title,
-        color = Color.White,
-        style = MaterialTheme.typography.h5,
-        modifier = Modifier.padding(8.dp)
-    )
+fun TitleText(title: String, clickAction: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = { clickAction.invoke() }),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = title,
+            color = Color.White,
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.padding(8.dp)
+        )
+        Icon(
+            Icons.Default.ArrowForward,
+            contentDescription = "",
+            modifier = Modifier.padding(8.dp),
+            tint = Color.White
+
+        )
+
+    }
+
 }
 
 @Composable
@@ -112,9 +130,11 @@ fun CustomImageDes(game: Result) {
 }
 
 @Composable
-fun VerticalList(games: List<Result>, gameCnt: Int) {
+fun VerticalList(games: List<Result>, navController: NavHostController?, gameCnt: Int) {
 
-    TitleText("What's Hot Now")
+    TitleText("What's Hot Now") {
+        navController?.navigate("list/2")
+    }
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.Start,
@@ -165,11 +185,13 @@ fun VerticalList(games: List<Result>, gameCnt: Int) {
 }
 
 @Composable
-fun HorizontalList(games: List<Result>, gameCnt: Int) {
+fun HorizontalList(games: List<Result>, navController: NavHostController?, gameCnt: Int) {
 
     val selectedGames = games.subList(0, gameCnt)
 
-    TitleText("Upcoming Games")
+    TitleText("Upcoming Games"){
+        navController?.navigate("list/3")
+    }
     LazyRow {
         items(selectedGames) { game ->
             GameCard(game = game)
@@ -242,6 +264,6 @@ fun AppBar() {
 @Composable
 fun DefaultPreview() {
     Rawg_privateTheme {
-        MainScreen()
+//        MainScreen(MainViewModel(),null)
     }
 }
