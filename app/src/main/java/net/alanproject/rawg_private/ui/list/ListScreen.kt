@@ -26,7 +26,7 @@ import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Result
 
 @Composable
-fun ListScreen(navController1: Int, navController: NavHostController?) {
+fun ListScreen(navController: NavHostController?) {
     val viewModel = hiltViewModel<ListViewModel>()
     val list = viewModel.listState.value
 
