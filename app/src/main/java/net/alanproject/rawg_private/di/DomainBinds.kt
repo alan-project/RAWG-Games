@@ -1,4 +1,4 @@
-package net.alanproject.rawg_private.ui.di
+package net.alanproject.rawg_private.di
 
 import dagger.Binds
 import dagger.Module
