@@ -7,37 +7,37 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.list.Result
-import net.alanproject.domain.usecases.GetList
+import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.usecases.GetGames
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val getList: GetList
+    private val getGames: GetGames
 ) : ViewModel() {
 
-    val listState: MutableState<List<Result>> = mutableStateOf(listOf())
-    val hotState: MutableState<List<Result>> = mutableStateOf(listOf())
-    val upcomingState: MutableState<List<Result>> = mutableStateOf(listOf())
+    val newTrendingList: MutableState<List<Game>> = mutableStateOf(listOf())
+    val hotListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     init{
         try{
             viewModelScope.launch {
                 val newTrendingDeferred = async {
-                    getList(dates = "2022-01-01,2022-01-25", platforms =null)
+                    getGames.get(dates = "2022-01-01,2022-01-25")
                 }
                 val hotDeferred = async {
-                    getList(dates = "2021-06-01,2022-01-26", platforms =null)
+                    getGames.get(dates = "2021-06-01,2022-01-26")
                 }
                 val upcomingDeferred = async {
-                    getList(dates = "2022-01-27,2022-02-27", platforms =null)
+                    getGames.get(dates = "2022-01-27,2022-02-27")
                 }
 
 
-                listState.value = newTrendingDeferred.await()
-                hotState.value = hotDeferred.await()
-                upcomingState.value = upcomingDeferred.await()
+                newTrendingList.value = newTrendingDeferred.await()
+                hotListState.value = hotDeferred.await()
+                upcomingListState.value = upcomingDeferred.await()
             }
 
         }catch (exception: Exception) {
@@ -45,13 +45,4 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
-    private suspend fun getList(
-        page: Int = 1,
-        order: String = "-added",
-        dates: String = "",
-        platforms: String?
-    ): List<Result> {
-        return getList.getList(page, order, dates, platforms)
-    }
 }

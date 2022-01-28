@@ -1,12 +1,12 @@
 package net.alanproject.domain.repository
 
-import net.alanproject.domain.model.list.GameList
+import net.alanproject.domain.model.list.Response
 
 interface RawgRepository {
-    suspend fun getList(
-        page: Int,
-        order: String,
-        dates: String,
+    suspend fun getGames(
+        page: Int?,
+        order: String?,
+        dates: String?,
         platforms: String?
-    ): GameList
+    ): Response
 }
