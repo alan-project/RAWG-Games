@@ -74,8 +74,13 @@ fun TopContent(games: List<Game>?, navController: NavHostController?) {
             verticalArrangement = Arrangement.Top
         ) {
             displayedGame?.let { it ->
-                FullImage(it)
-                CustomImageDes(it)
+                GameScreen(
+                    it, modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+                GameDescription(it)
             }
 
         }
@@ -108,7 +113,7 @@ fun TitleText(title: String, clickAction: () -> Unit) {
 }
 
 @Composable
-fun FullImage(game: Game) {
+fun GameScreen(game: Game, modifier: Modifier) {
     val scrUrl: String = game.backgroundImage
     Image(
         //loaded asynchronously
@@ -120,16 +125,13 @@ fun FullImage(game: Game) {
                 )
             }
         ),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(200.dp)
-            .clip(RoundedCornerShape(10.dp)),
+        modifier = modifier,
         contentDescription = "Profile picture description",
     )
 }
 
 @Composable
-fun CustomImageDes(game: Game) {
+fun GameDescription(game: Game) {
     Text(text = game.name)
 }
 
@@ -159,16 +161,9 @@ fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt:
                             .align(Alignment.Start)
                             .padding(4.dp)
                     ) {
-                        Image(
-                            painter = rememberImagePainter(
-                                data = game.backgroundImage,
-                                builder = {
-                                    transformations(
-                                        RoundedCornersTransformation(),
-                                    )
-                                }),
-                            contentDescription = null,
-                            modifier = Modifier
+
+                        GameScreen(
+                            game, modifier = Modifier
                                 .width(120.dp)
                                 .height(80.dp)
                                 .padding(4.dp)
@@ -233,19 +228,13 @@ fun GameCard(game: Game) {
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                Image(
-                    painter = rememberImagePainter(game.backgroundImage,
-                        builder = {
-                            transformations(
-                                RoundedCornersTransformation(),
-                            )
-                        }),
-                    contentDescription = null,
-                    modifier = Modifier
+                GameScreen(
+                    game, modifier = Modifier
                         .width(220.dp)
                         .height(160.dp)
                         .padding(4.dp)
                 )
+
                 Text(
                     text = game.name,
                     style = MaterialTheme.typography.h6,
