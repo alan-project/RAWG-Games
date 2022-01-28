@@ -9,6 +9,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGames
+import net.alanproject.rawg_private.common.*
+import net.alanproject.rawg_private.common.Constants.Companion.HOT_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PERIOD
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -22,16 +25,17 @@ class MainViewModel @Inject constructor(
     val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     init{
+
         try{
             viewModelScope.launch {
                 val newTrendingDeferred = async {
-                    getGames.get(dates = "2022-01-01,2022-01-25")
+                    getGames.get(dates = Constants.TRENDING_PERIOD)
                 }
                 val hotDeferred = async {
-                    getGames.get(dates = "2021-06-01,2022-01-26")
+                    getGames.get(dates = HOT_PERIOD)
                 }
                 val upcomingDeferred = async {
-                    getGames.get(dates = "2022-01-27,2022-02-27")
+                    getGames.get(dates = UPCOMING_PERIOD)
                 }
 
 
