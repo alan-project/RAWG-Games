@@ -1,6 +1,5 @@
 package net.alanproject.rawg_private.ui.detail
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,19 +10,19 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import coil.transform.CircleCropTransformation
 import coil.transform.RoundedCornersTransformation
 
 @Composable
-fun DetailScreen(id: Int, navController: NavHostController?) {
-    val viewModel = hiltViewModel<DetailViewModel>()
+fun DetailScreen(gameId: Int, navController: NavHostController?) {
+    val viewModel = hiltViewModel<DetailViewModel>().apply {
+        getGame(gameId)
+    }
     val game = viewModel.gameState.value
 
     Scaffold(topBar = {

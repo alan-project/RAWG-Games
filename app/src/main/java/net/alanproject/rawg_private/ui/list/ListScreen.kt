@@ -22,8 +22,10 @@ import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.list.Game
 
 @Composable
-fun ListScreen(navController: NavHostController?) {
-    val viewModel = hiltViewModel<ListViewModel>()
+fun ListScreen(categoryId: Int, navController: NavHostController?) {
+    val viewModel = hiltViewModel<ListViewModel>().apply {
+        getList(categoryId)
+    }
     val list = viewModel.listState.value
 
     Scaffold(topBar = {
@@ -42,8 +44,9 @@ fun ListScreen(navController: NavHostController?) {
             LazyColumn {
                 //'items' iterate actual items
                 items(list) { game ->
-                    ProfileCard(game)
-                    { navController?.navigate("detail/${game.id}") }
+                    ProfileCard(game) {
+                        navController?.navigate("detail/${game.id}")
+                    }
                 }
             }
         }
