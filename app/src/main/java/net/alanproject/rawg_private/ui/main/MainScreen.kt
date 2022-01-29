@@ -62,16 +62,18 @@ fun TopContent(games: List<Game>?, navController: NavHostController?) {
     TitleText("New & Trending") {
         navController?.navigate("list/1")
     }
+    val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
     Card(
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth()
-            .wrapContentHeight(align = Alignment.Top),
+            .wrapContentHeight(align = Alignment.Top)
+            .clickable(onClick = { clickAction.invoke() }),
         elevation = 8.dp,
         backgroundColor = Color.White
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(4.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
@@ -89,6 +91,100 @@ fun TopContent(games: List<Game>?, navController: NavHostController?) {
     }
 }
 
+@Composable
+fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
+
+
+    TitleText("What's Hot Now") {
+        navController?.navigate("list/2")
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.Top
+    ) {
+        val displayedGames = games?.take(gameCnt)
+
+        displayedGames?.let { selectedGames ->
+            selectedGames.forEach { game ->
+                val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = 2.dp,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp)
+                        .clickable(onClick = { clickAction.invoke() })
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(4.dp)
+                    ) {
+
+                        GameScreen(
+                            game, modifier = Modifier
+                                .width(120.dp)
+                                .height(80.dp)
+                                .padding(4.dp)
+                        )
+
+                        GameDescription(game)
+
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+
+@Composable
+fun HorizontalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
+
+    val displayedGames = games?.take(gameCnt)
+
+    TitleText("Upcoming Games") {
+        navController?.navigate("list/3")
+    }
+
+    LazyRow {
+        displayedGames?.let {
+            items(it) { game ->
+                val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+                Card(
+                    shape = RoundedCornerShape(8.dp),
+                    elevation = 2.dp,
+                    modifier = Modifier
+                        .width(240.dp)
+                        .wrapContentHeight()
+                        .padding(8.dp)
+                        .clickable(onClick = { clickAction.invoke() })
+                ) {
+
+                    Column(
+                        modifier = Modifier.padding(4.dp),
+                        horizontalAlignment = Alignment.Start,
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        GameScreen(
+                            game,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(160.dp)
+                                .padding(4.dp)
+                        )
+
+                        GameDescription(game)
+                    }
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun TitleText(title: String, clickAction: () -> Unit) {
@@ -134,119 +230,13 @@ fun GameScreen(game: Game, modifier: Modifier) {
 
 @Composable
 fun GameDescription(game: Game) {
-    Text(text = game.name)
+    Text(
+        text = game.name,
+        style = MaterialTheme.typography.h6,
+        maxLines = 1, overflow = TextOverflow.Ellipsis
+    )
 }
 
-@Composable
-fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
-
-    TitleText("What's Hot Now") {
-        navController?.navigate("list/2")
-    }
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
-    ) {
-        val displayedGames = games?.take(gameCnt)
-        displayedGames?.let { selectedGames ->
-            selectedGames.forEach { game ->
-                Card(
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = 2.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(4.dp)
-                    ) {
-
-                        GameScreen(
-                            game, modifier = Modifier
-                                .width(120.dp)
-                                .height(80.dp)
-                                .padding(4.dp)
-                        )
-
-                        Column(
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                                .padding(16.dp)
-                        ) {
-                            Text(
-                                text = game.name,
-                                style = MaterialTheme.typography.h6
-                            )
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-}
-
-@Composable
-fun HorizontalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
-
-    val displayedGames = games?.take(gameCnt)
-
-    TitleText("Upcoming Games") {
-        navController?.navigate("list/3")
-    }
-
-    LazyRow {
-        displayedGames?.let {
-            items(it) { game ->
-                GameCard(game = game)
-            }
-        }
-    }
-}
-
-@Composable
-fun GameCard(game: Game) {
-    Row(
-        modifier = Modifier.padding(4.dp),
-        verticalAlignment = Alignment.Top,
-        horizontalArrangement = Arrangement.SpaceEvenly
-    ) {
-
-        Card(
-            shape = RoundedCornerShape(8.dp),
-            elevation = 2.dp,
-            modifier = Modifier
-                .width(240.dp)
-                .wrapContentHeight()
-
-            // .padding(top = 16.dp)
-        ) {
-
-            Column(
-                modifier = Modifier.padding(4.dp),
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                GameScreen(
-                    game, modifier = Modifier
-                        .width(220.dp)
-                        .height(160.dp)
-                        .padding(4.dp)
-                )
-
-                Text(
-                    text = game.name,
-                    style = MaterialTheme.typography.h6,
-                    maxLines = 1, overflow = TextOverflow.Ellipsis
-                )
-            }
-        }
-
-    }
-}
 
 @Composable
 fun AppBar() {
