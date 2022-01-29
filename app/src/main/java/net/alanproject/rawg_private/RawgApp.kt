@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import net.alanproject.rawg_private.ui.detail.DetailScreen
 import net.alanproject.rawg_private.ui.list.ListScreen
 import net.alanproject.rawg_private.ui.main.MainScreen
 import net.alanproject.rawg_private.ui.main.MainViewModel
@@ -15,13 +16,13 @@ import net.alanproject.rawg_private.ui.main.MainViewModel
 fun RawgApp() {
 
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main_screen") {
+    NavHost(navController = navController, startDestination = "main") {
 
         //navGraphBuilder to control how to build the navigation Graph
         //and navGraph is a map of screens
-        composable(route = "main_screen") {
-            val mainViewModel = hiltViewModel<MainViewModel>()
-            MainScreen(mainViewModel, navController)
+        composable(route = "main") {
+
+            MainScreen(navController)
         }
 
         //pass parameter
@@ -31,6 +32,14 @@ fun RawgApp() {
         ) { navBackStackEntry ->
 
             ListScreen(navController)
+        }
+
+        composable(
+            route = "detail/{id}",
+            arguments = listOf(navArgument("id") { type = NavType.IntType })
+        ) { navBackStackEntry ->
+
+            DetailScreen(navBackStackEntry.arguments!!.getInt("id"), navController)
         }
     }
 

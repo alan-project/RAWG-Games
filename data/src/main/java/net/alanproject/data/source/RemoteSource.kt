@@ -1,5 +1,6 @@
 package net.alanproject.data.source
 
+import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.model.list.Response
 
 interface RemoteSource {
@@ -9,4 +10,8 @@ interface RemoteSource {
         dates: String?,
         platforms: String?
     ): Response
+
+    suspend fun getGame(
+        id: Int
+    ): Game
 }
