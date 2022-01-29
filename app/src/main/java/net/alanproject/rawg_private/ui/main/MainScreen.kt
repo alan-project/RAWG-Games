@@ -59,86 +59,93 @@ fun MainScreen(navController: NavHostController?) {
 fun TopContent(games: List<Game>?, navController: NavHostController?) {
 
     val displayedGame = games?.firstOrNull()
-    TitleText("New & Trending") {
-        navController?.navigate("list/1")
-    }
-    val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
-    Card(
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
-            .fillMaxWidth()
-            .wrapContentHeight(align = Alignment.Top)
-            .clickable(onClick = { clickAction.invoke() }),
-        elevation = 8.dp,
-        backgroundColor = Color.White
-    ) {
-        Column(
-            modifier = Modifier.padding(4.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
+    if (displayedGame != null) {
+        TitleText("New & Trending") {
+            navController?.navigate("list/1")
+        }
+        val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
+        Card(
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+                .fillMaxWidth()
+                .wrapContentHeight(align = Alignment.Top)
+                .clickable(onClick = { clickAction.invoke() }),
+            elevation = 8.dp,
+            backgroundColor = Color.White
         ) {
-            displayedGame?.let { it ->
-                GameScreen(
-                    it, modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
-                GameDescription(it)
-            }
+            Column(
+                modifier = Modifier.padding(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            )
+            {
+                displayedGame?.let { it ->
+                    GameScreen(
+                        it, modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .clip(RoundedCornerShape(10.dp))
+                    )
+                    GameDescription(it)
+                }
 
+            }
         }
     }
+
+
 }
 
 @Composable
 fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
 
+    if (!games.isNullOrEmpty()) {
+        TitleText("What's Hot Now") {
+            navController?.navigate("list/2")
+        }
 
-    TitleText("What's Hot Now") {
-        navController?.navigate("list/2")
-    }
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Top
+        ) {
+            val displayedGames = games?.take(gameCnt)
 
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Top
-    ) {
-        val displayedGames = games?.take(gameCnt)
+            displayedGames?.let { selectedGames ->
+                selectedGames.forEach { game ->
+                    val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
 
-        displayedGames?.let { selectedGames ->
-            selectedGames.forEach { game ->
-                val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
-
-                Card(
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = 2.dp,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                        .clickable(onClick = { clickAction.invoke() })
-                ) {
-                    Row(
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        elevation = 2.dp,
                         modifier = Modifier
-                            .align(Alignment.Start)
-                            .padding(4.dp)
+                            .fillMaxWidth()
+                            .padding(top = 16.dp)
+                            .clickable(onClick = { clickAction.invoke() })
                     ) {
-
-                        GameScreen(
-                            game, modifier = Modifier
-                                .width(120.dp)
-                                .height(80.dp)
+                        Row(
+                            modifier = Modifier
+                                .align(Alignment.Start)
                                 .padding(4.dp)
-                        )
+                        ) {
 
-                        GameDescription(game)
+                            GameScreen(
+                                game, modifier = Modifier
+                                    .width(120.dp)
+                                    .height(80.dp)
+                                    .padding(4.dp)
+                            )
 
+                            GameDescription(game)
+
+                        }
                     }
                 }
             }
         }
-
     }
+
+
 }
 
 
@@ -147,43 +154,47 @@ fun HorizontalList(games: List<Game>?, navController: NavHostController?, gameCn
 
     val displayedGames = games?.take(gameCnt)
 
-    TitleText("Upcoming Games") {
-        navController?.navigate("list/3")
-    }
-
-    LazyRow {
-        displayedGames?.let {
-            items(it) { game ->
-                val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
-                Card(
-                    shape = RoundedCornerShape(8.dp),
-                    elevation = 2.dp,
-                    modifier = Modifier
-                        .width(240.dp)
-                        .wrapContentHeight()
-                        .padding(8.dp)
-                        .clickable(onClick = { clickAction.invoke() })
-                ) {
-
-                    Column(
-                        modifier = Modifier.padding(4.dp),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.SpaceEvenly
+    if (!displayedGames.isNullOrEmpty()) {
+        TitleText("Upcoming Games") {
+            navController?.navigate("list/3")
+        }
+        LazyRow {
+            displayedGames?.let {
+                items(it) { game ->
+                    val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+                    Card(
+                        shape = RoundedCornerShape(8.dp),
+                        elevation = 2.dp,
+                        modifier = Modifier
+                            .width(240.dp)
+                            .wrapContentHeight()
+                            .padding(8.dp)
+                            .clickable(onClick = { clickAction.invoke() })
                     ) {
-                        GameScreen(
-                            game,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(160.dp)
-                                .padding(4.dp)
-                        )
 
-                        GameDescription(game)
+                        Column(
+                            modifier = Modifier.padding(4.dp),
+                            horizontalAlignment = Alignment.Start,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            GameScreen(
+                                game,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(160.dp)
+                                    .padding(4.dp)
+                            )
+
+                            GameDescription(game)
+                        }
                     }
                 }
             }
         }
+
     }
+
+
 }
 
 @Composable
