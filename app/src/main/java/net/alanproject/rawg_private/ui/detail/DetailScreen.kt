@@ -1,14 +1,13 @@
-package net.alanproject.rawg_private.ui.list
+package net.alanproject.rawg_private.ui.detail
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,36 +18,40 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import net.alanproject.domain.model.list.Game
+import coil.transform.CircleCropTransformation
+import coil.transform.RoundedCornersTransformation
 
 @Composable
-fun ListScreen(navController: NavHostController?) {
-    val viewModel = hiltViewModel<ListViewModel>()
-    val list = viewModel.listState.value
+fun DetailScreen(id: Int, navController: NavHostController?) {
+    val viewModel = hiltViewModel<DetailViewModel>()
+    val game = viewModel.gameState.value
 
     Scaffold(topBar = {
         AppBar(
-            title = "Game List",
-            icon = Icons.Default.Home
+            title = "Users profile details",
+            icon = Icons.Default.ArrowBack
         ) {
-            //do nothing
+            //pop most current composable
+            navController?.navigateUp()
         }
     }) {
         Surface(
-
             modifier = Modifier.fillMaxSize()
-
         ) {
-            LazyColumn {
-                //'items' iterate actual items
-                items(list) { game ->
-                    ProfileCard(game)
-                    { navController?.navigate("detail/${game.id}") }
-                }
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                // reuse and customize composable
+                ProfilePicture(game.backgroundImage, 240.dp)
+                ProfileContent(game.name, Alignment.CenterHorizontally)
             }
         }
     }
 }
+
 
 @Composable
 fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
@@ -66,44 +69,23 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
     )
 }
 
-@Composable
-fun ProfileCard(game: Game, clickAction: () -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
-            .fillMaxWidth()
-            .wrapContentHeight(align = Alignment.Top)
-            .clickable(onClick = { clickAction.invoke() }),
-        elevation = 8.dp,
-        backgroundColor = Color.White
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            ProfilePicture(game.backgroundImage, 72.dp)
-            ProfileContent(game.name, Alignment.Start)
-        }
-
-    }
-}
 
 @Composable
 fun ProfilePicture(pictureUrl: String, imageSize: Dp) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),
-        modifier = Modifier
-            .padding(16.dp)
-            .width(100.dp),
+        modifier = Modifier.padding(16.dp),
         elevation = 4.dp
     ) {
 
         Image(
             //loaded asynchronously
             painter = rememberImagePainter(
-                data = pictureUrl
+                data = pictureUrl,
+                builder = {
+                    transformations(RoundedCornersTransformation())
+                }
             ),
             modifier = Modifier.size(imageSize),
             contentDescription = "Profile picture description",
@@ -112,17 +94,16 @@ fun ProfilePicture(pictureUrl: String, imageSize: Dp) {
 }
 
 @Composable
-fun ProfileContent(userName: String, alignment: Alignment.Horizontal) {
+fun ProfileContent(gameName: String, alignment: Alignment.Horizontal) {
     Column(
         modifier = Modifier
             .padding(8.dp),
         horizontalAlignment = alignment
 
     ) {
-        //transparency
 
         Text(
-            text = userName,
+            text = gameName,
             style = MaterialTheme.typography.h5
         )
 

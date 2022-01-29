@@ -11,6 +11,7 @@ import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.rawg_private.common.*
 import net.alanproject.rawg_private.common.Constants.Companion.HOT_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PERIOD
 import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PERIOD
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class MainViewModel @Inject constructor(
         try{
             viewModelScope.launch {
                 val newTrendingDeferred = async {
-                    getGames.get(dates = Constants.TRENDING_PERIOD)
+                    getGames.get(dates = TRENDING_PERIOD)
                 }
                 val hotDeferred = async {
                     getGames.get(dates = HOT_PERIOD)

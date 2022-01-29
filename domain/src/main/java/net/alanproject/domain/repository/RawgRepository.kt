@@ -1,5 +1,6 @@
 package net.alanproject.domain.repository
 
+import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.model.list.Response
 
 interface RawgRepository {
@@ -9,4 +10,8 @@ interface RawgRepository {
         dates: String?,
         platforms: String?
     ): Response
+
+    suspend fun getGame(
+        id: Int
+    ): Game
 }
