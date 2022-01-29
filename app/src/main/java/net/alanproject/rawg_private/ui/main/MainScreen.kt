@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
@@ -31,7 +32,8 @@ import timber.log.Timber
 
 
 @Composable
-fun MainScreen(viewModel: MainViewModel, navController: NavHostController?) {
+fun MainScreen(navController: NavHostController?) {
+    val viewModel = hiltViewModel<MainViewModel>()
     val newTrendingList = viewModel.newTrendingList.value
     val hotList = viewModel.hotListState.value
     val upcomingList = viewModel.upcomingListState.value
