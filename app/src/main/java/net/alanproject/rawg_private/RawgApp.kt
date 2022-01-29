@@ -28,18 +28,18 @@ fun RawgApp() {
         //pass parameter
         composable(
             route = "list/{categoryId}",
-            arguments = listOf(navArgument("categoryId") { type = NavType.LongType })
+            arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
         ) { navBackStackEntry ->
 
-            ListScreen(navController)
+            ListScreen(navBackStackEntry.arguments!!.getInt("categoryId"), navController)
         }
 
         composable(
-            route = "detail/{id}",
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            route = "detail/{gameId}",
+            arguments = listOf(navArgument("gameId") { type = NavType.IntType })
         ) { navBackStackEntry ->
 
-            DetailScreen(navBackStackEntry.arguments!!.getInt("id"), navController)
+            DetailScreen(navBackStackEntry.arguments!!.getInt("gameId"), navController)
         }
     }
 
