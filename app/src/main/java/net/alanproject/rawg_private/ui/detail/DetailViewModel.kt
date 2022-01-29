@@ -16,26 +16,20 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getGame: GetGame,
-    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     val gameState: MutableState<Game> = mutableStateOf(Game())
-    private val id: Int? = savedStateHandle.get("id")
 
-    init {
+    fun getGame(gameId:Int){
         try {
             viewModelScope.launch {
                 val gameDeferred = async {
-                    id?.let{
-                        getGame.get(it)
-                    }
+                        getGame.get(gameId)
                 }
                 gameState.value = gameDeferred.await()?:Game()
             }
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
         }
-
     }
-
 }
