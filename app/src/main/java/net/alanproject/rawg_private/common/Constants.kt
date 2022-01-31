@@ -11,7 +11,7 @@ class Constants{
 }
 
 const val BASE_URL = "https://api.rawg.io/api/"
-const val VERTICAL_GAME_NUMBER = 3
+const val VERTICAL_GAME_NUMBER = 6
 const val HORIZONTAL_GAME_NUMBER = 5
 const val ONE_WEEK = 7L
 const val ONE_MONTH = 30L

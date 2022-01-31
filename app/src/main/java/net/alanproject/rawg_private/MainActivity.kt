@@ -7,7 +7,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import dagger.hilt.android.AndroidEntryPoint
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
-import net.alanproject.rawg_private.ui.main.MainScreen
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
