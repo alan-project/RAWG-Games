@@ -15,6 +15,13 @@ import net.alanproject.rawg_private.ui.main.MainViewModel
 @Composable
 fun RawgApp() {
 
+    Navigation()
+
+}
+
+@Composable
+fun Navigation(){
+
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "main") {
 
@@ -42,5 +49,4 @@ fun RawgApp() {
             DetailScreen(navBackStackEntry.arguments!!.getInt("gameId"), navController)
         }
     }
-
 }
