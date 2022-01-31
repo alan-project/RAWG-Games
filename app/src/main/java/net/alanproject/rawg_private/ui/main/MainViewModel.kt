@@ -11,6 +11,7 @@ import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.rawg_private.common.*
 import net.alanproject.rawg_private.common.Constants.Companion.HOT_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PERIOD
 import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PERIOD
 import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PERIOD
 import timber.log.Timber
@@ -24,6 +25,7 @@ class MainViewModel @Inject constructor(
     val newTrendingList: MutableState<List<Game>> = mutableStateOf(listOf())
     val hotListState: MutableState<List<Game>> = mutableStateOf(listOf())
     val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val newReleaseListState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     init{
 
@@ -38,11 +40,15 @@ class MainViewModel @Inject constructor(
                 val upcomingDeferred = async {
                     getGames.get(dates = UPCOMING_PERIOD)
                 }
+                val releaseDeferred = async {
+                    getGames.get(dates = RELEASE_PERIOD)
+                }
 
 
                 newTrendingList.value = newTrendingDeferred.await()
                 hotListState.value = hotDeferred.await()
                 upcomingListState.value = upcomingDeferred.await()
+                newReleaseListState.value = releaseDeferred.await()
             }
 
         }catch (exception: Exception) {
