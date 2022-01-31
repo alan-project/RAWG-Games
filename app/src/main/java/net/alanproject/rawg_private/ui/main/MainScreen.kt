@@ -1,13 +1,10 @@
 package net.alanproject.rawg_private.ui.main
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
@@ -16,10 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
@@ -34,9 +35,11 @@ import timber.log.Timber
 @Composable
 fun MainScreen(navController: NavHostController?) {
     val viewModel = hiltViewModel<MainViewModel>()
+
     val newTrendingList = viewModel.newTrendingList.value
     val hotList = viewModel.hotListState.value
     val upcomingList = viewModel.upcomingListState.value
+    val releaseList = viewModel.newReleaseListState.value
 
     Timber.d("newTrendingList: $newTrendingList")
     Timber.d("hotList: $hotList")
@@ -48,12 +51,31 @@ fun MainScreen(navController: NavHostController?) {
                 .verticalScroll(rememberScrollState())
 
         ) {
-            TopContent(newTrendingList, navController)
-            VerticalList(hotList, navController, VERTICAL_GAME_NUMBER)
-            HorizontalList(upcomingList, navController, HORIZONTAL_GAME_NUMBER)
+            NewTrending(newTrendingList, navController)
+            HowNow(hotList, navController, VERTICAL_GAME_NUMBER)
+            Upcoming(upcomingList, navController, HORIZONTAL_GAME_NUMBER, "Upcoming Games")
+            NewRelease(releaseList, navController, HORIZONTAL_GAME_NUMBER, "New Release")
+
         }
     }
 }
+
+@Composable
+fun NewTrending(games: List<Game>?, navController: NavHostController?) =
+    TopContent(games, navController)
+
+@Composable
+fun HowNow(games: List<Game>?, navController: NavHostController?, gameCnt: Int) =
+    VerticalList(games, navController, gameCnt)
+
+@Composable
+fun NewRelease(games: List<Game>?, navController: NavHostController?, gameCnt: Int, text: String) =
+    HorizontalList(games, navController, gameCnt, text)
+
+@Composable
+fun Upcoming(games: List<Game>?, navController: NavHostController?, gameCnt: Int, text: String) =
+    HorizontalList(games, navController, gameCnt, text)
+
 
 @Composable
 fun TopContent(games: List<Game>?, navController: NavHostController?) {
@@ -65,35 +87,23 @@ fun TopContent(games: List<Game>?, navController: NavHostController?) {
         }
         val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
         Card(
+            shape = RoundedCornerShape(15.dp),
             modifier = Modifier
-                .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
                 .fillMaxWidth()
                 .wrapContentHeight(align = Alignment.Top)
-                .clickable(onClick = { clickAction.invoke() }),
+                .clickable(onClick = { clickAction.invoke() })
+                .padding(4.dp),
             elevation = 8.dp,
             backgroundColor = Color.White
         ) {
-            Column(
-                modifier = Modifier.padding(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
+            GameScreenWithText(
+                displayedGame, modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+                    .clip(RoundedCornerShape(10.dp))
             )
-            {
-                displayedGame?.let { it ->
-                    GameScreen(
-                        it, modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                    )
-                    GameDescription(it)
-                }
-
-            }
         }
     }
-
-
 }
 
 @Composable
@@ -109,9 +119,9 @@ fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt:
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            val displayedGames = games?.take(gameCnt)
+            val displayedGames = games.take(gameCnt)
 
-            displayedGames?.let { selectedGames ->
+            displayedGames.let { selectedGames ->
                 selectedGames.forEach { game ->
                     val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
 
@@ -135,66 +145,55 @@ fun VerticalList(games: List<Game>?, navController: NavHostController?, gameCnt:
                                     .height(80.dp)
                                     .padding(4.dp)
                             )
-
                             GameDescription(game)
-
                         }
                     }
                 }
             }
         }
     }
-
-
 }
 
 
 @Composable
-fun HorizontalList(games: List<Game>?, navController: NavHostController?, gameCnt: Int) {
+fun HorizontalList(
+    games: List<Game>?,
+    navController: NavHostController?,
+    gameCnt: Int,
+    text: String
+) {
 
     val displayedGames = games?.take(gameCnt)
 
     if (!displayedGames.isNullOrEmpty()) {
-        TitleText("Upcoming Games") {
+        TitleText(text) {
             navController?.navigate("list/3")
         }
         LazyRow {
-            displayedGames?.let {
-                items(it) { game ->
-                    val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
-                    Card(
-                        shape = RoundedCornerShape(8.dp),
-                        elevation = 2.dp,
+            items(displayedGames) { game ->
+                val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+                Card(
+
+                    shape = RoundedCornerShape(15.dp),
+                    elevation = 2.dp,
+                    modifier = Modifier
+                        .width(240.dp)
+                        .wrapContentHeight()
+                        .padding(4.dp)
+                        .clickable(onClick = { clickAction.invoke() })
+                ) {
+
+                    GameScreenWithText(
+                        game,
                         modifier = Modifier
-                            .width(240.dp)
-                            .wrapContentHeight()
-                            .padding(8.dp)
-                            .clickable(onClick = { clickAction.invoke() })
-                    ) {
-
-                        Column(
-                            modifier = Modifier.padding(4.dp),
-                            horizontalAlignment = Alignment.Start,
-                            verticalArrangement = Arrangement.SpaceEvenly
-                        ) {
-                            GameScreen(
-                                game,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(160.dp)
-                                    .padding(4.dp)
-                            )
-
-                            GameDescription(game)
-                        }
-                    }
+                            .fillMaxWidth()
+                            .height(160.dp)
+                    )
                 }
             }
         }
 
     }
-
-
 }
 
 @Composable
@@ -223,11 +222,10 @@ fun TitleText(title: String, clickAction: () -> Unit) {
 
 @Composable
 fun GameScreen(game: Game, modifier: Modifier) {
-    val scrUrl: String = game.backgroundImage
     Image(
         //loaded asynchronously
         painter = rememberImagePainter(
-            data = scrUrl,
+            data = game.backgroundImage,
             builder = {
                 transformations(
                     RoundedCornersTransformation(),
@@ -235,8 +233,51 @@ fun GameScreen(game: Game, modifier: Modifier) {
             }
         ),
         modifier = modifier,
-        contentDescription = "Profile picture description",
+        contentDescription = "game picture description",
+        contentScale = ContentScale.Crop
     )
+}
+
+@Composable
+fun GameScreenWithText(game: Game, modifier: Modifier) {
+    Box(modifier = modifier) {
+        Image(
+            //loaded asynchronously
+            painter = rememberImagePainter(
+                data = game.backgroundImage,
+                builder = {
+                    transformations(
+                        RoundedCornersTransformation(),
+                    )
+                }
+            ),
+//            modifier = modifier,
+            contentDescription = "game picture description",
+            contentScale = ContentScale.Crop
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Brush.verticalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black
+                        ),
+                        startY = 300f
+                    )
+                )
+        )
+        Text(
+            text = game.name,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(12.dp),
+            style = TextStyle(color = Color.White, fontSize = 16.sp),
+        )
+    }
+
 }
 
 @Composable
