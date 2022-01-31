@@ -6,6 +6,7 @@ class Constants{
         val TRENDING_PERIOD:String = dateParsing(past=true, ONE_WEEK)
         val HOT_PERIOD:String = dateParsing(past=true, SIX_MONTH)
         val UPCOMING_PERIOD:String = dateParsing(past=false, ONE_MONTH)
+        val RELEASE_PERIOD:String = dateParsing(past=true, ONE_MONTH)
     }
 }
 
