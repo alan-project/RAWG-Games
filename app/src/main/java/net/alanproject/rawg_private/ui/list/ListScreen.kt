@@ -10,6 +10,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,13 +22,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.list.Game
+import net.alanproject.rawg_private.common.RetrySection
 
 @Composable
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
     val viewModel = hiltViewModel<ListViewModel>().apply {
-        getList(categoryId)
+        onLoadGames(categoryId)
     }
-    val list = viewModel.listState.value
+
+    val games by remember { viewModel.listState }
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
 
     Scaffold(topBar = {
         AppBar(
@@ -43,9 +49,23 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
         ) {
             LazyColumn {
                 //'items' iterate actual items
-                items(list) { game ->
+                items(games) { game ->
                     ProfileCard(game) {
                         navController?.navigate("detail/${game.id}")
+                    }
+                }
+            }
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if(isLoading) {
+                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                }
+                if(loadError.isNotEmpty()) {
+                    RetrySection(error = loadError) {
+                        viewModel.onLoadGames(categoryId)
                     }
                 }
             }

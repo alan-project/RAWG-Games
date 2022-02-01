@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
     private val getGames: GetGames
 ) : ViewModel() {
 
-    val newTrendingList: MutableState<List<Game>> = mutableStateOf(listOf())
+    val trendingListState: MutableState<List<Game>> = mutableStateOf(listOf())
     val hotListState: MutableState<List<Game>> = mutableStateOf(listOf())
     val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
     val newReleaseListState: MutableState<List<Game>> = mutableStateOf(listOf())
@@ -35,7 +35,7 @@ class MainViewModel @Inject constructor(
 
         try {
             viewModelScope.launch {
-                val newTrendingDeferred = async { fetchResource(newTrendingList, TRENDING_PERIOD) }
+                val newTrendingDeferred = async { fetchResource(trendingListState, TRENDING_PERIOD) }
                 val hotDeferred = async { fetchResource(hotListState, HOT_PERIOD) }
                 val upcomingDeferred = async { fetchResource(upcomingListState, UPCOMING_PERIOD) }
                 val releaseDeferred = async { fetchResource(newReleaseListState, RELEASE_PERIOD) }
