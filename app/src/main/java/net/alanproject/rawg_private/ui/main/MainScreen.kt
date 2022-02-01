@@ -424,25 +424,25 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
                 painter = painterRating,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(14.dp)
+                    .size(12.dp)
 //                    .padding(start = 6.dp)
 
             )
             Text(
                 text = game.rating.toString(),
-                style = TextStyle(color = Color.White, fontSize = 16.sp),
+                style = TextStyle(color = Color.White, fontSize = 12.sp),
                 modifier = Modifier.padding(start = 4.dp)
             )
             Image(
                 painter = painterMeta,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(22.dp)
+                    .size(20.dp)
                     .padding(start = 8.dp)
             )
             Text(
                 text = game.metacritic.toString(),
-                style = TextStyle(color = Color.White, fontSize = 16.sp),
+                style = TextStyle(color = Color.White, fontSize = 12.sp),
                 modifier = Modifier.padding(start = 4.dp)
             )
         }
