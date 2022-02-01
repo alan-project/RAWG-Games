@@ -26,7 +26,7 @@ class DetailViewModel @Inject constructor(
                 val gameDeferred = async {
                         getGame.get(gameId)
                 }
-                gameState.value = gameDeferred.await()?:Game()
+//                gameState.value = gameDeferred.await()?:Game()
             }
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
