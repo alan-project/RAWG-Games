@@ -77,7 +77,7 @@ fun MainScreen(
             modifier = Modifier.fillMaxSize()
         ) {
             if(isLoading) {
-                CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                CircularProgressIndicator(color = Yellow200)
             }
             if(loadError.isNotEmpty()) {
                 RetrySection(error = loadError) {
@@ -202,26 +202,31 @@ fun TopContent(
 
     val displayedGame = games?.firstOrNull()
     if (displayedGame != null) {
-        MainTitleText(text) {
-            navController?.navigate("list/1")
-        }
-        val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
-        Card(
-            shape = RoundedCornerShape(15.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(align = Alignment.Top)
-                .clickable(onClick = { clickAction.invoke() })
-                .padding(4.dp),
+        MainTitleText(text) {}
+
+        Surface(
+            color = Charcoal500,
             elevation = 8.dp,
-            backgroundColor = Color.White
+
         ) {
-            GameScreenWithText(
-                displayedGame, modifier = Modifier
+            val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
+            Card(
+                shape = RoundedCornerShape(15.dp),
+                modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
-                    .clip(RoundedCornerShape(10.dp))
-            )
+                    .wrapContentHeight(align = Alignment.Top)
+                    .clickable(onClick = { clickAction.invoke() })
+                    .padding(8.dp),
+                elevation = 8.dp,
+                backgroundColor = Color.White
+            ) {
+                GameScreenWithText(
+                    displayedGame, modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                )
+            }
         }
     }
 }
