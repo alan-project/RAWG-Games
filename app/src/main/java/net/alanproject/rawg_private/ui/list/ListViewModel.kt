@@ -39,7 +39,7 @@ class ListViewModel @Inject constructor(
                 val newTrendingDeferred = async {
                     getGames.get(dates = period)
                 }
-                listState.value = newTrendingDeferred.await()
+//                listState.value = newTrendingDeferred.await()
             }
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
