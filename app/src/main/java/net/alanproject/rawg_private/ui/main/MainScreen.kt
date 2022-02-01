@@ -22,7 +22,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -31,6 +30,7 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Game
 import net.alanproject.rawg_private.R
+import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.common.VERTICAL_GAME_NUMBER
 import net.alanproject.rawg_private.ui.theme.*
 import net.alanproject.rawg_private.ui.widget.Rating
@@ -43,7 +43,7 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel<MainViewModel>()
 ) {
 
-    val newTrendingList by remember { viewModel.newTrendingList }
+    val newTrendingList by remember { viewModel.trendingListState }
     val hotList by remember { viewModel.hotListState }
     val upcomingList by remember { viewModel.upcomingListState }
     val releaseList by remember { viewModel.newReleaseListState }
@@ -138,11 +138,11 @@ fun HotNowGames(
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 SubTitleText(title = "New Release") {
-                    null
+                    navController?.navigate("list/1")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Upcoming Games") {
-                    null
+                    navController?.navigate("list/2")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
 
@@ -172,19 +172,19 @@ fun PopularGames(
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 SubTitleText(title = "Action / Adventure / RPG") {
-                    null
+                    navController?.navigate("list/3")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Strategy / Simulation") {
-                    null
+                    navController?.navigate("list/3")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Puzzle / Arcade") {
-                    null
+                    navController?.navigate("list/3")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Racing / Sports") {
-                    null
+                    navController?.navigate("list/3")
                 }
                 HorizontalList(games, navController, modifier, gameCnt)
             }
@@ -499,23 +499,7 @@ fun AppBar() {
     )
 }
 
-@Composable
-fun RetrySection(
-    error: String,
-    onRetry: () -> Unit
-) {
-    Timber.d("Retry")
-    Column {
-        Text(error, color = Color.Red, fontSize = 18.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Button(
-            onClick = { onRetry() },
-            modifier = Modifier.align(CenterHorizontally)
-        ) {
-            Text(text = "Retry")
-        }
-    }
-}
+
 
 
 
