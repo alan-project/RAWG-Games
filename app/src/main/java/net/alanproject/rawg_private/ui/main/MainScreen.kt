@@ -9,14 +9,16 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontSynthesis.Companion.Style
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -36,17 +38,25 @@ import timber.log.Timber
 
 
 @Composable
-fun MainScreen(navController: NavHostController?) {
-    val viewModel = hiltViewModel<MainViewModel>()
+fun MainScreen(
+    navController: NavHostController,
+    viewModel: MainViewModel = hiltViewModel<MainViewModel>()
+) {
 
-    val newTrendingList = viewModel.newTrendingList.value
-    val hotList = viewModel.hotListState.value
-    val upcomingList = viewModel.upcomingListState.value
-    val releaseList = viewModel.newReleaseListState.value
+    val newTrendingList by remember { viewModel.newTrendingList }
+    val hotList by remember { viewModel.hotListState }
+    val upcomingList by remember { viewModel.upcomingListState }
+    val releaseList by remember { viewModel.newReleaseListState }
+
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
+
 
     Timber.d("newTrendingList: $newTrendingList")
     Timber.d("hotList: $hotList")
     Timber.d("upcomingList: $upcomingList")
+
+    viewModel.onLoadGames()
 
     Scaffold(topBar = { AppBar() }) {
         Column(
@@ -60,6 +70,20 @@ fun MainScreen(navController: NavHostController?) {
             Ranking(hotList, navController, text = "Ranking", gameCnt = VERTICAL_GAME_NUMBER)
             PopularGames(upcomingList, navController, text = "Popular", gameCnt = null)
 
+        }
+
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            if(isLoading) {
+                CircularProgressIndicator(color = MaterialTheme.colors.primary)
+            }
+            if(loadError.isNotEmpty()) {
+                RetrySection(error = loadError) {
+                    viewModel.onLoadGames()
+                }
+            }
         }
     }
 }
@@ -126,7 +150,6 @@ fun HotNowGames(
         }
     }
 }
-
 
 @Composable
 fun PopularGames(
@@ -344,8 +367,6 @@ fun SubTitleText(title: String, clickAction: () -> Unit) {
 
 @Composable
 fun GameScreen(game: Game, modifier: Modifier) {
-
-
     Image(
         //loaded asynchronously
         painter = rememberImagePainter(
@@ -478,10 +499,23 @@ fun AppBar() {
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    Rawg_privateTheme {
-//        MainScreen(MainViewModel(),null)
+fun RetrySection(
+    error: String,
+    onRetry: () -> Unit
+) {
+    Timber.d("Retry")
+    Column {
+        Text(error, color = Color.Red, fontSize = 18.sp)
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { onRetry() },
+            modifier = Modifier.align(CenterHorizontally)
+        ) {
+            Text(text = "Retry")
+        }
     }
 }
+
+
+

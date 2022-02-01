@@ -1,6 +1,7 @@
 package net.alanproject.domain.usecases
 
 import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.util.Resource
 
 interface GetGames {
     suspend fun get(
@@ -8,5 +9,5 @@ interface GetGames {
         order: String? = "-added",
         dates: String? = null,
         platforms: String? = null
-    ): List<Game>
+    ): Resource<List<Game>>
 }
