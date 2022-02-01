@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontSynthesis.Companion.Style
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,11 +28,10 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Game
+import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.VERTICAL_GAME_NUMBER
-import net.alanproject.rawg_private.ui.theme.Charcoal200
-import net.alanproject.rawg_private.ui.theme.Charcoal500
-import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
-import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.theme.*
+import net.alanproject.rawg_private.ui.widget.Rating
 import timber.log.Timber
 
 
@@ -147,23 +147,23 @@ fun PopularGames(
             color = Charcoal500,
             elevation = 8.dp,
         ) {
-            Column(modifier = Modifier.padding(8.dp)){
+            Column(modifier = Modifier.padding(8.dp)) {
                 SubTitleText(title = "Action / Adventure / RPG") {
                     null
                 }
-                HorizontalList(games, navController,modifier, gameCnt)
+                HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Strategy / Simulation") {
                     null
                 }
-                HorizontalList(games, navController,modifier, gameCnt)
+                HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Puzzle / Arcade") {
                     null
                 }
-                HorizontalList(games, navController,modifier, gameCnt)
+                HorizontalList(games, navController, modifier, gameCnt)
                 SubTitleText(title = "Racing / Sports") {
                     null
                 }
-                HorizontalList(games, navController,modifier, gameCnt)
+                HorizontalList(games, navController, modifier, gameCnt)
             }
         }
 
@@ -211,7 +211,8 @@ fun VerticalList(
 ) {
 
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(8.dp),
 
         horizontalAlignment = Alignment.Start,
@@ -228,25 +229,26 @@ fun VerticalList(
                 elevation = 2.dp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 16.dp)
+                    .padding(top = 6.dp, bottom = 6.dp)
                     .clickable(onClick = { clickAction.invoke() })
             ) {
                 Row(
                     modifier = Modifier
                         .align(Alignment.Start)
                         .background(color = Charcoal200)
-//                            .padding(4.dp)
+                        .width(120.dp)
+                        .height(80.dp)
                 ) {
 
                     GameScreen(
                         game, modifier = Modifier
                             .width(120.dp)
                             .height(80.dp)
-//                                .padding(4.dp)
                     )
                     GameDescription(
                         game,
                         modifier = Modifier
+                            .height(80.dp)
                             .padding(8.dp),
                         style = TextStyle(color = Color.White, fontSize = 16.sp),
 
@@ -297,11 +299,11 @@ fun HorizontalList(
 @Composable
 fun MainTitleText(title: String, clickAction: () -> Unit) {
 
-        Text(
-            text = title,
-            style = TextStyle(fontSize = 20.sp, color = Yellow200, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
-        )
+    Text(
+        text = title,
+        style = TextStyle(fontSize = 20.sp, color = Yellow200, fontWeight = FontWeight.Bold),
+        modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
+    )
 
 }
 
@@ -342,6 +344,8 @@ fun SubTitleText(title: String, clickAction: () -> Unit) {
 
 @Composable
 fun GameScreen(game: Game, modifier: Modifier) {
+
+
     Image(
         //loaded asynchronously
         painter = rememberImagePainter(
@@ -376,6 +380,7 @@ fun GameScreenWithText(game: Game, modifier: Modifier) {
             contentScale = ContentScale.Crop
         )
 
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -396,18 +401,66 @@ fun GameScreenWithText(game: Game, modifier: Modifier) {
                 .padding(12.dp),
             style = TextStyle(color = Color.White, fontSize = 16.sp),
         )
+        Rating(score = game.rating, modifier = Modifier.align(Alignment.TopEnd))
     }
 
 }
 
 @Composable
 fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
-    Text(
-        text = game.name,
-        style = style,
-        modifier = modifier,
-        maxLines = 1, overflow = TextOverflow.Ellipsis
-    )
+
+    val painterRating = rememberImagePainter(R.drawable.rating)
+    val painterMeta = rememberImagePainter(R.drawable.meta)
+    Column(
+        verticalArrangement = Arrangement.SpaceEvenly,
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterRating,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(14.dp)
+//                    .padding(start = 6.dp)
+
+            )
+            Text(
+                text = game.rating.toString(),
+                style = TextStyle(color = Color.White, fontSize = 16.sp),
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            Image(
+                painter = painterMeta,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(22.dp)
+                    .padding(start = 8.dp)
+            )
+            Text(
+                text = game.metacritic.toString(),
+                style = TextStyle(color = Color.White, fontSize = 16.sp),
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
+        Text(
+            text = game.name,
+            style = style,
+//            modifier = modifier,
+            maxLines = 1, overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            text = "Release: ${game.released}",
+            style = TextStyle(fontSize = 12.sp),
+            color = Grey200,
+//            modifier = modifier,
+            maxLines = 1
+        )
+    }
+
 }
 
 
