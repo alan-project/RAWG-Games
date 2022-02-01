@@ -7,10 +7,13 @@ class Constants{
         val HOT_PERIOD: String = dateParsing(past = true, SIX_MONTH)
         val UPCOMING_PERIOD: String = dateParsing(past = false, ONE_MONTH)
         val RELEASE_PERIOD: String = dateParsing(past = true, ONE_MONTH)
+
+
     }
 }
 
 const val BASE_URL = "https://api.rawg.io/api/"
+const val PAGE_SIZE = 20
 const val VERTICAL_GAME_NUMBER = 6
 const val HORIZONTAL_GAME_NUMBER = 5
 const val ONE_WEEK = 7L

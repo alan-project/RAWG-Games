@@ -1,6 +1,6 @@
 package net.alanproject.domain.usecases
 
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.list.Response
 import net.alanproject.domain.util.Resource
 
 interface GetGames {
@@ -9,5 +9,6 @@ interface GetGames {
         order: String? = "-added",
         dates: String? = null,
         platforms: String? = null
-    ): Resource<List<Game>>
+    ): Resource<Response>
+
 }

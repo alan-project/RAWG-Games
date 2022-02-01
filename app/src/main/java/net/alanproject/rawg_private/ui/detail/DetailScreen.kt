@@ -20,6 +20,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.rawg_private.common.RetrySection
+import net.alanproject.rawg_private.ui.theme.Yellow200
 
 @Composable
 fun DetailScreen(gameId: Int, navController: NavHostController?) {
@@ -58,7 +59,7 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 if(isLoading) {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                    CircularProgressIndicator(color = Yellow200)
                 }
                 if(loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
