@@ -8,6 +8,8 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,13 +19,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import net.alanproject.rawg_private.common.RetrySection
 
 @Composable
 fun DetailScreen(gameId: Int, navController: NavHostController?) {
     val viewModel = hiltViewModel<DetailViewModel>().apply {
-        getGame(gameId)
+        onLoadGame(gameId)
     }
-    val game = viewModel.gameState.value
+    val game by remember { viewModel.gameState }
+    val loadError by remember { viewModel.loadError }
+    val isLoading by remember { viewModel.isLoading }
 
     Scaffold(topBar = {
         AppBar(
@@ -46,6 +51,20 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
                 // reuse and customize composable
                 ProfilePicture(game.backgroundImage, 240.dp)
                 ProfileContent(game.name, Alignment.CenterHorizontally)
+            }
+
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                if(isLoading) {
+                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                }
+                if(loadError.isNotEmpty()) {
+                    RetrySection(error = loadError) {
+                        viewModel.onLoadGame(gameId)
+                    }
+                }
             }
         }
     }

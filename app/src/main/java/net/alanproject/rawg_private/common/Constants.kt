@@ -2,11 +2,11 @@ package net.alanproject.rawg_private.common
 
 
 class Constants{
-    companion object{
-        val TRENDING_PERIOD:String = dateParsing(past=true, ONE_WEEK)
-        val HOT_PERIOD:String = dateParsing(past=true, SIX_MONTH)
-        val UPCOMING_PERIOD:String = dateParsing(past=false, ONE_MONTH)
-        val RELEASE_PERIOD:String = dateParsing(past=true, ONE_MONTH)
+    companion object {
+        val TRENDING_PERIOD: String = dateParsing(past = true, ONE_WEEK)
+        val HOT_PERIOD: String = dateParsing(past = true, SIX_MONTH)
+        val UPCOMING_PERIOD: String = dateParsing(past = false, ONE_MONTH)
+        val RELEASE_PERIOD: String = dateParsing(past = true, ONE_MONTH)
     }
 }
 
@@ -19,3 +19,12 @@ const val TWO_MONTH = 60L
 const val THREE_MONTH = 90L
 const val SIX_MONTH = 180L
 const val ONE_YEAR = 365L
+
+fun mapToPeriod(categoryId:Int):String = when (categoryId) {
+    1 -> Constants.TRENDING_PERIOD
+    2 -> Constants.HOT_PERIOD
+    3 -> Constants.UPCOMING_PERIOD
+    else -> {
+        Constants.TRENDING_PERIOD
+    }
+}

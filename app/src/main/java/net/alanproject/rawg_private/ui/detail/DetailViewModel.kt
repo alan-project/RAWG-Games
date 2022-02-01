@@ -10,6 +10,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGame
+import net.alanproject.domain.util.Resource
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -19,17 +20,33 @@ class DetailViewModel @Inject constructor(
 ) : ViewModel() {
 
     val gameState: MutableState<Game> = mutableStateOf(Game())
+    var loadError = mutableStateOf("")
+    var isLoading = mutableStateOf(false)
 
-    fun getGame(gameId:Int){
+    fun onLoadGame(gameId:Int){
         try {
             viewModelScope.launch {
-                val gameDeferred = async {
-                        getGame.get(gameId)
-                }
-//                gameState.value = gameDeferred.await()?:Game()
+                fetchResource(gameState, gameId)
             }
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
+        }
+    }
+
+    private suspend fun fetchResource(gameState: MutableState<Game>, gameId: Int) {
+        isLoading.value = true
+        val result = getGame.get(gameId)
+        when (result) {
+            is Resource.Success -> {
+                gameState.value = result.data?:Game()
+                loadError.value = ""
+                isLoading.value = false
+
+            }
+            is Resource.Error -> {
+                loadError.value = result.message!!
+                isLoading.value = false
+            }
         }
     }
 }
