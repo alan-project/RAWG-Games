@@ -53,7 +53,7 @@ class MainViewModel @Inject constructor(
         val result = getGames.get(dates = dates)
         when (result) {
             is Resource.Success -> {
-                games.value = result.data ?: listOf()
+                games.value = result.data?.results?: listOf()
                 loadError.value = ""
                 isLoading.value = false
 

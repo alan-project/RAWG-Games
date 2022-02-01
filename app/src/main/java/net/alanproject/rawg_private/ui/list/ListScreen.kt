@@ -4,12 +4,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -23,6 +23,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.list.Game
 import net.alanproject.rawg_private.common.RetrySection
+import net.alanproject.rawg_private.ui.theme.Yellow200
 
 @Composable
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
@@ -30,7 +31,8 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
         onLoadGames(categoryId)
     }
 
-    val games by remember { viewModel.listState }
+    val games by remember { viewModel.gamesState }
+    val endReached by remember { viewModel.endReached }
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
@@ -48,12 +50,17 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
 
         ) {
             LazyColumn {
-                //'items' iterate actual items
-                items(games) { game ->
-                    ProfileCard(game) {
-                        navController?.navigate("detail/${game.id}")
+                val itemCount = games.size
+
+                items(itemCount) { it->
+                    if(it >= itemCount - 1 && !endReached && !isLoading) {
+                        LaunchedEffect(key1 = true) {
+                            viewModel.onLoadGames(categoryId)
+                        }
                     }
+                    GamesRow(rowIndex = it, games, navController)
                 }
+
             }
 
             Box(
@@ -61,7 +68,7 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 if(isLoading) {
-                    CircularProgressIndicator(color = MaterialTheme.colors.primary)
+                    CircularProgressIndicator(color = Yellow200)
                 }
                 if(loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
@@ -70,6 +77,14 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                 }
             }
         }
+    }
+}
+
+@Composable
+fun GamesRow(rowIndex:Int, game:List<Game>, navController: NavHostController?){
+    val game = game[rowIndex]
+    ProfileCard(game) {
+        navController?.navigate("detail/${game.id}")
     }
 }
 
