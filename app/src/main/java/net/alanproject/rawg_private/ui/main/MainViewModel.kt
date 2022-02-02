@@ -51,17 +51,20 @@ class MainViewModel @Inject constructor(
 
     private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
         Timber.d("result: $games")
+        Timber.d("fetchResource in MainViewModel")
         isLoading.value = true
         val result = getGames.get(dates = dates)
 
         when (result) {
             is Resource.Success -> {
+                Timber.d("fetchResource: Success")
                 games.value = result.data?.results?: listOf()
                 loadError.value = ""
                 isLoading.value = false
 
             }
             is Resource.Error -> {
+                Timber.d("fetchResource: Error ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }

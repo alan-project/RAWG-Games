@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -118,23 +117,28 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
             .fillMaxWidth()
+            .height(100.dp)
             .wrapContentHeight(align = Alignment.Top)
             .clickable(onClick = { clickAction.invoke() }),
         elevation = 8.dp,
-        shape = RoundedCornerShape(15.dp),
+        shape = RoundedCornerShape(8.dp),
         backgroundColor = Charcoal500
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            GameScreen(game.backgroundImage, 72.dp)
+            GameScreen(
+                game.backgroundImage, modifier = Modifier
+                    .width(160.dp)
+                    .fillMaxHeight()
+            )
             GameDescription(
                 game,
                 modifier = Modifier
-                    .height(80.dp)
-                    .padding(start = 8.dp),
+                    .fillMaxHeight()
+                    .padding(start = 16.dp),
                 style = TextStyle(color = Color.White, fontSize = 16.sp),
             )
         }
@@ -143,24 +147,18 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
 }
 
 @Composable
-fun GameScreen(pictureUrl: String, imageSize: Dp) {
-    //by wrapping Image with Card, we can use shape, border, elevation parameter
-    Card(
-        modifier = Modifier
-            .width(140.dp)
-            .height(100.dp),
-        elevation = 4.dp
-    )
-    {
+fun GameScreen(pictureUrl: String, modifier: Modifier) {
 
-        Image(
-            painter = rememberImagePainter(
-                data = pictureUrl
-            ),
-            contentDescription = "game picture description",
-            contentScale = ContentScale.Crop
-        )
-    }
+
+    Image(
+        painter = rememberImagePainter(
+            data = pictureUrl
+        ),
+        modifier = modifier,
+        contentDescription = "game picture description",
+        contentScale = ContentScale.Crop
+    )
+
 }
 
 
@@ -178,31 +176,37 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Image(
-                painter = painterRating,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(12.dp)
+            if(game.rating != 0.0){
+                Image(
+                    painter = painterRating,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(12.dp)
 //                    .padding(start = 6.dp)
 
-            )
-            Text(
-                text = game.rating.toString(),
-                style = TextStyle(color = Color.White, fontSize = 12.sp),
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            Image(
-                painter = painterMeta,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(20.dp)
-                    .padding(start = 8.dp)
-            )
-            Text(
-                text = game.metacritic.toString(),
-                style = TextStyle(color = Color.White, fontSize = 12.sp),
-                modifier = Modifier.padding(start = 4.dp)
-            )
+                )
+                Text(
+                    text = game.rating.toString(),
+                    style = TextStyle(color = Color.White, fontSize = 12.sp),
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+
+            if(game.metacritic!=0){
+                Image(
+                    painter = painterMeta,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(20.dp)
+                        .padding(start = 8.dp)
+                )
+                Text(
+                    text = game.metacritic.toString(),
+                    style = TextStyle(color = Color.White, fontSize = 12.sp),
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+
         }
         Text(
             text = game.name,
