@@ -14,13 +14,15 @@ class RawgRepositoryImpl @Inject constructor(
         page: Int?,
         order: String?,
         dates: String?,
-        platforms: String?
+        platforms: String?,
+        genres:String?
     ): Response {
         return remoteSource.getGames(
             page,
             order,
             dates,
-            platforms
+            platforms,
+            genres
         )
     }
 

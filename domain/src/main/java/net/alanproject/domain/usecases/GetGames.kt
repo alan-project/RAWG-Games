@@ -8,7 +8,8 @@ interface GetGames {
         page: Int? = 1,
         order: String? = "-added",
         dates: String? = null,
-        platforms: String? = null
+        platforms: String? = null,
+        genres: String? = null
     ): Resource<Response>
 
 }

@@ -14,11 +14,12 @@ class GetGamesUsecase @Inject constructor(
         page: Int?,
         order: String?,
         dates: String?,
-        platforms: String?
+        platforms: String?,
+        genres: String?
     ): Resource<Response> {
         val response = try{
             rawgRepository.getGames(
-                page, order, dates, platforms
+                page, order, dates, platforms,genres
             )
         }catch(e:Exception){
             return Resource.Error("An unknown error occured.")
