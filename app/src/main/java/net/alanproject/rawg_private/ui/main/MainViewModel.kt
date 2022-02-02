@@ -11,8 +11,12 @@ import kotlinx.coroutines.launch
 import net.alanproject.domain.model.list.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
+import net.alanproject.rawg_private.common.Constants.Companion.ACTION
 import net.alanproject.rawg_private.common.Constants.Companion.HOT_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE
+import net.alanproject.rawg_private.common.Constants.Companion.RACING
 import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY
 import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PERIOD
 import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PERIOD
 import timber.log.Timber
@@ -23,10 +27,21 @@ class MainViewModel @Inject constructor(
     private val getGames: GetGames
 ) : ViewModel() {
 
+    //Trending
     val trendingListState: MutableState<List<Game>> = mutableStateOf(listOf())
-    val hotListState: MutableState<List<Game>> = mutableStateOf(listOf())
+
+    //Hot: NewRelease, Upcoming
     val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
     val newReleaseListState: MutableState<List<Game>> = mutableStateOf(listOf())
+
+    //Ranking
+    val rankListState: MutableState<List<Game>> = mutableStateOf(listOf())
+
+    //Popular by Genre
+    val actionListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val strategyListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val puzzleListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val racingListState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
@@ -36,11 +51,30 @@ class MainViewModel @Inject constructor(
         Timber.d("onLoadGames in ViewModel")
         try {
             viewModelScope.launch {
-                val newTrendingDeferred = async { fetchResource(trendingListState, TRENDING_PERIOD) }
-                val hotDeferred = async { fetchResource(hotListState, HOT_PERIOD) }
+                val trendingDeferred = async { fetchResource(trendingListState, TRENDING_PERIOD) }
+
                 val upcomingDeferred = async { fetchResource(upcomingListState, UPCOMING_PERIOD) }
-                val releaseDeferred = async { fetchResource(newReleaseListState, RELEASE_PERIOD) }
-                awaitAll(newTrendingDeferred, hotDeferred, upcomingDeferred, releaseDeferred)
+                val newReleaseDeferred =
+                    async { fetchResource(newReleaseListState, RELEASE_PERIOD) }
+
+                val rankDeferred = async { fetchResource(rankListState, HOT_PERIOD) }
+
+                //Generes
+                val actionDeferred = async { fetchResource(actionListState, HOT_PERIOD, genres = ACTION) }
+                val strategyDeferred = async { fetchResource(strategyListState, HOT_PERIOD, genres = STRATEGY) }
+                val puzzleDeferred = async { fetchResource(puzzleListState, HOT_PERIOD, genres = PUZZLE) }
+                val racingDeferred = async { fetchResource(racingListState, HOT_PERIOD, genres = RACING) }
+
+                awaitAll(
+                    trendingDeferred,
+                    rankDeferred,
+                    upcomingDeferred,
+                    newReleaseDeferred,
+                    actionDeferred,
+                    strategyDeferred,
+                    puzzleDeferred,
+                    racingDeferred
+                )
 
             }
 
@@ -49,16 +83,15 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
-        Timber.d("result: $games")
+    private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String,genres:String?=null) {
         Timber.d("fetchResource in MainViewModel")
         isLoading.value = true
-        val result = getGames.get(dates = dates)
+        val result = getGames.get(dates = dates, genres = genres)
 
         when (result) {
             is Resource.Success -> {
                 Timber.d("fetchResource: Success")
-                games.value = result.data?.results?: listOf()
+                games.value = result.data?.results ?: listOf()
                 loadError.value = ""
                 isLoading.value = false
 

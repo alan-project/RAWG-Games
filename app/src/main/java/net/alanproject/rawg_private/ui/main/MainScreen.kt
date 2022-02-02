@@ -45,9 +45,16 @@ fun MainScreen(
 ) {
 
     val newTrendingList by remember { viewModel.trendingListState }
-    val hotList by remember { viewModel.hotListState }
+
+    val rankList by remember { viewModel.rankListState }
+
     val upcomingList by remember { viewModel.upcomingListState }
-    val releaseList by remember { viewModel.newReleaseListState }
+    val newReleaseList by remember { viewModel.newReleaseListState }
+
+    val actionList by remember { viewModel.actionListState }
+    val strategyList by remember { viewModel.strategyListState }
+    val puzzleList by remember { viewModel.puzzleListState }
+    val racingList by remember { viewModel.racingListState }
 
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
@@ -67,13 +74,30 @@ fun MainScreen(
                 .padding(start = 12.dp, end = 12.dp)
 
         ) {
-            NewTrending(newTrendingList, navController, text = "New & Trending")
-            HotNowGames(upcomingList, navController, text = "What's Hot Now", gameCnt = null)
-            Ranking(hotList, navController, text = "Ranking", gameCnt = VERTICAL_GAME_NUMBER)
-            PopularGames(releaseList, navController, text = "Popular", gameCnt = null)
+            if (!newTrendingList.isNullOrEmpty()) {
 
+                TrendingGames(newTrendingList, navController, text = "New & Trending")
+            }
+            HotGames(
+                newReleaseList,
+                upcomingList,
+                navController,
+                text = "What's Hot Now",
+                gameCnt = null
+            )
+            if (!rankList.isNullOrEmpty()) {
+                Ranking(rankList, navController, text = "Ranking", gameCnt = VERTICAL_GAME_NUMBER)
+            }
+            PopularGamesByGenre(
+                actionList,
+                strategyList,
+                puzzleList,
+                racingList,
+                navController,
+                text = "Popular",
+                gameCnt = null
+            )
         }
-
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
@@ -87,41 +111,43 @@ fun MainScreen(
                 }
             }
         }
+
     }
+
+
 }
 
 @Composable
-fun NewTrending(
+fun TrendingGames(
     games: List<Game>?,
     navController: NavHostController?,
     text: String
 ) {
+    Timber.d("[TrendingGames] games: $games")
     TopContent(games, navController, text)
 }
 
 @Composable
 fun Ranking(
-    games: List<Game>?,
+    rankGames: List<Game>,
     navController: NavHostController?,
     text: String,
     gameCnt: Int
 ) {
-    if (!games.isNullOrEmpty()) {
-
         MainTitleText(text) { navController?.navigate("list/2") }
         Surface(
             color = Charcoal500,
             elevation = 8.dp
         ) {
 
-            VerticalList(games, navController, gameCnt)
+            VerticalList(rankGames, navController, gameCnt)
         }
-    }
 }
 
 @Composable
-fun HotNowGames(
-    games: List<Game>?,
+fun HotGames(
+    releaseGames: List<Game>?,
+    upcomingGames: List<Game>?,
     navController: NavHostController?,
     gameCnt: Int?,
     text: String
@@ -131,31 +157,37 @@ fun HotNowGames(
         .wrapContentHeight()
         .padding(4.dp)
 
-    if (!games.isNullOrEmpty()) {
+    if (!releaseGames.isNullOrEmpty() ||!upcomingGames.isNullOrEmpty()){
         MainTitleText(text) { navController?.navigate("list/1") }
+    }
 
-        Surface(
-            color = Charcoal500,
-            elevation = 8.dp,
-        ) {
-            Column(modifier = Modifier.padding(8.dp)) {
+    Surface(
+        color = Charcoal500,
+        elevation = 8.dp,
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            if (!releaseGames.isNullOrEmpty()) {
                 SubTitleText(title = "New Release") {
                     navController?.navigate("list/1")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
+                HorizontalList(releaseGames, navController, modifier, gameCnt)
+            }
+            if (!upcomingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Upcoming Games") {
                     navController?.navigate("list/2")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
-
+                HorizontalList(upcomingGames, navController, modifier, gameCnt)
             }
         }
     }
 }
 
 @Composable
-fun PopularGames(
-    games: List<Game>?,
+fun PopularGamesByGenre(
+    actionGames: List<Game>?,
+    strategyGames: List<Game>?,
+    puzzleGames: List<Game>?,
+    racingGames: List<Game>?,
     navController: NavHostController?,
     text: String,
     gameCnt: Int?
@@ -165,30 +197,38 @@ fun PopularGames(
         .width(240.dp)
         .wrapContentHeight()
         .padding(4.dp)
-    if (!games.isNullOrEmpty()) {
-        MainTitleText(text) { navController?.navigate("list/3") }
+    MainTitleText(text) { navController?.navigate("list/3") }
 
-        Surface(
-            color = Charcoal500,
-            elevation = 8.dp,
-        ) {
-            Column(modifier = Modifier.padding(8.dp)) {
+    Surface(
+        color = Charcoal500,
+        elevation = 8.dp,
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            if (!actionGames.isNullOrEmpty()) {
                 SubTitleText(title = "Action / Adventure / RPG") {
                     navController?.navigate("list/3")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
+                HorizontalList(actionGames, navController, modifier, gameCnt)
+            }
+            if (!strategyGames.isNullOrEmpty()) {
                 SubTitleText(title = "Strategy / Simulation") {
                     navController?.navigate("list/3")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
+                HorizontalList(strategyGames, navController, modifier, gameCnt)
+            }
+            if (!puzzleGames.isNullOrEmpty()) {
+
                 SubTitleText(title = "Puzzle / Arcade") {
                     navController?.navigate("list/3")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
+                HorizontalList(puzzleGames, navController, modifier, gameCnt)
+            }
+
+            if (!racingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Racing / Sports") {
                     navController?.navigate("list/3")
                 }
-                HorizontalList(games, navController, modifier, gameCnt)
+                HorizontalList(racingGames, navController, modifier, gameCnt)
             }
         }
 
@@ -197,13 +237,13 @@ fun PopularGames(
 
 @Composable
 fun TopContent(
-    games: List<Game>?,
+    topGames: List<Game>?,
     navController: NavHostController?,
     text: String
 ) {
-
-    val displayedGame = games?.firstOrNull()
-    if (displayedGame != null) {
+Timber.d("[TopContent] topGames: $topGames")
+    if (!topGames.isNullOrEmpty()) {
+        val displayedGame = topGames.first()
         MainTitleText(text) {}
 
         Surface(
@@ -211,7 +251,7 @@ fun TopContent(
             elevation = 8.dp,
 
             ) {
-            val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
+            val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame.id}") }
             Card(
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier

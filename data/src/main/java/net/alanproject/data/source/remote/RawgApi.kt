@@ -16,6 +16,7 @@ interface RawgApi {
         @Query("ordering") order: String?, // rating, release, metacritic
         @Query("dates") dates: String?,
         @Query("platforms") platforms: String?,
+        @Query("genres") genres: String?,
     ):Response
 
     @GET("games/{id}")
