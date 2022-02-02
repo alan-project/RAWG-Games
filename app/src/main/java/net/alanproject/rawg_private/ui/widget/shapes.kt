@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Rating(score: Double, modifier:Modifier) {
+fun RatingOnCircle(score: Double, modifier:Modifier) {
     Surface(
         shape = RoundedCornerShape(15.dp),
         color = Color.Black.copy(alpha = 0.5f),
@@ -23,15 +23,12 @@ fun Rating(score: Double, modifier:Modifier) {
             .width(44.dp)
             .wrapContentHeight()
             .padding(top = 8.dp, end=8.dp)
-
     ) {
         Text(
-
             text = score.toString(),
             modifier =Modifier.padding(4.dp),
             style = TextStyle(textAlign = TextAlign.Center, color = Color.White, fontSize = 12.sp )
         )
-
     }
-
 }
+
