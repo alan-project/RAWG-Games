@@ -3,11 +3,17 @@ package net.alanproject.rawg_private.common
 
 class Constants{
     companion object {
+        //Period
         val TRENDING_PERIOD: String = dateParsing(past = true, ONE_WEEK)
         val HOT_PERIOD: String = dateParsing(past = true, SIX_MONTH)
         val UPCOMING_PERIOD: String = dateParsing(past = false, ONE_MONTH)
         val RELEASE_PERIOD: String = dateParsing(past = true, ONE_MONTH)
 
+        //Genres
+        val ACTION:String ="2,3,4,5"
+        val STRATEGY:String ="10,14"
+        val PUZZLE:String ="7,11,28,17"
+        val RACING:String ="1,15"
 
     }
 }

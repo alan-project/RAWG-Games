@@ -8,7 +8,8 @@ interface RemoteSource {
         page: Int?,
         order: String?,
         dates: String?,
-        platforms: String?
+        platforms: String?,
+    genres:String?
     ): Response
 
     suspend fun getGame(

@@ -13,11 +13,12 @@ class RemoteSourceImpl @Inject constructor(
         page: Int?,
         order: String?,
         dates: String?,
-        platforms: String?
+        platforms: String?,
+        genres:String?
     ): Response {
 
         Timber.d("page:$page, order:$order, dates:$dates, platforms:$platforms")
-        return api.getGames(page = page, order = order, dates = dates, platforms = platforms)
+        return api.getGames(page = page, order = order, dates = dates, platforms = platforms, genres = genres)
     }
 
     override suspend fun getGame(id: Int): Game {
