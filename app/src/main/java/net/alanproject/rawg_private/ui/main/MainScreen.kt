@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,7 +30,10 @@ import net.alanproject.domain.model.list.Game
 import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.common.VERTICAL_GAME_NUMBER
-import net.alanproject.rawg_private.ui.theme.*
+import net.alanproject.rawg_private.ui.theme.Charcoal200
+import net.alanproject.rawg_private.ui.theme.Charcoal500
+import net.alanproject.rawg_private.ui.theme.Grey200
+import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.RatingOnCircle
 import timber.log.Timber
 
@@ -76,10 +78,10 @@ fun MainScreen(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxSize()
         ) {
-            if(isLoading) {
+            if (isLoading) {
                 CircularProgressIndicator(color = Yellow200)
             }
-            if(loadError.isNotEmpty()) {
+            if (loadError.isNotEmpty()) {
                 RetrySection(error = loadError) {
                     viewModel.onLoadGames()
                 }
@@ -208,7 +210,7 @@ fun TopContent(
             color = Charcoal500,
             elevation = 8.dp,
 
-        ) {
+            ) {
             val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame?.id}") }
             Card(
                 shape = RoundedCornerShape(15.dp),
@@ -339,29 +341,37 @@ fun SubTitleText(title: String, clickAction: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .height(IntrinsicSize.Min)
+            .padding(4.dp)
             .clickable(onClick = { clickAction.invoke() }),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Bottom
     ) {
-        Divider(
-            color = Yellow200,
-            modifier = Modifier
-                .height(28.dp)
-                .width(2.dp)
-        )
-        Text(
-            text = title,
-            style = TextStyle(fontSize = 16.sp, color = Color.White, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(8.dp)
-        )
+
+        Box(modifier = Modifier.align(Alignment.CenterVertically)) {
+            Divider(
+                color = Yellow200,
+                modifier = Modifier
+                    .height(20.dp)
+                    .width(2.dp)
+            )
+            Text(
+                text = title,
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                ),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+
         Text(
             text = "SEE MORE",
-            color = Color.Blue,
+            color = Color.LightGray,
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = 10.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.End
             ),
             modifier = Modifier.padding(8.dp)
         )

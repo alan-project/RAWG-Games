@@ -45,10 +45,12 @@ class ListViewModel @Inject constructor(
     }
 
     private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
+        Timber.d("fetchResource in ListViewModel")
         isLoading.value = true
         val result = getGames.get(page = curPage, dates = dates)
         when (result) {
             is Resource.Success -> {
+                Timber.d("fetchResource: Success")
                 endReached.value = curPage * PAGE_SIZE >= result.data!!.count
 
                 cachedGames.addAll(result.data?.results?: listOf())
@@ -60,6 +62,7 @@ class ListViewModel @Inject constructor(
 
             }
             is Resource.Error -> {
+                Timber.d("fetchResource: Error ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }
