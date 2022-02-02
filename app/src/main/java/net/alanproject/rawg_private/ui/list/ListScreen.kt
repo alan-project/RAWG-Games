@@ -25,7 +25,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Game
 import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
@@ -122,6 +121,7 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
             .wrapContentHeight(align = Alignment.Top)
             .clickable(onClick = { clickAction.invoke() }),
         elevation = 8.dp,
+        shape = RoundedCornerShape(15.dp),
         backgroundColor = Charcoal500
     ) {
         Row(
@@ -146,7 +146,6 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
 fun GameScreen(pictureUrl: String, imageSize: Dp) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
-        shape = RoundedCornerShape(10),
         modifier = Modifier
             .width(140.dp)
             .height(100.dp),
@@ -156,12 +155,7 @@ fun GameScreen(pictureUrl: String, imageSize: Dp) {
 
         Image(
             painter = rememberImagePainter(
-                data = pictureUrl,
-                builder = {
-                    transformations(
-                        RoundedCornersTransformation(),
-                    )
-                }
+                data = pictureUrl
             ),
             contentDescription = "game picture description",
             contentScale = ContentScale.Crop
