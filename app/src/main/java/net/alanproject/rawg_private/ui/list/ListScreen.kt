@@ -16,14 +16,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
+import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.list.Game
+import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
+import net.alanproject.rawg_private.ui.theme.Charcoal500
+import net.alanproject.rawg_private.ui.theme.Grey200
 import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.widget.Icons
 
 @Composable
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
@@ -45,15 +54,15 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
         }
     }) {
         Surface(
-
+            color = MaterialTheme.colors.background,
             modifier = Modifier.fillMaxSize()
 
         ) {
             LazyColumn {
                 val itemCount = games.size
 
-                items(itemCount) { it->
-                    if(it >= itemCount - 1 && !endReached && !isLoading) {
+                items(itemCount) { it ->
+                    if (it >= itemCount - 1 && !endReached && !isLoading) {
                         LaunchedEffect(key1 = true) {
                             viewModel.onLoadGames(categoryId)
                         }
@@ -67,10 +76,10 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if(isLoading) {
+                if (isLoading) {
                     CircularProgressIndicator(color = Yellow200)
                 }
-                if(loadError.isNotEmpty()) {
+                if (loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
                         viewModel.onLoadGames(categoryId)
                     }
@@ -81,8 +90,8 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
 }
 
 @Composable
-fun GamesRow(rowIndex:Int, game:List<Game>, navController: NavHostController?){
-    val game = game[rowIndex]
+fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?) {
+    val game = games[rowIndex]
     ProfileCard(game) {
         navController?.navigate("detail/${game.id}")
     }
@@ -108,62 +117,133 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
 fun ProfileCard(game: Game, clickAction: () -> Unit) {
     Card(
         modifier = Modifier
-            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
+            .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
             .fillMaxWidth()
             .wrapContentHeight(align = Alignment.Top)
             .clickable(onClick = { clickAction.invoke() }),
         elevation = 8.dp,
-        backgroundColor = Color.White
+        backgroundColor = Charcoal500
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture(game.backgroundImage, 72.dp)
-            ProfileContent(game.name, Alignment.Start)
+            GameScreen(game.backgroundImage, 72.dp)
+            GameDescription(
+                game,
+                modifier = Modifier
+                    .height(80.dp)
+                    .padding(start = 8.dp),
+                style = TextStyle(color = Color.White, fontSize = 16.sp),
+            )
         }
 
     }
 }
 
 @Composable
-fun ProfilePicture(pictureUrl: String, imageSize: Dp) {
+fun GameScreen(pictureUrl: String, imageSize: Dp) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),
         modifier = Modifier
-            .padding(16.dp)
-            .width(100.dp),
+            .width(140.dp)
+            .height(100.dp),
         elevation = 4.dp
-    ) {
+    )
+    {
 
         Image(
-            //loaded asynchronously
             painter = rememberImagePainter(
-                data = pictureUrl
+                data = pictureUrl,
+                builder = {
+                    transformations(
+                        RoundedCornersTransformation(),
+                    )
+                }
             ),
-            modifier = Modifier.size(imageSize),
-            contentDescription = "Profile picture description",
+            contentDescription = "game picture description",
+            contentScale = ContentScale.Crop
         )
     }
 }
+
 
 @Composable
-fun ProfileContent(userName: String, alignment: Alignment.Horizontal) {
+fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
+
+    val painterRating = rememberImagePainter(R.drawable.ic_rating)
+    val painterMeta = rememberImagePainter(R.drawable.ic_meta_score)
     Column(
-        modifier = Modifier
-            .padding(8.dp),
-        horizontalAlignment = alignment
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
 
     ) {
-        //transparency
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Image(
+                painter = painterRating,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(12.dp)
+//                    .padding(start = 6.dp)
 
+            )
+            Text(
+                text = game.rating.toString(),
+                style = TextStyle(color = Color.White, fontSize = 12.sp),
+                modifier = Modifier.padding(start = 4.dp)
+            )
+            Image(
+                painter = painterMeta,
+                contentDescription = null,
+                modifier = Modifier
+                    .size(20.dp)
+                    .padding(start = 8.dp)
+            )
+            Text(
+                text = game.metacritic.toString(),
+                style = TextStyle(color = Color.White, fontSize = 12.sp),
+                modifier = Modifier.padding(start = 4.dp)
+            )
+        }
         Text(
-            text = userName,
-            style = MaterialTheme.typography.h5
+            text = game.name,
+            style = style,
+//            modifier = modifier,
+            maxLines = 1, overflow = TextOverflow.Ellipsis
         )
-
+        Text(
+            text = "Release: ${game.released}",
+            style = TextStyle(fontSize = 12.sp),
+            color = Grey200,
+//            modifier = modifier,
+            maxLines = 1
+        )
+        Icons(game)
     }
 
 }
+
+//
+//@Composable
+//fun GameDescription(userName: String, alignment: Alignment.Horizontal) {
+//    Column(
+//        modifier = Modifier
+//            .padding(8.dp),
+//        horizontalAlignment = alignment
+//
+//    ) {
+//        //transparency
+//
+//        Text(
+//            text = userName,
+//            style = TextStyle(color = Color.White, fontSize = 16.sp)
+//        )
+//
+//    }
+//
+//}

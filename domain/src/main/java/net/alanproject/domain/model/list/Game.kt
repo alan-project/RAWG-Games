@@ -35,7 +35,7 @@ data class Game(
     val saturatedColor: String = "",
     @SerializedName("dominant_color")
     val dominantColor: String = "",
-    val eachPlatforms: List<EachPlatform> = listOf(),
+    val platforms: List<EachPlatform> = listOf(),
     val genres: List<Genre> = listOf(),
     val stores: List<EachStore> = listOf(),
     val clip: Any = Any(),
