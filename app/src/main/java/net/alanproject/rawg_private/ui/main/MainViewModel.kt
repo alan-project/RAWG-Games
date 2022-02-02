@@ -33,6 +33,7 @@ class MainViewModel @Inject constructor(
 
     fun onLoadGames() {
 
+        Timber.d("onLoadGames in ViewModel")
         try {
             viewModelScope.launch {
                 val newTrendingDeferred = async { fetchResource(trendingListState, TRENDING_PERIOD) }
@@ -49,8 +50,10 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
+        Timber.d("result: $games")
         isLoading.value = true
         val result = getGames.get(dates = dates)
+
         when (result) {
             is Resource.Success -> {
                 games.value = result.data?.results?: listOf()

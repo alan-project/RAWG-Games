@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -33,14 +32,14 @@ import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.common.VERTICAL_GAME_NUMBER
 import net.alanproject.rawg_private.ui.theme.*
-import net.alanproject.rawg_private.ui.widget.Rating
+import net.alanproject.rawg_private.ui.widget.RatingOnCircle
 import timber.log.Timber
 
 
 @Composable
 fun MainScreen(
     navController: NavHostController,
-    viewModel: MainViewModel = hiltViewModel<MainViewModel>()
+    viewModel: MainViewModel = hiltViewModel()
 ) {
 
     val newTrendingList by remember { viewModel.trendingListState }
@@ -52,10 +51,11 @@ fun MainScreen(
     val isLoading by remember { viewModel.isLoading }
 
 
-    Timber.d("newTrendingList: $newTrendingList")
-    Timber.d("hotList: $hotList")
-    Timber.d("upcomingList: $upcomingList")
+//    Timber.d("newTrendingList: $newTrendingList")
+//    Timber.d("hotList: $hotList")
+//    Timber.d("upcomingList: $upcomingList")
 
+    Timber.d("onLoadGames in View")
     viewModel.onLoadGames()
 
     Scaffold(topBar = { AppBar() }) {
@@ -68,7 +68,7 @@ fun MainScreen(
             NewTrending(newTrendingList, navController, text = "New & Trending")
             HotNowGames(upcomingList, navController, text = "What's Hot Now", gameCnt = null)
             Ranking(hotList, navController, text = "Ranking", gameCnt = VERTICAL_GAME_NUMBER)
-            PopularGames(upcomingList, navController, text = "Popular", gameCnt = null)
+            PopularGames(releaseList, navController, text = "Popular", gameCnt = null)
 
         }
 
@@ -283,8 +283,6 @@ fun VerticalList(
                         )
                 }
             }
-
-
         }
     }
 }
@@ -427,7 +425,7 @@ fun GameScreenWithText(game: Game, modifier: Modifier) {
                 .padding(12.dp),
             style = TextStyle(color = Color.White, fontSize = 16.sp),
         )
-        Rating(score = game.rating, modifier = Modifier.align(Alignment.TopEnd))
+        RatingOnCircle(score = game.rating, modifier = Modifier.align(Alignment.TopEnd))
     }
 
 }
@@ -435,8 +433,8 @@ fun GameScreenWithText(game: Game, modifier: Modifier) {
 @Composable
 fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
 
-    val painterRating = rememberImagePainter(R.drawable.rating)
-    val painterMeta = rememberImagePainter(R.drawable.meta)
+    val painterRating = rememberImagePainter(R.drawable.ic_rating)
+    val painterMeta = rememberImagePainter(R.drawable.ic_meta_score)
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start,
