@@ -28,13 +28,10 @@ class ListViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
 
-
-
     fun onLoadGames(categoryId: Int) {
 
         val period = mapToPeriod(categoryId)
 
-        Timber.d("categoryId: $categoryId")
         try {
             viewModelScope.launch {
                 fetchResource(gamesState, period)
@@ -46,10 +43,12 @@ class ListViewModel @Inject constructor(
 
     private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
         Timber.d("fetchResource in ListViewModel")
+        Timber.d("[LoadingError] curPage: $curPage")
         isLoading.value = true
         val result = getGames.get(page = curPage, dates = dates)
         when (result) {
             is Resource.Success -> {
+                Timber.d("[LoadingError] Success")
                 Timber.d("fetchResource: Success")
                 endReached.value = curPage * PAGE_SIZE >= result.data!!.count
 
@@ -57,14 +56,19 @@ class ListViewModel @Inject constructor(
                 games.value = cachedGames
 
                 curPage ++
+                Timber.d("curPage increase: $curPage")
                 loadError.value = ""
                 isLoading.value = false
 
             }
             is Resource.Error -> {
+                Timber.d("[LoadingError] Error")
                 Timber.d("fetchResource: Error ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
+            }
+            else ->{
+                Timber.d("[LoadingError] else")
             }
         }
     }

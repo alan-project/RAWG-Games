@@ -31,10 +31,13 @@ import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Grey200
 import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.Icons
+import timber.log.Timber
 
 @Composable
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
+    Timber.d("[LoadingError] ListScreen is called")
     val viewModel = hiltViewModel<ListViewModel>().apply {
+        Timber.d("[LoadingError] onLoadGames in apply")
         onLoadGames(categoryId)
     }
 
@@ -62,6 +65,7 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                 items(itemCount) { it ->
                     if (it >= itemCount - 1 && !endReached && !isLoading) {
                         LaunchedEffect(key1 = true) {
+                            Timber.d("[LoadingError] onLoadGames in LaunchedEffect")
                             viewModel.onLoadGames(categoryId)
                         }
                     }
