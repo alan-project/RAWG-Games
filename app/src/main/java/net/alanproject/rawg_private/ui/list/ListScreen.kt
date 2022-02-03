@@ -37,10 +37,12 @@ import timber.log.Timber
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
     Timber.d("[LoadingError] ListScreen is called")
     Timber.d("[LoadingError] CategoryId: $categoryId")
-    val viewModel = hiltViewModel<ListViewModel>().apply {
-        Timber.d("[LoadingError] onLoadGames in apply")
-        onLoadGames(categoryId)
+    val viewModel = hiltViewModel<ListViewModel>()
+
+    LaunchedEffect(key1 = true) {
+        viewModel.onLoadGames(categoryId)
     }
+
 
     val games by remember { viewModel.gamesState }
     val endReached by remember { viewModel.endReached }
