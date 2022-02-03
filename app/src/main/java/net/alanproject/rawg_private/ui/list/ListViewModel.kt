@@ -33,8 +33,11 @@ class ListViewModel @Inject constructor(
         val period = mapToPeriod(categoryId)
 
         try {
-            viewModelScope.launch {
-                fetchResource(gamesState, period)
+            if(!isLoading.value){
+
+                viewModelScope.launch {
+                    fetchResource(gamesState, period)
+                }
             }
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
