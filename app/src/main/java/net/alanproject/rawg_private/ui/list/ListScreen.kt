@@ -36,6 +36,7 @@ import timber.log.Timber
 @Composable
 fun ListScreen(categoryId: Int, navController: NavHostController?) {
     Timber.d("[LoadingError] ListScreen is called")
+    Timber.d("[LoadingError] CategoryId: $categoryId")
     val viewModel = hiltViewModel<ListViewModel>().apply {
         Timber.d("[LoadingError] onLoadGames in apply")
         onLoadGames(categoryId)

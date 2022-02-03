@@ -209,14 +209,14 @@ fun PopularGamesByGenre(
             if (!actionGames.isNullOrEmpty()) {
                 SubTitleText(title = "Action / Adventure / RPG") {
                     Timber.d("[LoadingError] navigate 3 - 1")
-                    navController?.navigate("list/3")
+                    navController?.navigate("list/1")
                 }
                 HorizontalList(actionGames, navController, modifier, gameCnt)
             }
             if (!strategyGames.isNullOrEmpty()) {
                 SubTitleText(title = "Strategy / Simulation") {
                     Timber.d("[LoadingError] navigate 3 - 2")
-                    navController?.navigate("list/3")
+                    navController?.navigate("list/1")
                 }
                 HorizontalList(strategyGames, navController, modifier, gameCnt)
             }
@@ -224,7 +224,7 @@ fun PopularGamesByGenre(
 
                 SubTitleText(title = "Puzzle / Arcade") {
                     Timber.d("[LoadingError] navigate 3 - 3")
-                    navController?.navigate("list/3")
+                    navController?.navigate("list/1")
                 }
                 HorizontalList(puzzleGames, navController, modifier, gameCnt)
             }
@@ -232,7 +232,7 @@ fun PopularGamesByGenre(
             if (!racingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Racing / Sports") {
                     Timber.d("[LoadingError] navigate 3 - 4")
-                    navController?.navigate("list/3")
+                    navController?.navigate("list/1")
                 }
                 HorizontalList(racingGames, navController, modifier, gameCnt)
             }

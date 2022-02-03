@@ -11,6 +11,7 @@ import net.alanproject.rawg_private.ui.detail.DetailScreen
 import net.alanproject.rawg_private.ui.list.ListScreen
 import net.alanproject.rawg_private.ui.main.MainScreen
 import net.alanproject.rawg_private.ui.main.MainViewModel
+import timber.log.Timber
 
 @Composable
 fun RawgApp() {
@@ -22,6 +23,7 @@ fun RawgApp() {
 @Composable
 fun Navigation(){
 
+    Timber.d("[LoadingError] Navigation is called")
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "main") {
 
@@ -38,6 +40,7 @@ fun Navigation(){
             arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
         ) { navBackStackEntry ->
 
+            Timber.d("[LoadingError] Navigate to ListScreen")
             ListScreen(navBackStackEntry.arguments!!.getInt("categoryId"), navController)
         }
 
