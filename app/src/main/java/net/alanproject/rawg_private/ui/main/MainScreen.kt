@@ -123,7 +123,7 @@ fun TrendingGames(
     navController: NavHostController?,
     text: String
 ) {
-    Timber.d("[TrendingGames] games: $games")
+//    Timber.d("[TrendingGames] games: $games")
     TopContent(games, navController, text)
 }
 
@@ -168,12 +168,14 @@ fun HotGames(
         Column(modifier = Modifier.padding(8.dp)) {
             if (!releaseGames.isNullOrEmpty()) {
                 SubTitleText(title = "New Release") {
+                    Timber.d("[LoadingError] navigate 1")
                     navController?.navigate("list/1")
                 }
                 HorizontalList(releaseGames, navController, modifier, gameCnt)
             }
             if (!upcomingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Upcoming Games") {
+                    Timber.d("[LoadingError] navigate 2")
                     navController?.navigate("list/2")
                 }
                 HorizontalList(upcomingGames, navController, modifier, gameCnt)
@@ -206,12 +208,14 @@ fun PopularGamesByGenre(
         Column(modifier = Modifier.padding(8.dp)) {
             if (!actionGames.isNullOrEmpty()) {
                 SubTitleText(title = "Action / Adventure / RPG") {
+                    Timber.d("[LoadingError] navigate 3 - 1")
                     navController?.navigate("list/3")
                 }
                 HorizontalList(actionGames, navController, modifier, gameCnt)
             }
             if (!strategyGames.isNullOrEmpty()) {
                 SubTitleText(title = "Strategy / Simulation") {
+                    Timber.d("[LoadingError] navigate 3 - 2")
                     navController?.navigate("list/3")
                 }
                 HorizontalList(strategyGames, navController, modifier, gameCnt)
@@ -219,6 +223,7 @@ fun PopularGamesByGenre(
             if (!puzzleGames.isNullOrEmpty()) {
 
                 SubTitleText(title = "Puzzle / Arcade") {
+                    Timber.d("[LoadingError] navigate 3 - 3")
                     navController?.navigate("list/3")
                 }
                 HorizontalList(puzzleGames, navController, modifier, gameCnt)
@@ -226,6 +231,7 @@ fun PopularGamesByGenre(
 
             if (!racingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Racing / Sports") {
+                    Timber.d("[LoadingError] navigate 3 - 4")
                     navController?.navigate("list/3")
                 }
                 HorizontalList(racingGames, navController, modifier, gameCnt)
@@ -241,7 +247,7 @@ fun TopContent(
     navController: NavHostController?,
     text: String
 ) {
-Timber.d("[TopContent] topGames: $topGames")
+//Timber.d("[TopContent] topGames: $topGames")
     if (!topGames.isNullOrEmpty()) {
         val displayedGame = topGames.first()
         MainTitleText(text) {}
@@ -292,7 +298,9 @@ fun VerticalList(
 
 
         displayedGames.forEach { game ->
-            val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+            val clickAction: () -> Unit = {
+                navController?.navigate("detail/${game.id}")
+            }
 
             Card(
                 shape = RoundedCornerShape(8.dp),
@@ -342,7 +350,9 @@ fun HorizontalList(
 
     LazyRow {
         items(displayedGames) { game ->
-            val clickAction: () -> Unit = { navController?.navigate("detail/${game.id}") }
+            val clickAction: () -> Unit = {
+                navController?.navigate("detail/${game.id}")
+            }
             Card(
 
                 shape = RoundedCornerShape(15.dp),
