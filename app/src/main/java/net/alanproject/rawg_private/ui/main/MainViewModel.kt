@@ -57,7 +57,9 @@ class MainViewModel @Inject constructor(
                 val newReleaseDeferred =
                     async { fetchResource(newReleaseListState, RELEASE_PERIOD) }
 
-                val rankDeferred = async { fetchResource(rankListState, HOT_PERIOD) }
+                val rankDeferred = async {
+                    fetchResource(rankListState, HOT_PERIOD, size = VERTICAL_GAME_NUMBER)
+                }
 
                 //Generes
                 val actionDeferred = async { fetchResource(actionListState, HOT_PERIOD, genres = ACTION) }
@@ -83,7 +85,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String,genres:String?=null) {
+    private suspend fun fetchResource(
+        games: MutableState<List<Game>>,
+        dates: String,
+        genres: String? = null,
+        size: Int = Int.MAX_VALUE
+    ) {
         Timber.d("fetchResource in MainViewModel")
         isLoading.value = true
         val result = getGames.get(dates = dates, genres = genres)
@@ -91,7 +98,7 @@ class MainViewModel @Inject constructor(
         when (result) {
             is Resource.Success -> {
                 Timber.d("fetchResource: Success")
-                games.value = result.data?.results ?: listOf()
+                games.value = (result.data?.results ?: listOf()).take(VERTICAL_GAME_NUMBER)
                 loadError.value = ""
                 isLoading.value = false
 
@@ -104,5 +111,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    companion object {
+        private const val VERTICAL_GAME_NUMBER = 6
+    }
 
 }
