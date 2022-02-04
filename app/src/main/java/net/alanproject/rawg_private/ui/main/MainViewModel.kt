@@ -8,17 +8,23 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.params.ListParams
+import net.alanproject.domain.model.response.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION
-import net.alanproject.rawg_private.common.Constants.Companion.HOT_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.RANK_PERIOD
 import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE
+import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RACING
-import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.RACING_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.RANK_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY
-import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PERIOD
-import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PERIOD
+import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -51,21 +57,21 @@ class MainViewModel @Inject constructor(
         Timber.d("onLoadGames in ViewModel")
         try {
             viewModelScope.launch {
-                val trendingDeferred = async { fetchResource(trendingListState, TRENDING_PERIOD) }
+                val trendingDeferred = async { fetchResource(trendingListState, TRENDING_PARAMS) }
 
-                val upcomingDeferred = async { fetchResource(upcomingListState, UPCOMING_PERIOD) }
+                val upcomingDeferred = async { fetchResource(upcomingListState, UPCOMING_PARAMS) }
                 val newReleaseDeferred =
-                    async { fetchResource(newReleaseListState, RELEASE_PERIOD) }
+                    async { fetchResource(newReleaseListState, RELEASE_PARAMS) }
 
                 val rankDeferred = async {
-                    fetchResource(rankListState, HOT_PERIOD, size = VERTICAL_GAME_NUMBER)
+                    fetchResource(rankListState, RANK_PARAMS)
                 }
 
                 //Generes
-                val actionDeferred = async { fetchResource(actionListState, HOT_PERIOD, genres = ACTION) }
-                val strategyDeferred = async { fetchResource(strategyListState, HOT_PERIOD, genres = STRATEGY) }
-                val puzzleDeferred = async { fetchResource(puzzleListState, HOT_PERIOD, genres = PUZZLE) }
-                val racingDeferred = async { fetchResource(racingListState, HOT_PERIOD, genres = RACING) }
+                val actionDeferred = async { fetchResource(actionListState, ACTION_PARAMS) }
+                val strategyDeferred = async { fetchResource(strategyListState, STRATEGY_PARAMS) }
+                val puzzleDeferred = async { fetchResource(puzzleListState, PUZZLE_PARAMS) }
+                val racingDeferred = async { fetchResource(racingListState, RACING_PARAMS) }
 
                 awaitAll(
                     trendingDeferred,
@@ -87,13 +93,12 @@ class MainViewModel @Inject constructor(
 
     private suspend fun fetchResource(
         games: MutableState<List<Game>>,
-        dates: String,
-        genres: String? = null,
-        size: Int = Int.MAX_VALUE
+        params:ListParams
+
     ) {
         Timber.d("fetchResource in MainViewModel")
         isLoading.value = true
-        val result = getGames.get(dates = dates, genres = genres)
+        val result = getGames.get(params = params)
 
         when (result) {
             is Resource.Success -> {

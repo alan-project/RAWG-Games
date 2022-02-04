@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.google.gson.Gson
+import net.alanproject.domain.model.params.ListParams
 import net.alanproject.rawg_private.ui.detail.DetailScreen
 import net.alanproject.rawg_private.ui.list.ListScreen
 import net.alanproject.rawg_private.ui.main.MainScreen
@@ -36,12 +38,16 @@ fun Navigation(){
 
         //pass parameter
         composable(
-            route = "list/{categoryId}",
-            arguments = listOf(navArgument("categoryId") { type = NavType.IntType })
+            route = "list/{params}",
+            arguments = listOf(navArgument("params") { type = NavType.StringType })
         ) { navBackStackEntry ->
 
+            val listParamsString:String = navBackStackEntry.arguments?.getString("params").orEmpty()
+            Timber.d("listParamsString: $listParamsString")
+            val listParams: ListParams = Gson().fromJson(listParamsString, ListParams::class.java)
+            Timber.d("listParams: $listParams")
             Timber.d("[LoadingError] Navigate to ListScreen")
-            ListScreen(navBackStackEntry.arguments!!.getInt("categoryId"), navController)
+            ListScreen(listParams, navController)
         }
 
         composable(

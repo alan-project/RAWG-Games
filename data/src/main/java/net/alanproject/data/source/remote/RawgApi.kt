@@ -2,8 +2,8 @@ package net.alanproject.data.source.remote
 
 
 import net.alanproject.data.BuildConfig
-import net.alanproject.domain.model.list.Game
-import net.alanproject.domain.model.list.Response
+import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

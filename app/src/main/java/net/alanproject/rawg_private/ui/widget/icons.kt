@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.response.Game
 import net.alanproject.rawg_private.R
 import timber.log.Timber
 

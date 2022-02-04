@@ -1,4 +1,4 @@
-package net.alanproject.domain.model.list
+package net.alanproject.domain.model.response
 
 
 data class EachStore(
