@@ -69,15 +69,23 @@ fun ListScreen(listParams: ListParams, navController: NavHostController?) {
             LazyColumn {
                 val itemCount = games.size
 
+
                 items(itemCount) { it ->
-                    if (it >= itemCount - 1 && !endReached && !isLoading) {
-                        LaunchedEffect(key1 = true) {
-                            Timber.d("[LoadingError] onLoadGames in LaunchedEffect")
-                            viewModel.onLoadGames(listParams)
+
+                    //List via MainScreen will show only 20 items(No pagination)
+                    if (!listParams.isFromMain) {
+                        if (it >= itemCount - 1 && !endReached && !isLoading) {
+
+                            LaunchedEffect(key1 = true) {
+                                Timber.d("[LoadingError] onLoadGames in LaunchedEffect")
+                                viewModel.onLoadGames(listParams)
+                            }
                         }
                     }
                     GamesRow(rowIndex = it, games, navController)
+
                 }
+
 
             }
 

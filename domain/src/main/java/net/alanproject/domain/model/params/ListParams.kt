@@ -9,6 +9,8 @@ data class ListParams(
     val ordering: String? = "-added",
     val platforms: String? = null,
 
+    val isFromMain: Boolean = false
+
 )
 
 fun listParamsToJsonString(listParams: ListParams):String{
