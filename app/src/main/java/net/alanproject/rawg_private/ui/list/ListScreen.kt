@@ -223,7 +223,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
             maxLines = 1, overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = "Release: ${game.released}",
+            text = game.released,
             style = TextStyle(fontSize = 12.sp),
             color = Grey200,
 //            modifier = modifier,
