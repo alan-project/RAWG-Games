@@ -12,19 +12,20 @@ import net.alanproject.domain.model.params.ListParams
 import net.alanproject.domain.model.response.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
-import net.alanproject.rawg_private.common.Constants.Companion.ACTION
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.RANK_PERIOD
-import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE
+import net.alanproject.rawg_private.common.Constants.Companion.CONSOLE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.MOBILE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.PC_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.PS
+import net.alanproject.rawg_private.common.Constants.Companion.PS_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.RACING
 import net.alanproject.rawg_private.common.Constants.Companion.RACING_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RANK_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY
 import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.TRENDING_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.XBOX_PARAMS
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -34,20 +35,26 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     //Trending
-    val trendingListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val trendingGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     //Hot: NewRelease, Upcoming
-    val upcomingListState: MutableState<List<Game>> = mutableStateOf(listOf())
-    val newReleaseListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val upcomingGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val releaseGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     //Ranking
-    val rankListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val totalRankGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     //Popular by Genre
-    val actionListState: MutableState<List<Game>> = mutableStateOf(listOf())
-    val strategyListState: MutableState<List<Game>> = mutableStateOf(listOf())
-    val puzzleListState: MutableState<List<Game>> = mutableStateOf(listOf())
-    val racingListState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val actionGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val strategyGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val puzzleGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val racingGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+
+    //Popular by Platforms
+    val pcGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val psGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val xboxGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
+    val mobileGamesState: MutableState<List<Game>> = mutableStateOf(listOf())
 
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
@@ -57,21 +64,27 @@ class MainViewModel @Inject constructor(
         Timber.d("onLoadGames in ViewModel")
         try {
             viewModelScope.launch {
-                val trendingDeferred = async { fetchResource(trendingListState, TRENDING_PARAMS) }
+                val trendingDeferred = async { fetchResource(trendingGamesState, TRENDING_PARAMS) }
 
-                val upcomingDeferred = async { fetchResource(upcomingListState, UPCOMING_PARAMS) }
+                val upcomingDeferred = async { fetchResource(upcomingGamesState, UPCOMING_PARAMS) }
                 val newReleaseDeferred =
-                    async { fetchResource(newReleaseListState, RELEASE_PARAMS) }
+                    async { fetchResource(releaseGamesState, RELEASE_PARAMS) }
 
                 val rankDeferred = async {
-                    fetchResource(rankListState, RANK_PARAMS)
+                    fetchResource(totalRankGamesState, RANK_PARAMS)
                 }
 
                 //Generes
-                val actionDeferred = async { fetchResource(actionListState, ACTION_PARAMS) }
-                val strategyDeferred = async { fetchResource(strategyListState, STRATEGY_PARAMS) }
-                val puzzleDeferred = async { fetchResource(puzzleListState, PUZZLE_PARAMS) }
-                val racingDeferred = async { fetchResource(racingListState, RACING_PARAMS) }
+                val actionDeferred = async { fetchResource(actionGamesState, ACTION_PARAMS) }
+                val strategyDeferred = async { fetchResource(strategyGamesState, STRATEGY_PARAMS) }
+                val puzzleDeferred = async { fetchResource(puzzleGamesState, PUZZLE_PARAMS) }
+                val racingDeferred = async { fetchResource(racingGamesState, RACING_PARAMS) }
+
+                //Platform
+                val pcDeferred = async { fetchResource(pcGamesState, PC_PARAMS) }
+                val psDeferred = async { fetchResource(psGamesState, PS_PARAMS) }
+                val xboxDeferred = async { fetchResource(xboxGamesState, XBOX_PARAMS) }
+                val mobileDeferred = async { fetchResource(mobileGamesState, MOBILE_PARAMS) }
 
                 awaitAll(
                     trendingDeferred,
@@ -81,7 +94,12 @@ class MainViewModel @Inject constructor(
                     actionDeferred,
                     strategyDeferred,
                     puzzleDeferred,
-                    racingDeferred
+                    racingDeferred,
+                    pcDeferred,
+                    psDeferred,
+                    xboxDeferred,
+                    mobileDeferred
+
                 )
 
             }
