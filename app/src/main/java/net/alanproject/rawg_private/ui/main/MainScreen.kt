@@ -16,9 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,8 +27,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import net.alanproject.domain.model.list.Game
-import net.alanproject.rawg_private.R
+import net.alanproject.domain.model.params.listParamsToJsonString
+import net.alanproject.domain.model.response.Game
+import net.alanproject.rawg_private.common.Constants.Companion.ACTION
+import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.RACING_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal200
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -63,11 +68,6 @@ fun MainScreen(
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
-
-//    Timber.d("newTrendingList: $newTrendingList")
-//    Timber.d("hotList: $hotList")
-//    Timber.d("upcomingList: $upcomingList")
-
     Timber.d("onLoadGames in View")
     viewModel.onLoadGames()
 
@@ -84,8 +84,8 @@ fun MainScreen(
                 newReleaseList,
                 upcomingList,
                 navController,
-                text = "What's Hot Now",
-                gameCnt = null
+                gameCnt = null,
+                text = "What's Hot Now"
             )
 
             Ranking(rankList, navController, text = "Ranking")
@@ -187,14 +187,17 @@ private fun HotGames(
             if (!releaseGames.isNullOrEmpty()) {
                 SubTitleText(title = "New Release") {
                     Timber.d("[LoadingError] navigate 1")
-                    navController?.navigate("list/1")
+
+                    val jsonString = listParamsToJsonString(RELEASE_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(releaseGames, navController, modifier, gameCnt)
             }
             if (!upcomingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Upcoming Games") {
                     Timber.d("[LoadingError] navigate 2")
-                    navController?.navigate("list/2")
+                    val jsonString = listParamsToJsonString(UPCOMING_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(upcomingGames, navController, modifier, gameCnt)
             }
@@ -226,31 +229,31 @@ private fun PopularGamesByGenre(
         Column(modifier = Modifier.padding(8.dp)) {
             if (!actionGames.isNullOrEmpty()) {
                 SubTitleText(title = "Action / Adventure / RPG") {
-                    Timber.d("[LoadingError] navigate 3 - 1")
-                    navController?.navigate("list/1")
+                    val jsonString = listParamsToJsonString(ACTION_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(actionGames, navController, modifier, gameCnt)
             }
             if (!strategyGames.isNullOrEmpty()) {
                 SubTitleText(title = "Strategy / Simulation") {
-                    Timber.d("[LoadingError] navigate 3 - 2")
-                    navController?.navigate("list/1")
+                    val jsonString = listParamsToJsonString(STRATEGY_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(strategyGames, navController, modifier, gameCnt)
             }
             if (!puzzleGames.isNullOrEmpty()) {
 
                 SubTitleText(title = "Puzzle / Arcade") {
-                    Timber.d("[LoadingError] navigate 3 - 3")
-                    navController?.navigate("list/1")
+                    val jsonString = listParamsToJsonString(PUZZLE_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(puzzleGames, navController, modifier, gameCnt)
             }
 
             if (!racingGames.isNullOrEmpty()) {
                 SubTitleText(title = "Racing / Sports") {
-                    Timber.d("[LoadingError] navigate 3 - 4")
-                    navController?.navigate("list/1")
+                    val jsonString = listParamsToJsonString(RACING_PARAMS)
+                    navController?.navigate("list/$jsonString")
                 }
                 HorizontalList(racingGames, navController, modifier, gameCnt)
             }
@@ -275,6 +278,7 @@ fun TopContent(
             elevation = 8.dp,
 
             ) {
+
             val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame.id}") }
             Card(
                 shape = RoundedCornerShape(15.dp),

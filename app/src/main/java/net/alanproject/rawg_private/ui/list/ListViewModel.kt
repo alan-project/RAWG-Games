@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.params.ListParams
+import net.alanproject.domain.model.response.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.PAGE_SIZE
@@ -28,15 +29,13 @@ class ListViewModel @Inject constructor(
     var isLoading = mutableStateOf(false)
     var endReached = mutableStateOf(false)
 
-    fun onLoadGames(categoryId: Int) {
-
-        val period = mapToPeriod(categoryId)
+    fun onLoadGames(listParams: ListParams) {
 
         try {
             if(!isLoading.value){
 
                 viewModelScope.launch {
-                    fetchResource(gamesState, period)
+                    fetchResource(gamesState, listParams)
                 }
             }
         } catch (exception: Exception) {
@@ -44,11 +43,11 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchResource(games: MutableState<List<Game>>, dates: String) {
+    private suspend fun fetchResource(games: MutableState<List<Game>>, listParams: ListParams) {
         Timber.d("fetchResource in ListViewModel")
         Timber.d("[LoadingError] curPage: $curPage")
         isLoading.value = true
-        val result = getGames.get(page = curPage, dates = dates)
+        val result = getGames.get(page = curPage, listParams)
         when (result) {
             is Resource.Success -> {
                 Timber.d("[LoadingError] Success")

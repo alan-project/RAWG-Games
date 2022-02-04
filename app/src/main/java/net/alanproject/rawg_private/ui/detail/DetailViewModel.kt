@@ -2,13 +2,11 @@ package net.alanproject.rawg_private.ui.detail
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.response.Game
 import net.alanproject.domain.usecases.GetGame
 import net.alanproject.domain.util.Resource
 import timber.log.Timber

@@ -1,8 +1,8 @@
 package net.alanproject.data.source.remote
 
 import net.alanproject.data.source.RemoteSource
-import net.alanproject.domain.model.list.Game
-import net.alanproject.domain.model.list.Response
+import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.Response
 import timber.log.Timber
 import javax.inject.Inject
 
