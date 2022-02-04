@@ -90,7 +90,7 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
 
 
 @Composable
-fun ProfilePicture(pictureUrl: String, imageSize: Dp) {
+fun ProfilePicture(pictureUrl: String?, imageSize: Dp) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),

@@ -10,7 +10,7 @@ data class Game(
     val released: String = "",
     val tba: Boolean = false,
     @SerializedName("background_image")
-    val backgroundImage: String = "",
+    val backgroundImage: String? = "",
     val rating: Double = 0.0,
     @SerializedName("rating_top")
     val ratingTop: Int = 0,
