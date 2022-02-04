@@ -11,7 +11,6 @@ import net.alanproject.domain.model.response.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.PAGE_SIZE
-import net.alanproject.rawg_private.common.mapToPeriod
 import timber.log.Timber
 import javax.inject.Inject
 

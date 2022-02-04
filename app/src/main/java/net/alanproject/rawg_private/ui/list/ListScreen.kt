@@ -155,7 +155,7 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
 }
 
 @Composable
-fun GameScreen(pictureUrl: String, modifier: Modifier) {
+fun GameScreen(pictureUrl: String?, modifier: Modifier) {
 
 
     Image(
