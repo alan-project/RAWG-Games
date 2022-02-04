@@ -25,8 +25,8 @@ fun Icons(game: Game) {
         val platformId = eachPlatform.platform.id
         Timber.d("platformId: $platformId")
         when (platformId) {
-
-            4, 5 -> platformSet.add(PC)
+            4,->platformSet.add(WIN)
+            5 -> platformSet.add(MAC)
             6 -> platformSet.add(LINUX)
             15, 16, 18, 187, 27, 19, 17 -> platformSet.add(PS)
             1, 14, 80, 186 -> platformSet.add(XBOX)
@@ -59,12 +59,13 @@ fun DrawIcon(platformSet: MutableSet<Int>) {
     }
 }
 
-const val PC = R.drawable.ic_pc
+const val WIN = R.drawable.ic_win
 const val LINUX = R.drawable.ic_linux
 const val PS = R.drawable.ic_ps
 const val XBOX = R.drawable.ic_xbox
 const val NINTENDO = R.drawable.ic_nintendo
 const val ANDROID = R.drawable.ic_android
 const val IOS = R.drawable.ic_ios
+const val MAC = R.drawable.ic_mac
 
 

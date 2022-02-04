@@ -33,77 +33,91 @@ class Constants{
         val TRENDING_PARAMS: ListParams = ListParams(
             period = TRENDING_PERIOD,
             genres = null,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
 
         val UPCOMING_PARAMS:ListParams = ListParams(
             period = UPCOMING_PERIOD,
             genres = null,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
 
         val RELEASE_PARAMS:ListParams = ListParams(
             period = RELEASE_PERIOD,
             genres = null,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
 
         val RANK_PARAMS:ListParams = ListParams(
             period = RANK_PERIOD,
             genres = null,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
 
         val ACTION_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             genres = ACTION,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
         val STRATEGY_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             genres = STRATEGY,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
         val PUZZLE_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             genres = PUZZLE,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
         val RACING_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             genres = RACING,
-            ordering = null
+            ordering = null,
+            isFromMain = true
         )
 
         val PC_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = PC
+            platforms = PC,
+            isFromMain = true
         )
         val CONSOLE_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = CONSOLE
+            platforms = CONSOLE,
+            isFromMain = true
         )
         val PS_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = PS
+            platforms = PS,
+            isFromMain = true
         )
         val XBOX_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = XBOX
+            platforms = XBOX,
+            isFromMain = true
         )
         val NINTENDO_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = NINTENDO
+            platforms = NINTENDO,
+            isFromMain = true
         )
         val MOBILE_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
-            platforms = MOBILE
+            platforms = MOBILE,
+            isFromMain = true
         )
 
     }
