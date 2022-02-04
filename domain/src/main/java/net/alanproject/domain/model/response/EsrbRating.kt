@@ -1,7 +1,5 @@
-package net.alanproject.domain.model.list
+package net.alanproject.domain.model.response
 
-
-import com.google.gson.annotations.SerializedName
 
 data class EsrbRating(
     val id: Int = 0,

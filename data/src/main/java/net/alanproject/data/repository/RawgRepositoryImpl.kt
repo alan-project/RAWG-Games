@@ -1,9 +1,8 @@
 package net.alanproject.data.repository
 
 import net.alanproject.data.source.RemoteSource
-import net.alanproject.data.source.remote.RemoteSourceImpl
-import net.alanproject.domain.model.list.Game
-import net.alanproject.domain.model.list.Response
+import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.Response
 import net.alanproject.domain.repository.RawgRepository
 import javax.inject.Inject
 

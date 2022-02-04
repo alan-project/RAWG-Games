@@ -1,7 +1,7 @@
 package net.alanproject.data.source
 
-import net.alanproject.domain.model.list.Game
-import net.alanproject.domain.model.list.Response
+import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.Response
 
 interface RemoteSource {
     suspend fun getGames(

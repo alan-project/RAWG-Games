@@ -24,7 +24,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
-import net.alanproject.domain.model.list.Game
+import net.alanproject.domain.model.params.ListParams
+import net.alanproject.domain.model.response.Game
 import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -34,13 +35,13 @@ import net.alanproject.rawg_private.ui.widget.Icons
 import timber.log.Timber
 
 @Composable
-fun ListScreen(categoryId: Int, navController: NavHostController?) {
+fun ListScreen(listParams: ListParams, navController: NavHostController?) {
     Timber.d("[LoadingError] ListScreen is called")
-    Timber.d("[LoadingError] CategoryId: $categoryId")
+    Timber.d("listParams: $listParams")
     val viewModel = hiltViewModel<ListViewModel>()
 
     LaunchedEffect(key1 = true) {
-        viewModel.onLoadGames(categoryId)
+        viewModel.onLoadGames(listParams)
     }
 
 
@@ -69,7 +70,7 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                     if (it >= itemCount - 1 && !endReached && !isLoading) {
                         LaunchedEffect(key1 = true) {
                             Timber.d("[LoadingError] onLoadGames in LaunchedEffect")
-                            viewModel.onLoadGames(categoryId)
+                            viewModel.onLoadGames(listParams)
                         }
                     }
                     GamesRow(rowIndex = it, games, navController)
@@ -86,7 +87,7 @@ fun ListScreen(categoryId: Int, navController: NavHostController?) {
                 }
                 if (loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
-                        viewModel.onLoadGames(categoryId)
+                        viewModel.onLoadGames(listParams)
                     }
                 }
             }
