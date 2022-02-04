@@ -30,7 +30,6 @@ import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.params.listParamsToJsonString
 import net.alanproject.domain.model.response.Game
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.CONSOLE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.MOBILE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PC_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PS_PARAMS
@@ -45,6 +44,7 @@ import net.alanproject.rawg_private.ui.theme.Charcoal200
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Grey200
 import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.widget.AddedText
 import net.alanproject.rawg_private.ui.widget.MetaScoreText
 import net.alanproject.rawg_private.ui.widget.RatingOnCircle
 import net.alanproject.rawg_private.ui.widget.RatingText
@@ -145,7 +145,6 @@ private fun TrendingGames(
     navController: NavHostController?,
     text: String
 ) {
-//    Timber.d("[TrendingGames] games: $games")
     if (!games.isNullOrEmpty()) {
         TopContent(games, navController, text)
     }
@@ -166,20 +165,22 @@ private fun Ranking(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun PreviewRanking() {
-    Ranking(listOf(
-        Game(name = "game 1"),
-        Game(name = "game 2"),
-        Game(name = "game 3"),
-        Game(name = "game 4"),
-        Game(name = "game 5"),
-        Game(name = "game 6")
-    ), null, "Test")
+    Ranking(
+        listOf(
+            Game(name = "game 1"),
+            Game(name = "game 2"),
+            Game(name = "game 3"),
+            Game(name = "game 4"),
+            Game(name = "game 5"),
+            Game(name = "game 6")
+        ), null, "Test"
+    )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 private fun PreviewRankGame() {
-    RankGame(null, Game(name = "Halo",))
+    RankGame(null, Game(name = "Halo"))
 }
 
 @Composable
@@ -195,7 +196,7 @@ private fun HotGames(
         .wrapContentHeight()
         .padding(4.dp)
 
-    if (!releaseGames.isNullOrEmpty() ||!upcomingGames.isNullOrEmpty()){
+    if (!releaseGames.isNullOrEmpty() || !upcomingGames.isNullOrEmpty()) {
         MainTitleText(text) { navController?.navigate("list/1") }
     }
 
@@ -240,48 +241,49 @@ private fun PopularGamesByGenre(
         .width(240.dp)
         .wrapContentHeight()
         .padding(4.dp)
-    MainTitleText(text) { navController?.navigate("list/3") }
+    if (!actionGames.isNullOrEmpty() || !strategyGames.isNullOrEmpty() || !puzzleGames.isNullOrEmpty() || !racingGames.isNullOrEmpty()) {
+        MainTitleText(text) { navController?.navigate("list/3") }
 
-    Surface(
-        color = Charcoal500,
-        elevation = 8.dp,
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            if (!actionGames.isNullOrEmpty()) {
-                SubTitleText(title = "Action / Adventure / RPG") {
-                    val jsonString = listParamsToJsonString(ACTION_PARAMS)
-                    navController?.navigate("list/$jsonString")
+        Surface(
+            color = Charcoal500,
+            elevation = 8.dp,
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                if (!actionGames.isNullOrEmpty()) {
+                    SubTitleText(title = "Action / Adventure / RPG") {
+                        val jsonString = listParamsToJsonString(ACTION_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(actionGames, navController, modifier, gameCnt)
                 }
-                HorizontalList(actionGames, navController, modifier, gameCnt)
-            }
-            if (!strategyGames.isNullOrEmpty()) {
-                SubTitleText(title = "Strategy / Simulation") {
-                    val jsonString = listParamsToJsonString(STRATEGY_PARAMS)
-                    navController?.navigate("list/$jsonString")
+                if (!strategyGames.isNullOrEmpty()) {
+                    SubTitleText(title = "Strategy / Simulation") {
+                        val jsonString = listParamsToJsonString(STRATEGY_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(strategyGames, navController, modifier, gameCnt)
                 }
-                HorizontalList(strategyGames, navController, modifier, gameCnt)
-            }
-            if (!puzzleGames.isNullOrEmpty()) {
+                if (!puzzleGames.isNullOrEmpty()) {
 
-                SubTitleText(title = "Puzzle / Arcade") {
-                    val jsonString = listParamsToJsonString(PUZZLE_PARAMS)
-                    navController?.navigate("list/$jsonString")
+                    SubTitleText(title = "Puzzle / Arcade") {
+                        val jsonString = listParamsToJsonString(PUZZLE_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(puzzleGames, navController, modifier, gameCnt)
                 }
-                HorizontalList(puzzleGames, navController, modifier, gameCnt)
+
+                if (!racingGames.isNullOrEmpty()) {
+                    SubTitleText(title = "Racing / Sports") {
+                        val jsonString = listParamsToJsonString(RACING_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(racingGames, navController, modifier, gameCnt)
+                }
             }
 
-            if (!racingGames.isNullOrEmpty()) {
-                SubTitleText(title = "Racing / Sports") {
-                    val jsonString = listParamsToJsonString(RACING_PARAMS)
-                    navController?.navigate("list/$jsonString")
-                }
-                HorizontalList(racingGames, navController, modifier, gameCnt)
-            }
         }
-
     }
 }
-
 
 
 @Composable
@@ -299,48 +301,52 @@ private fun PopularGamesByPlatform(
         .width(240.dp)
         .wrapContentHeight()
         .padding(4.dp)
-    MainTitleText(text) {  }
 
-    Surface(
-        color = Charcoal500,
-        elevation = 8.dp,
-    ) {
-        Column(modifier = Modifier.padding(8.dp)) {
-            if (!pcGames.isNullOrEmpty()) {
-                SubTitleText(title = "PC Games") {
-                    val jsonString = listParamsToJsonString(PC_PARAMS)
-                    navController?.navigate("list/$jsonString")
-                }
-                HorizontalList(pcGames, navController, modifier, gameCnt)
-            }
-            if (!psGames.isNullOrEmpty()) {
-                SubTitleText(title = "PS Games") {
-                    val jsonString = listParamsToJsonString(PS_PARAMS)
-                    navController?.navigate("list/$jsonString")
-                }
-                HorizontalList(psGames, navController, modifier, gameCnt)
-            }
+    if (!pcGames.isNullOrEmpty() || !psGames.isNullOrEmpty() || !xboxGames.isNullOrEmpty() || !mobileGames.isNullOrEmpty()) {
 
-            if (!xboxGames.isNullOrEmpty()) {
-                SubTitleText(title = "Xbox Games") {
-                    val jsonString = listParamsToJsonString(XBOX_PARAMS)
-                    navController?.navigate("list/$jsonString")
-                }
-                HorizontalList(xboxGames, navController, modifier, gameCnt)
-            }
-            if (!mobileGames.isNullOrEmpty()) {
 
-                SubTitleText(title = "Mobile Games") {
-                    val jsonString = listParamsToJsonString(MOBILE_PARAMS)
-                    navController?.navigate("list/$jsonString")
-                }
-                HorizontalList(mobileGames, navController, modifier, gameCnt)
-            }
+        MainTitleText(text) { }
 
+        Surface(
+            color = Charcoal500,
+            elevation = 8.dp,
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                if (!pcGames.isNullOrEmpty()) {
+                    SubTitleText(title = "PC") {
+                        val jsonString = listParamsToJsonString(PC_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(pcGames, navController, modifier, gameCnt)
+                }
+                if (!psGames.isNullOrEmpty()) {
+                    SubTitleText(title = "PlayStation") {
+                        val jsonString = listParamsToJsonString(PS_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(psGames, navController, modifier, gameCnt)
+                }
+
+                if (!xboxGames.isNullOrEmpty()) {
+                    SubTitleText(title = "Xbox") {
+                        val jsonString = listParamsToJsonString(XBOX_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(xboxGames, navController, modifier, gameCnt)
+                }
+                if (!mobileGames.isNullOrEmpty()) {
+
+                    SubTitleText(title = "Mobile") {
+                        val jsonString = listParamsToJsonString(MOBILE_PARAMS)
+                        navController?.navigate("list/$jsonString")
+                    }
+                    HorizontalList(mobileGames, navController, modifier, gameCnt)
+                }
+            }
         }
-
     }
 }
+
 @Composable
 fun TopContent(
     topGames: List<Game>?,
@@ -589,6 +595,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
+            AddedText(game.added)
             RatingText(game.rating)
             MetaScoreText(game.metacritic)
         }

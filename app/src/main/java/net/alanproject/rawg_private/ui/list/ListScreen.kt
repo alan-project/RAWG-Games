@@ -31,7 +31,10 @@ import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Grey200
 import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.widget.AddedText
 import net.alanproject.rawg_private.ui.widget.Icons
+import net.alanproject.rawg_private.ui.widget.MetaScoreText
+import net.alanproject.rawg_private.ui.widget.RatingText
 import timber.log.Timber
 
 @Composable
@@ -176,7 +179,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
     val painterRating = rememberImagePainter(R.drawable.ic_rating)
     val painterMeta = rememberImagePainter(R.drawable.ic_meta_score)
     Column(
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start,
         modifier = modifier
 
@@ -184,36 +187,9 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if(game.rating != 0.0){
-                Image(
-                    painter = painterRating,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(12.dp)
-//                    .padding(start = 6.dp)
-
-                )
-                Text(
-                    text = game.rating.toString(),
-                    style = TextStyle(color = Color.White, fontSize = 12.sp),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
-
-            if(game.metacritic!=0){
-                Image(
-                    painter = painterMeta,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(20.dp)
-                        .padding(start = 8.dp)
-                )
-                Text(
-                    text = game.metacritic.toString(),
-                    style = TextStyle(color = Color.White, fontSize = 12.sp),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-            }
+            AddedText(game.added)
+            RatingText(game.rating)
+            MetaScoreText(game.metacritic)
 
         }
         Text(
@@ -233,23 +209,3 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
     }
 
 }
-
-//
-//@Composable
-//fun GameDescription(userName: String, alignment: Alignment.Horizontal) {
-//    Column(
-//        modifier = Modifier
-//            .padding(8.dp),
-//        horizontalAlignment = alignment
-//
-//    ) {
-//        //transparency
-//
-//        Text(
-//            text = userName,
-//            style = TextStyle(color = Color.White, fontSize = 16.sp)
-//        )
-//
-//    }
-//
-//}
