@@ -18,6 +18,16 @@ class Constants{
         val PUZZLE:String ="7,11,28,17"
         val RACING:String ="1,15"
 
+        //Platforms
+        val PC:String ="4,5,6"
+        val CONSOLE:String ="187,18,16,15,27,19,17,1,186,14,80,83,7,8,9,13,10,11"
+        val MOBILE:String ="3,21"
+        val XBOX: String ="1,14,80,186"
+        val PS: String = "187,18,16,15,27,19,17"
+        val NINTENDO: String = "83,7,8,9,13,10,11"
+
+
+
 
 
         val TRENDING_PARAMS: ListParams = ListParams(
@@ -64,6 +74,38 @@ class Constants{
             genres = RACING,
             ordering = null
         )
+
+        val PC_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = PC
+        )
+        val CONSOLE_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = CONSOLE
+        )
+        val PS_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = PS
+        )
+        val XBOX_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = XBOX
+        )
+        val NINTENDO_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = NINTENDO
+        )
+        val MOBILE_PARAMS:ListParams = ListParams(
+            period = GENRES_PERIOD,
+            ordering = null,
+            platforms = MOBILE
+        )
+
     }
 }
 

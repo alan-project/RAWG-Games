@@ -29,13 +29,17 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.params.listParamsToJsonString
 import net.alanproject.domain.model.response.Game
-import net.alanproject.rawg_private.common.Constants.Companion.ACTION
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.CONSOLE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.MOBILE_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.PC_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.PS_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RACING_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RELEASE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.STRATEGY_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
+import net.alanproject.rawg_private.common.Constants.Companion.XBOX_PARAMS
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal200
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -53,17 +57,23 @@ fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
 
-    val newTrendingList by remember { viewModel.trendingListState }
+    val trendingGames by remember { viewModel.trendingGamesState }
 
-    val rankList by remember { viewModel.rankListState }
+    val upcomingGames by remember { viewModel.upcomingGamesState }
+    val releaseGames by remember { viewModel.releaseGamesState }
 
-    val upcomingList by remember { viewModel.upcomingListState }
-    val newReleaseList by remember { viewModel.newReleaseListState }
+    val totalRankGames by remember { viewModel.totalRankGamesState }
 
-    val actionList by remember { viewModel.actionListState }
-    val strategyList by remember { viewModel.strategyListState }
-    val puzzleList by remember { viewModel.puzzleListState }
-    val racingList by remember { viewModel.racingListState }
+
+    val actionGames by remember { viewModel.actionGamesState }
+    val strategyGames by remember { viewModel.strategyGamesState }
+    val puzzleGames by remember { viewModel.puzzleGamesState }
+    val racingGames by remember { viewModel.racingGamesState }
+
+    val pcGames by remember { viewModel.pcGamesState }
+    val psGames by remember { viewModel.psGamesState }
+    val xboxGames by remember { viewModel.xboxGamesState }
+    val mobileGames by remember { viewModel.mobileGamesState }
 
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
@@ -78,25 +88,35 @@ fun MainScreen(
                 .padding(start = 12.dp, end = 12.dp)
 
         ) {
-            TrendingGames(newTrendingList, navController, text = "New & Trending")
+            TrendingGames(trendingGames, navController, text = "New & Trending")
 
             HotGames(
-                newReleaseList,
-                upcomingList,
+                releaseGames,
+                upcomingGames,
                 navController,
                 gameCnt = null,
                 text = "What's Hot Now"
             )
 
-            Ranking(rankList, navController, text = "Ranking")
+            Ranking(totalRankGames, navController, text = "Total Ranking")
 
             PopularGamesByGenre(
-                actionList,
-                strategyList,
-                puzzleList,
-                racingList,
+                actionGames,
+                strategyGames,
+                puzzleGames,
+                racingGames,
                 navController,
-                text = "Popular",
+                text = "Popular by Genres",
+                gameCnt = null
+            )
+
+            PopularGamesByPlatform(
+                pcGames,
+                psGames,
+                xboxGames,
+                mobileGames,
+                navController,
+                text = "Popular by Platforms",
                 gameCnt = null
             )
         }
@@ -262,6 +282,65 @@ private fun PopularGamesByGenre(
     }
 }
 
+
+
+@Composable
+private fun PopularGamesByPlatform(
+    pcGames: List<Game>?,
+    psGames: List<Game>?,
+    xboxGames: List<Game>?,
+    mobileGames: List<Game>?,
+    navController: NavHostController?,
+    text: String,
+    gameCnt: Int?
+) {
+
+    val modifier = Modifier
+        .width(240.dp)
+        .wrapContentHeight()
+        .padding(4.dp)
+    MainTitleText(text) {  }
+
+    Surface(
+        color = Charcoal500,
+        elevation = 8.dp,
+    ) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            if (!pcGames.isNullOrEmpty()) {
+                SubTitleText(title = "PC Games") {
+                    val jsonString = listParamsToJsonString(PC_PARAMS)
+                    navController?.navigate("list/$jsonString")
+                }
+                HorizontalList(pcGames, navController, modifier, gameCnt)
+            }
+            if (!psGames.isNullOrEmpty()) {
+                SubTitleText(title = "PS Games") {
+                    val jsonString = listParamsToJsonString(PS_PARAMS)
+                    navController?.navigate("list/$jsonString")
+                }
+                HorizontalList(psGames, navController, modifier, gameCnt)
+            }
+
+            if (!xboxGames.isNullOrEmpty()) {
+                SubTitleText(title = "Xbox Games") {
+                    val jsonString = listParamsToJsonString(XBOX_PARAMS)
+                    navController?.navigate("list/$jsonString")
+                }
+                HorizontalList(xboxGames, navController, modifier, gameCnt)
+            }
+            if (!mobileGames.isNullOrEmpty()) {
+
+                SubTitleText(title = "Mobile Games") {
+                    val jsonString = listParamsToJsonString(MOBILE_PARAMS)
+                    navController?.navigate("list/$jsonString")
+                }
+                HorizontalList(mobileGames, navController, modifier, gameCnt)
+            }
+
+        }
+
+    }
+}
 @Composable
 fun TopContent(
     topGames: List<Game>?,
@@ -520,7 +599,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            text = "Release: ${game.released}",
+            text = game.released,
             style = TextStyle(fontSize = 12.sp),
             color = Grey200,
             maxLines = 1
