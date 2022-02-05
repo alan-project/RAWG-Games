@@ -37,7 +37,6 @@ fun AddedText(
             modifier = Modifier.padding(start = 3.dp),
         )
     }
-
 }
 
 

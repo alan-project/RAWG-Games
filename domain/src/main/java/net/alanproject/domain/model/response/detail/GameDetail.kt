@@ -87,7 +87,7 @@ data class GameDetail(
     val tags: List<Tag> = listOf(),
     val publishers: List<Publisher> = listOf(),
     @SerializedName("esrb_rating")
-    val esrbRating: EsrbRating = EsrbRating(),
+    val esrbRating: EsrbRating? = EsrbRating(),
     val clip: Any = Any(),
     @SerializedName("description_raw")
     val descriptionRaw: String = ""
