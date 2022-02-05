@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.params.ListParams
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.list.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.PAGE_SIZE

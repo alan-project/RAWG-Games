@@ -1,5 +1,7 @@
-package net.alanproject.domain.model.response
+package net.alanproject.domain.model.response.detail
 
+
+import com.google.gson.annotations.SerializedName
 
 data class Rating(
     val id: Int = 0,

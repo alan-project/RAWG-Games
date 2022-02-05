@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.detail.GameDetail
 import net.alanproject.domain.usecases.GetGame
 import net.alanproject.domain.util.Resource
 import timber.log.Timber
@@ -17,7 +17,7 @@ class DetailViewModel @Inject constructor(
     private val getGame: GetGame,
 ) : ViewModel() {
 
-    val gameState: MutableState<Game> = mutableStateOf(Game())
+    val gameState: MutableState<GameDetail> = mutableStateOf(GameDetail())
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
 
@@ -31,12 +31,12 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchResource(gameState: MutableState<Game>, gameId: Int) {
+    private suspend fun fetchResource(gameState: MutableState<GameDetail>, gameId: Int) {
         isLoading.value = true
         val result = getGame.get(gameId)
         when (result) {
             is Resource.Success -> {
-                gameState.value = result.data?:Game()
+                gameState.value = result.data?: GameDetail()
                 loadError.value = ""
                 isLoading.value = false
 
