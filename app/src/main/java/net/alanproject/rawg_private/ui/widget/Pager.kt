@@ -30,6 +30,7 @@ fun HorizontalGamePager(
     topGames: List<Game>,
     navController: NavHostController?
 ) {
+    val maxCntNum = if(topGames.size <5 ) topGames.size else 5
 
     val pagerState = rememberPagerState()
     LaunchedEffect(pagerState.currentPage) {
@@ -41,7 +42,7 @@ fun HorizontalGamePager(
     }
 
     HorizontalPager(count = Int.MAX_VALUE, state = pagerState) { cnt ->
-        val count = cnt % 5
+        val count = cnt % maxCntNum
         Surface(
             color = Charcoal500,
             elevation = 8.dp,
