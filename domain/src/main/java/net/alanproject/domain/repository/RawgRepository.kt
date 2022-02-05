@@ -1,7 +1,7 @@
 package net.alanproject.domain.repository
 
-import net.alanproject.domain.model.response.Game
-import net.alanproject.domain.model.response.Response
+import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.list.Response
 
 interface RawgRepository {
     suspend fun getGames(
@@ -14,5 +14,5 @@ interface RawgRepository {
 
     suspend fun getGame(
         id: Int
-    ): Game
+    ): GameDetail
 }

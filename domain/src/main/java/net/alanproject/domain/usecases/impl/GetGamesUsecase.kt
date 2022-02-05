@@ -1,7 +1,7 @@
 package net.alanproject.domain.usecases.impl
 
 import net.alanproject.domain.model.params.ListParams
-import net.alanproject.domain.model.response.Response
+import net.alanproject.domain.model.response.list.Response
 import net.alanproject.domain.repository.RawgRepository
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource

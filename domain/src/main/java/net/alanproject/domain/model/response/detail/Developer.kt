@@ -1,13 +1,12 @@
-package net.alanproject.domain.model.response
+package net.alanproject.domain.model.response.detail
 
 
 import com.google.gson.annotations.SerializedName
 
-data class Store(
+data class Developer(
     val id: Int = 0,
     val name: String = "",
     val slug: String = "",
-    val domain: String = "",
     @SerializedName("games_count")
     val gamesCount: Int = 0,
     @SerializedName("image_background")

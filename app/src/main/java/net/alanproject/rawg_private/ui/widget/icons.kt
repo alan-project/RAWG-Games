@@ -10,7 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.R
 import timber.log.Timber
 
@@ -25,7 +26,7 @@ fun Icons(game: Game) {
         val platformId = eachPlatform.platform.id
         Timber.d("platformId: $platformId")
         when (platformId) {
-            4,->platformSet.add(WIN)
+            4 -> platformSet.add(WIN)
             5 -> platformSet.add(MAC)
             6 -> platformSet.add(LINUX)
             15, 16, 18, 187, 27, 19, 17 -> platformSet.add(PS)
@@ -41,9 +42,42 @@ fun Icons(game: Game) {
 }
 
 @Composable
+fun Icons2(game: GameDetail) {
+
+    val platformSet = mutableSetOf<Int>()
+//    Timber.d("Icons2: $game")
+    Timber.d("Icons2:id: ${game.id}")
+    Timber.d("Icons2:release: ${game.released}")
+    Timber.d("Icons2:esrb_rating: ${game.esrbRating}")
+    Timber.d("Icons2:platform: ${game.platforms}")
+    Timber.d("Icons2:stores: ${game.stores}")
+
+
+    game.platforms.forEach { platformInfo ->
+        val platformId =platformInfo.platform.id
+            Timber.d("platformId2: $platformId")
+            when (platformId) {
+                4 -> platformSet.add(WIN)
+                5 -> platformSet.add(MAC)
+                6 -> platformSet.add(LINUX)
+                15, 16, 18, 187, 27, 19, 17 -> platformSet.add(PS)
+                1, 14, 80, 186 -> platformSet.add(XBOX)
+                83, 7, 8, 9, 13, 10, 11 -> platformSet.add(NINTENDO)
+                3 -> platformSet.add(IOS)
+                21 -> platformSet.add(ANDROID)
+                else -> {}
+
+        }
+
+
+    }
+    DrawIcon(platformSet)
+}
+
+@Composable
 fun DrawIcon(platformSet: MutableSet<Int>) {
     Timber.d("platform: $platformSet")
-    Row(modifier = Modifier.padding(top=8.dp)) {
+    Row(modifier = Modifier.padding(top = 8.dp)) {
 
         platformSet.forEach { platformId ->
             Image(

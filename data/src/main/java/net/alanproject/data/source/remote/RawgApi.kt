@@ -2,8 +2,8 @@ package net.alanproject.data.source.remote
 
 
 import net.alanproject.data.BuildConfig
-import net.alanproject.domain.model.response.Game
-import net.alanproject.domain.model.response.Response
+import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.list.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -15,13 +15,13 @@ interface RawgApi {
         @Query("page") page: Int?,
         @Query("ordering") order: String?, // rating, release, metacritic
         @Query("dates") dates: String?,
-        @Query("platforms") platforms: String?,
+        @Query("eachPlatforms") platforms: String?,
         @Query("genres") genres: String?,
-    ):Response
+    ): Response
 
     @GET("games/{id}")
     suspend fun getGame(
         @Path("id") id: Int,
         @Query("key") key: String = BuildConfig.API_KEY
-    ):Game
+    ): GameDetail
 }

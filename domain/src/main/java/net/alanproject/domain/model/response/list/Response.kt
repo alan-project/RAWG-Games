@@ -1,4 +1,4 @@
-package net.alanproject.domain.model.response
+package net.alanproject.domain.model.response.list
 
 
 import com.google.gson.annotations.SerializedName
