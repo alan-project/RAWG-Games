@@ -1,7 +1,6 @@
 package net.alanproject.rawg_private.ui.detail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -30,8 +29,10 @@ import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.response.detail.GameDetail
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.widget.ExpandableText
 import net.alanproject.rawg_private.ui.widget.Icons2
 import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
+import timber.log.Timber
 
 @Composable
 fun DetailScreen(gameId: Int, navController: NavHostController?) {
@@ -60,9 +61,10 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                // reuse and customize composable
-                DetailTop(game)
-//                ProfileContent(game.name, Alignment.CenterHorizontally)
+                TopContent(game)
+                About(game.descriptionRaw)
+
+
             }
 
             Box(
@@ -82,9 +84,25 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
     }
 }
 
+@Composable
+fun About(description: String) {
+    Timber.d("description: $description")
+    Column() {
+        Text(
+            text = "About",
+            style = TextStyle(color = Color.White, fontWeight = Bold, fontSize = 24.sp),
+            modifier = Modifier.padding(start = 20.dp, top = 8.dp,bottom = 8.dp)
+        )
+        ExpandableText(
+            text = description,
+        )
+    }
+
+}
+
 
 @Composable
-fun DetailTop(game: GameDetail, modifier: Modifier = Modifier) {
+fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),
@@ -118,7 +136,7 @@ fun DetailTop(game: GameDetail, modifier: Modifier = Modifier) {
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(start = 16.dp, top = 8.dp,end=8.dp),
+                        .padding(start = 16.dp, top = 8.dp, end = 8.dp),
                     backgroundColor = Color.White
 
                 ) {
@@ -146,7 +164,7 @@ fun DetailTop(game: GameDetail, modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .padding(16.dp)
                     .width(300.dp)
-                    .padding(top=8.dp)
+                    .padding(top = 8.dp)
             )
 
         }
@@ -155,25 +173,7 @@ fun DetailTop(game: GameDetail, modifier: Modifier = Modifier) {
 
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
-private fun DetailTop() {
-
-}
-
-@Composable
-fun ProfileContent(gameName: String, alignment: Alignment.Horizontal) {
-    Column(
-        modifier = Modifier
-            .padding(8.dp),
-        horizontalAlignment = alignment
-
-    ) {
-
-        Text(
-            text = gameName,
-            style = MaterialTheme.typography.h5
-        )
-
-    }
+private fun TopContent() {
 
 }
 
