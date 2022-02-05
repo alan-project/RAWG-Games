@@ -134,3 +134,5 @@ const val TWO_MONTH = 60L
 const val THREE_MONTH = 90L
 const val SIX_MONTH = 180L
 const val ONE_YEAR = 365L
+
+const val MINIMIZED_MAX_LINES = 4
