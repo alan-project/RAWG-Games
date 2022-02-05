@@ -114,6 +114,9 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.paging:paging-compose:1.0.0-alpha14")
 
+    //pager
+    implementation 'com.google.accompanist:accompanist-pager:0.24.1-alpha'
+
     implementation project(':data')
     implementation project(':domain')
 }

@@ -9,6 +9,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +28,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.alanproject.domain.model.params.listParamsToJsonString
 import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
@@ -44,10 +50,7 @@ import net.alanproject.rawg_private.ui.theme.Charcoal200
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Grey200
 import net.alanproject.rawg_private.ui.theme.Yellow200
-import net.alanproject.rawg_private.ui.widget.AddedText
-import net.alanproject.rawg_private.ui.widget.MetaScoreText
-import net.alanproject.rawg_private.ui.widget.RatingOnCircle
-import net.alanproject.rawg_private.ui.widget.RatingText
+import net.alanproject.rawg_private.ui.widget.*
 import timber.log.Timber
 
 
@@ -349,41 +352,15 @@ private fun PopularGamesByPlatform(
 
 @Composable
 fun TopContent(
-    topGames: List<Game>?,
+    topGames: List<Game>,
     navController: NavHostController?,
     text: String
 ) {
-//Timber.d("[TopContent] topGames: $topGames")
-    if (!topGames.isNullOrEmpty()) {
-        val displayedGame = topGames.first()
-        MainTitleText(text) {}
 
-        Surface(
-            color = Charcoal500,
-            elevation = 8.dp,
+    MainTitleText(text) {}
+    HorizontalGamePager(topGames, navController)
 
-            ) {
 
-            val clickAction: () -> Unit = { navController?.navigate("detail/${displayedGame.id}") }
-            Card(
-                shape = RoundedCornerShape(15.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(align = Alignment.Top)
-                    .clickable(onClick = { clickAction.invoke() })
-                    .padding(8.dp),
-                elevation = 8.dp,
-                backgroundColor = Color.White
-            ) {
-                GameScreenWithText(
-                    displayedGame, modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clip(RoundedCornerShape(10.dp))
-                )
-            }
-        }
-    }
 }
 
 @Composable
