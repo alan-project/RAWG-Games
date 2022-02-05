@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.params.ListParams
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -109,7 +109,7 @@ fun ListScreen(listParams: ListParams, navController: NavHostController?) {
 @Composable
 fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?) {
     val game = games[rowIndex]
-    ProfileCard(game) {
+    GameItem(game) {
         navController?.navigate("detail/${game.id}")
     }
 }
@@ -131,7 +131,7 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
 }
 
 @Composable
-fun ProfileCard(game: Game, clickAction: () -> Unit) {
+fun GameItem(game: Game, clickAction: () -> Unit) {
     Card(
         modifier = Modifier
             .padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 6.dp)
@@ -148,7 +148,7 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            GameScreen(
+            GameThumbnail(
                 game.backgroundImage, modifier = Modifier
                     .width(160.dp)
                     .fillMaxHeight()
@@ -166,7 +166,7 @@ fun ProfileCard(game: Game, clickAction: () -> Unit) {
 }
 
 @Composable
-fun GameScreen(pictureUrl: String?, modifier: Modifier) {
+fun GameThumbnail(pictureUrl: String?, modifier: Modifier) {
 
 
     Image(

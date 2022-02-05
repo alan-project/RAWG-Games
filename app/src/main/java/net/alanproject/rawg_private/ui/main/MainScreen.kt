@@ -28,7 +28,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import net.alanproject.domain.model.params.listParamsToJsonString
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.MOBILE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PC_PARAMS

@@ -9,14 +9,12 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.params.ListParams
-import net.alanproject.domain.model.response.Game
+import net.alanproject.domain.model.response.list.Game
 import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.CONSOLE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.MOBILE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PC_PARAMS
-import net.alanproject.rawg_private.common.Constants.Companion.PS
 import net.alanproject.rawg_private.common.Constants.Companion.PS_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.PUZZLE_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.RACING_PARAMS
@@ -80,7 +78,7 @@ class MainViewModel @Inject constructor(
                 val puzzleDeferred = async { fetchResource(puzzleGamesState, PUZZLE_PARAMS) }
                 val racingDeferred = async { fetchResource(racingGamesState, RACING_PARAMS) }
 
-                //Platform
+                //PlatformTemp
                 val pcDeferred = async { fetchResource(pcGamesState, PC_PARAMS) }
                 val psDeferred = async { fetchResource(psGamesState, PS_PARAMS) }
                 val xboxDeferred = async { fetchResource(xboxGamesState, XBOX_PARAMS) }

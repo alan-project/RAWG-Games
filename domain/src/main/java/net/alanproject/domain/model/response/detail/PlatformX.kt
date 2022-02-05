@@ -1,0 +1,10 @@
+package net.alanproject.domain.model.response.detail
+
+
+import com.google.gson.annotations.SerializedName
+
+data class PlatformX(
+    val id: Int = 0,
+    val name: String = "",
+    val slug: String = ""
+)

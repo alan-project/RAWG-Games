@@ -1,6 +1,7 @@
 package net.alanproject.rawg_private.ui.detail
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,15 +13,25 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
+import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import net.alanproject.domain.model.response.detail.GameDetail
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Yellow200
+import net.alanproject.rawg_private.ui.widget.Icons2
+import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
 
 @Composable
 fun DetailScreen(gameId: Int, navController: NavHostController?) {
@@ -50,18 +61,18 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
                 verticalArrangement = Arrangement.Top
             ) {
                 // reuse and customize composable
-                ProfilePicture(game.backgroundImage, 240.dp)
-                ProfileContent(game.name, Alignment.CenterHorizontally)
+                DetailTop(game)
+//                ProfileContent(game.name, Alignment.CenterHorizontally)
             }
 
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier.fillMaxSize()
             ) {
-                if(isLoading) {
+                if (isLoading) {
                     CircularProgressIndicator(color = Yellow200)
                 }
-                if(loadError.isNotEmpty()) {
+                if (loadError.isNotEmpty()) {
                     RetrySection(error = loadError) {
                         viewModel.onLoadGame(gameId)
                     }
@@ -73,43 +84,79 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 
 
 @Composable
-fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
-    TopAppBar(
-        navigationIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .clickable(onClick = { iconClickAction.invoke() })
-            )
-        },
-        title = { Text(title) }
-    )
-}
-
-
-@Composable
-fun ProfilePicture(pictureUrl: String?, imageSize: Dp) {
+fun DetailTop(game: GameDetail, modifier: Modifier = Modifier) {
     //by wrapping Image with Card, we can use shape, border, elevation parameter
     Card(
         shape = RoundedCornerShape(10),
-        modifier = Modifier.padding(16.dp),
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth()
+            .height(200.dp),
         elevation = 4.dp
     ) {
 
         Image(
             //loaded asynchronously
             painter = rememberImagePainter(
-                data = pictureUrl,
+                data = game.backgroundImage,
                 builder = {
                     transformations(RoundedCornersTransformation())
                 }
             ),
-            modifier = Modifier.size(imageSize),
-            contentDescription = "Profile picture description",
+            modifier = modifier.fillMaxWidth(),
+            contentDescription = "Game Thumbnail description",
+            contentScale = ContentScale.Crop,
+            colorFilter = ColorFilter.colorMatrix(grayScaleMatrix)
         )
+        Box(
+            contentAlignment = Alignment.TopStart,
+            modifier = Modifier.fillMaxSize()
+        ) {
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Card(
+                    shape = RoundedCornerShape(4.dp),
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(start = 16.dp, top = 8.dp,end=8.dp),
+                    backgroundColor = Color.White
+
+                ) {
+                    Text(
+
+                        text = game.released,
+                        style = TextStyle(
+                            color = Color.Black, fontSize = 12.sp,
+                            fontWeight = Bold
+                        ),
+                        modifier = Modifier
+                            .padding(1.dp)
+                    )
+                }
+                Icons2(game)
+            }
+
+
+            Text(
+                text = game.nameOriginal,
+                style = TextStyle(
+                    color = Color.White, fontSize = 32.sp,
+                    fontWeight = ExtraBold
+                ),
+                modifier = Modifier
+                    .padding(16.dp)
+                    .width(300.dp)
+                    .padding(top=8.dp)
+            )
+
+        }
     }
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@Composable
+private fun DetailTop() {
+
 }
 
 @Composable
@@ -128,4 +175,21 @@ fun ProfileContent(gameName: String, alignment: Alignment.Horizontal) {
 
     }
 
+}
+
+
+@Composable
+fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
+    TopAppBar(
+        navigationIcon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = "",
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .clickable(onClick = { iconClickAction.invoke() })
+            )
+        },
+        title = { Text(title) }
+    )
 }
