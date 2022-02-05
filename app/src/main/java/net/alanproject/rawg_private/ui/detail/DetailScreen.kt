@@ -3,7 +3,11 @@ package net.alanproject.rawg_private.ui.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -16,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
@@ -26,12 +31,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import net.alanproject.domain.model.response.custom.Specification
+import net.alanproject.domain.model.response.custom.mapToSpecification
 import net.alanproject.domain.model.response.detail.GameDetail
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.ExpandableText
 import net.alanproject.rawg_private.ui.widget.Icons2
 import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
+import org.intellij.lang.annotations.JdkConstants
 import timber.log.Timber
 
 @Composable
@@ -54,15 +62,17 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
     }) {
         Surface(
             modifier = Modifier.fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
 
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally,
+                horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.Top
             ) {
                 TopContent(game)
                 About(game.descriptionRaw)
+                Specification(game)
 
 
             }
@@ -85,13 +95,36 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 }
 
 @Composable
+fun Specification(game: GameDetail) {
+
+    val spec:Specification = mapToSpecification(game)
+    //Platforms
+    FirstColumn("Platforms", spec.platforms)
+}
+
+@Composable
+fun FirstColumn(title: String, items: String) {
+    Column(
+        modifier = Modifier
+            .padding(top = 8.dp, start = 20.dp)
+            .width(240.dp),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
+
+    ) {
+        Text(text = title, style = TextStyle(color = Color.Gray), fontSize = 16.sp)
+        Text(text = items, maxLines = 4, style = TextStyle(color = Color.White), fontSize = 16.sp)
+    }
+}
+
+@Composable
 fun About(description: String) {
     Timber.d("description: $description")
     Column() {
         Text(
             text = "About",
             style = TextStyle(color = Color.White, fontWeight = Bold, fontSize = 24.sp),
-            modifier = Modifier.padding(start = 20.dp, top = 8.dp,bottom = 8.dp)
+            modifier = Modifier.padding(start = 20.dp, top = 8.dp, bottom = 8.dp)
         )
         ExpandableText(
             text = description,
