@@ -27,10 +27,10 @@ import net.alanproject.rawg_private.ui.theme.Charcoal500
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HorizontalGamePager(
-    topGames: List<Game>,
+    games: List<Game>,
     navController: NavHostController?
 ) {
-    val maxCntNum = if(topGames.size <5 ) topGames.size else 5
+    val maxCntNum = if(games.size <5 ) games.size else 5
 
     val pagerState = rememberPagerState()
     LaunchedEffect(pagerState.currentPage) {
@@ -50,7 +50,7 @@ fun HorizontalGamePager(
             ) {
 
             val clickAction: () -> Unit =
-                { navController?.navigate("detail/${topGames[count].id}") }
+                { navController?.navigate("detail/${games[count].id}") }
             Card(
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier
@@ -62,7 +62,7 @@ fun HorizontalGamePager(
                 backgroundColor = Color.White
             ) {
                 GameScreenWithText(
-                    topGames[count], modifier = Modifier
+                    games[count], modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
                         .clip(RoundedCornerShape(10.dp))

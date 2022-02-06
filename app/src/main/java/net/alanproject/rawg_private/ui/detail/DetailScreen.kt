@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,17 +22,22 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.delay
 import net.alanproject.domain.model.response.custom.Specification
 import net.alanproject.domain.model.response.custom.mapToSpecification
 import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.screenshots.Screenshots
 import net.alanproject.rawg_private.common.RetrySection
+import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.ExpandableText
 import net.alanproject.rawg_private.ui.widget.Icons2
@@ -43,7 +49,9 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
     val viewModel = hiltViewModel<DetailViewModel>().apply {
         onLoadGame(gameId)
     }
-    val game by remember { viewModel.gameState }
+    val game: GameDetail by remember { viewModel.gameState }
+    val gameScreenShots: Screenshots by remember { viewModel.screenshotsState }
+
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
@@ -68,7 +76,9 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
                 verticalArrangement = Arrangement.Top
             ) {
                 TopContent(game)
+
                 About(game.descriptionRaw)
+                HorizontalThumbnailPager(gameScreenShots)
                 Specification(game)
 
 
@@ -150,9 +160,7 @@ fun About(description: String) {
             text = description,
         )
     }
-
 }
-
 
 @Composable
 fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
@@ -224,12 +232,79 @@ fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-private fun TopContent() {
+fun HorizontalThumbnailPager(
+    screenshots: Screenshots
+) {
+    if(!screenshots.results.isNullOrEmpty() && screenshots.count !=0 ){
+        Column() {
+            Text(
+                text = "Screenshots",
+                style = TextStyle(color = Color.White, fontWeight = Bold, fontSize = 24.sp),
+                modifier = Modifier.padding(start = 20.dp, top = 8.dp, bottom = 8.dp)
+            )
+            Box(modifier = Modifier
+                .height(180.dp)
+                .fillMaxWidth()) {
+                val maxCntNum = screenshots.count
+                Timber.d("screenshots.results.size: $maxCntNum")
+
+/*                val pagerState = rememberPagerState()
+                LaunchedEffect(pagerState.currentPage) {
+                    delay(3000) // wait for 3 seconds.
+                    // increasing the position and check the limit
+                    val newPosition = pagerState.currentPage + 1
+                    // scrolling to the new position.
+                    pagerState.animateScrollToPage(newPosition)
+                }*/
+
+                HorizontalPager(count = Int.MAX_VALUE, /*state = pagerState,*/35contentPadding = PaddingValues(end = 64.dp),) { cnt ->
+
+                    val count = cnt % maxCntNum!!
+                    Timber.d("screenShotErr: ${screenshots.results!![count].image}")
+                    Surface(
+                        color = Charcoal500,
+                        elevation = 8.dp,
+
+                        ) {
+
+                        Card(
+                            shape = RoundedCornerShape(15.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight(align = Alignment.Top)
+                                .padding(8.dp),
+                            elevation = 8.dp,
+                            backgroundColor = Color.White
+                        ) {
+
+                            Image(
+                                //loaded asynchronously
+                                painter = rememberImagePainter(
+                                    data = screenshots.results!![count].image,
+                                    builder = {
+                                        transformations(
+                                            RoundedCornersTransformation(),
+                                        )
+                                    }
+                                ),
+//            modifier = modifier,
+                                contentDescription = "game picture description",
+                                contentScale = ContentScale.Crop
+                            )
+
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+    }
 
 }
-
 
 @Composable
 fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
