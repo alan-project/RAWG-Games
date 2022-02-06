@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.screenshots.Screenshots
 import net.alanproject.domain.usecases.GetGame
+import net.alanproject.domain.usecases.GetScreenshots
 import net.alanproject.domain.util.Resource
 import timber.log.Timber
 import javax.inject.Inject
@@ -15,23 +17,31 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getGame: GetGame,
+    private val getScreenshots: GetScreenshots
 ) : ViewModel() {
 
     val gameState: MutableState<GameDetail> = mutableStateOf(GameDetail())
+    val screenshotsState: MutableState<Screenshots> = mutableStateOf(Screenshots())
+
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
 
     fun onLoadGame(gameId:Int){
         try {
+
             viewModelScope.launch {
-                fetchResource(gameState, gameId)
+                fetchGameInfo(gameState, gameId)
             }
+            viewModelScope.launch {
+                fetchGameScreenShots(screenshotsState, gameId)
+            }
+
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
         }
     }
 
-    private suspend fun fetchResource(gameState: MutableState<GameDetail>, gameId: Int) {
+    private suspend fun fetchGameInfo(gameState: MutableState<GameDetail>, gameId: Int) {
         isLoading.value = true
         val result = getGame.get(gameId)
         when (result) {
@@ -42,6 +52,25 @@ class DetailViewModel @Inject constructor(
 
             }
             is Resource.Error -> {
+                loadError.value = result.message!!
+                isLoading.value = false
+            }
+        }
+    }
+
+    private suspend fun fetchGameScreenShots(screenshotState: MutableState<Screenshots>, gameId: Int) {
+        isLoading.value = true
+        val result = getScreenshots.get(gameId)
+        when (result) {
+            is Resource.Success -> {
+                screenshotState.value = result.data?: Screenshots()
+                Timber.d("screenShotErr: screenshotState.value ${screenshotState.value}")
+                loadError.value = ""
+                isLoading.value = false
+
+            }
+            is Resource.Error -> {
+                Timber.d("screenShotErr: result.message ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }
