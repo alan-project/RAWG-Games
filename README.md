@@ -1,14 +1,16 @@
 
 
-<p align="center"> 
-<img src="/preview/preview2.gif"align="right" width="30%"/>
-<img src="/preview/preview1.gif"align="right" width="30%"/>
-
 
 </pr>
 
 ## WIP
 Alan's ongoing personal project #3<br><br><br><br><br>
+
+
+<p align="center"> 
+<img src="/preview/preview2.gif"align="right" width="30%"/>
+<img src="/preview/preview1.gif"align="right" width="30%"/>
+
 
 
 
