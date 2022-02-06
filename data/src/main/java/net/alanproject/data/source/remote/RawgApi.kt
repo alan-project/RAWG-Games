@@ -15,7 +15,7 @@ interface RawgApi {
         @Query("page") page: Int?,
         @Query("ordering") order: String?, // rating, release, metacritic
         @Query("dates") dates: String?,
-        @Query("eachPlatforms") platforms: String?,
+        @Query("platforms") platforms: String?,
         @Query("genres") genres: String?,
     ): Response
 
