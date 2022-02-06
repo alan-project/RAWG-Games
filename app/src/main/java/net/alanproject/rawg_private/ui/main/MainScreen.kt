@@ -9,12 +9,10 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,11 +26,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import net.alanproject.domain.model.params.listParamsToJsonString
 import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.common.Constants.Companion.ACTION_PARAMS
@@ -68,11 +61,13 @@ fun MainScreen(
     val totalRankGames by remember { viewModel.totalRankGamesState }
 
 
+    //Genres
     val actionGames by remember { viewModel.actionGamesState }
     val strategyGames by remember { viewModel.strategyGamesState }
     val puzzleGames by remember { viewModel.puzzleGamesState }
     val racingGames by remember { viewModel.racingGamesState }
 
+    //Platform
     val pcGames by remember { viewModel.pcGamesState }
     val psGames by remember { viewModel.psGamesState }
     val xboxGames by remember { viewModel.xboxGamesState }
@@ -103,6 +98,7 @@ fun MainScreen(
 
             Ranking(totalRankGames, navController, text = "Total Ranking")
 
+
             PopularGamesByGenre(
                 actionGames,
                 strategyGames,
@@ -113,11 +109,15 @@ fun MainScreen(
                 gameCnt = null
             )
 
+            if (!pcGames.isNullOrEmpty() && !mobileGames.isNullOrEmpty()) {
+                Timber.d("pcGames: ${pcGames.first().name}, mobileGames: ${mobileGames.first().name}")
+            }
+
             PopularGamesByPlatform(
-                pcGames,
-                psGames,
-                xboxGames,
-                mobileGames,
+                pcGames = pcGames,
+                psGames = psGames,
+                xboxGames = xboxGames,
+                mobileGames = mobileGames,
                 navController,
                 text = "Popular by Platforms",
                 gameCnt = null
@@ -305,8 +305,13 @@ private fun PopularGamesByPlatform(
         .wrapContentHeight()
         .padding(4.dp)
 
-    if (!pcGames.isNullOrEmpty() || !psGames.isNullOrEmpty() || !xboxGames.isNullOrEmpty() || !mobileGames.isNullOrEmpty()) {
+//    if (!pcGames.isNullOrEmpty() || !psGames.isNullOrEmpty() || !xboxGames.isNullOrEmpty() || !mobileGames.isNullOrEmpty()) {
+    if (!pcGames.isNullOrEmpty() && !psGames.isNullOrEmpty() && !xboxGames.isNullOrEmpty() && !mobileGames.isNullOrEmpty()) {
 
+        Timber.d("pcGames: ${pcGames.first().name}")
+        Timber.d("psGames: ${psGames.first().name}")
+        Timber.d("xboxGames: ${xboxGames.first().name}")
+        Timber.d("mobileGames: ${mobileGames.first().name}")
 
         MainTitleText(text) { }
 

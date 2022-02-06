@@ -97,11 +97,8 @@ class MainViewModel @Inject constructor(
                     psDeferred,
                     xboxDeferred,
                     mobileDeferred
-
                 )
-
             }
-
         } catch (exception: Exception) {
             Timber.d("throwable: $exception")
         }
@@ -113,6 +110,7 @@ class MainViewModel @Inject constructor(
 
     ) {
         Timber.d("fetchResource in MainViewModel")
+        Timber.d("[Error] params: ${params.platforms}")
         isLoading.value = true
         val result = getGames.get(params = params)
 
@@ -120,12 +118,13 @@ class MainViewModel @Inject constructor(
             is Resource.Success -> {
                 Timber.d("fetchResource: Success")
                 games.value = (result.data?.results ?: listOf()).take(VERTICAL_GAME_NUMBER)
+                Timber.d("fetchResource: Success : ${games.value.first().name}")
                 loadError.value = ""
                 isLoading.value = false
 
             }
             is Resource.Error -> {
-                Timber.d("fetchResource: Error ${result.message}")
+                Timber.d("fetchResource: Error ${result.message?.first()}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }

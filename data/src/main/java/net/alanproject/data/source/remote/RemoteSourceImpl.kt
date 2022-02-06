@@ -17,7 +17,7 @@ class RemoteSourceImpl @Inject constructor(
         genres:String?
     ): Response {
 
-        Timber.d("page:$page, order:$order, dates:$dates, eachPlatforms:$platforms")
+//        Timber.d("RemoteSourceImpl: page:$page, order:$order, dates:$dates, eachPlatforms:$platforms")
         return api.getGames(page = page, order = order, dates = dates, platforms = platforms, genres = genres)
     }
 

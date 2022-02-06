@@ -83,6 +83,7 @@ class Constants{
             isFromMain = true
         )
 
+        //Platforms
         val PC_PARAMS:ListParams = ListParams(
             period = GENRES_PERIOD,
             ordering = null,
