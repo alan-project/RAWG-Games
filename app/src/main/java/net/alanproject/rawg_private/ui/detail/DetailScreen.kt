@@ -93,24 +93,21 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 fun Specification(game: GameDetail) {
 
     val spec: Specification = mapToSpecification(game)
-    Row() {
-        Column(modifier = Modifier.padding(top = 8.dp)) {
-            //Platforms
+    Column(){
+        Row(modifier = Modifier.padding(top = 8.dp)){
             VerticalColumn("Platforms", spec.platforms)
-            VerticalColumn("Release date", spec.releaseDate)
-            VerticalColumn("Publisher", spec.publisher)
-
-
-        }
-        Column(modifier = Modifier.padding(top = 8.dp)) {
-            //Platforms
             VerticalColumn("Genre", spec.genres)
+        }
+        Row(modifier = Modifier.padding(top = 8.dp)){
+            VerticalColumn("Release date", spec.releaseDate)
             VerticalColumn("Developer", spec.developer)
-            VerticalColumn("Age rating", spec.ageRating)
+        }
 
+        Row(modifier = Modifier.padding(top = 8.dp)){
+            VerticalColumn("Publisher", spec.publisher)
+            VerticalColumn("Age rating", spec.ageRating)
         }
     }
-
 
 }
 
