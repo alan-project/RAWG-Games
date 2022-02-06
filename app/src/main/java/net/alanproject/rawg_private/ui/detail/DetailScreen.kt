@@ -3,24 +3,19 @@ package net.alanproject.rawg_private.ui.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
@@ -39,7 +34,6 @@ import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.ExpandableText
 import net.alanproject.rawg_private.ui.widget.Icons2
 import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
-import org.intellij.lang.annotations.JdkConstants
 import timber.log.Timber
 
 @Composable
@@ -61,7 +55,8 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
         }
     }) {
         Surface(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
 
@@ -97,23 +92,40 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 @Composable
 fun Specification(game: GameDetail) {
 
-    val spec:Specification = mapToSpecification(game)
-    //Platforms
-    FirstColumn("Platforms", spec.platforms)
+    val spec: Specification = mapToSpecification(game)
+    Row() {
+        Column(modifier = Modifier.padding(top = 8.dp)) {
+            //Platforms
+            VerticalColumn("Platforms", spec.platforms)
+            VerticalColumn("Release date", spec.releaseDate)
+            VerticalColumn("Publisher", spec.publisher)
+
+
+        }
+        Column(modifier = Modifier.padding(top = 8.dp)) {
+            //Platforms
+            VerticalColumn("Genre", spec.genres)
+            VerticalColumn("Developer", spec.developer)
+            VerticalColumn("Age rating", spec.ageRating)
+
+        }
+    }
+
+
 }
 
 @Composable
-fun FirstColumn(title: String, items: String) {
+fun VerticalColumn(title: String, items: String) {
     Column(
         modifier = Modifier
-            .padding(top = 8.dp, start = 20.dp)
-            .width(240.dp),
+            .padding(top = 20.dp, start = 20.dp)
+            .width(180.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
 
     ) {
         Text(text = title, style = TextStyle(color = Color.Gray), fontSize = 16.sp)
-        Text(text = items, maxLines = 4, style = TextStyle(color = Color.White), fontSize = 16.sp)
+        Text(text = items, maxLines = 4, style = TextStyle(color = Color.White), fontSize = 12.sp)
     }
 }
 

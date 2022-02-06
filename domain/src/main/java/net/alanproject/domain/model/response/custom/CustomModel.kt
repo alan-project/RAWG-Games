@@ -8,7 +8,7 @@ data class Specification(
     val genres: String = "",
     val developer: String = "",
     val publisher: String = "",
-    val ageRating: String? = "Not rated",
+    val ageRating: String = "",
     val tags: String = "",
     val releaseDate: String = ""
 )
@@ -41,7 +41,7 @@ fun mapToSpecification(game: GameDetail): Specification {
     }
     val publishersString = publisherList.joinToString(", ")
 
-    val ageRating: String = game.esrbRating?.name.orEmpty()
+    val ageRating: String = game.esrbRating?.name?:"Not rated"
     Timber.d("game.esrbRating.name: ${game.esrbRating?.name}")
 
     val tagsList: MutableList<String> = mutableListOf()
