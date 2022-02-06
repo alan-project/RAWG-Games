@@ -46,10 +46,12 @@ fun mapToSpecification(game: GameDetail): Specification {
 
     val tagsList: MutableList<String> = mutableListOf()
     game.tags.forEach {
+        Timber.d("TAG: ${it.name}")
         tagsList.add(it.name)
     }
-    val tagsString = tagsList.joinToString { ", " }
-
+    Timber.d("TAG: $tagsList")
+    val tagsString = tagsList.joinToString ( ", ")
+    Timber.d("TAG,tagsString: $tagsString")
     val releaseDae: String = game.released
 
     return Specification(

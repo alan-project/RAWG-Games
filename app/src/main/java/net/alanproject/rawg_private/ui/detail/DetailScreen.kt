@@ -9,7 +9,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -93,30 +95,39 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 fun Specification(game: GameDetail) {
 
     val spec: Specification = mapToSpecification(game)
-    Column(){
-        Row(modifier = Modifier.padding(top = 8.dp)){
-            VerticalColumn("Platforms", spec.platforms)
-            VerticalColumn("Genre", spec.genres)
+    Column() {
+        val twoColumnModifier = Modifier
+            .padding(top = 20.dp, start = 20.dp)
+            .width(180.dp)
+
+        Row(modifier = Modifier.padding(top = 8.dp)) {
+            VerticalColumn("Platforms", spec.platforms, modifier = twoColumnModifier)
+            VerticalColumn("Genre", spec.genres, modifier = twoColumnModifier)
         }
-        Row(modifier = Modifier.padding(top = 8.dp)){
-            VerticalColumn("Release date", spec.releaseDate)
-            VerticalColumn("Developer", spec.developer)
+        Row(modifier = Modifier.padding(top = 8.dp)) {
+            VerticalColumn("Release date", spec.releaseDate, modifier = twoColumnModifier)
+            VerticalColumn("Developer", spec.developer, modifier = twoColumnModifier)
         }
 
-        Row(modifier = Modifier.padding(top = 8.dp)){
-            VerticalColumn("Publisher", spec.publisher)
-            VerticalColumn("Age rating", spec.ageRating)
+        Row(modifier = Modifier.padding(top = 8.dp)) {
+            VerticalColumn("Publisher", spec.publisher, modifier = twoColumnModifier)
+            VerticalColumn("Age rating", spec.ageRating, modifier = twoColumnModifier)
         }
+
+        VerticalColumn(
+            title = "Tags",
+            items = spec.tags,
+            modifier = Modifier.padding(20.dp)
+        )
     }
 
 }
 
 @Composable
-fun VerticalColumn(title: String, items: String) {
+fun VerticalColumn(title: String, items: String, modifier: Modifier = Modifier) {
     Column(
-        modifier = Modifier
-            .padding(top = 20.dp, start = 20.dp)
-            .width(180.dp),
+        modifier = modifier,
+
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.Start
 
