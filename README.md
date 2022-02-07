@@ -17,8 +17,8 @@ Feb 19, 2022
 
 ### - Issues (as of now)
 - Slow api response.
-- api req limitation as it's free service.
--> need to build firebase backend? or upload part of the data?
+- api req limitation as it's free service.<br>
+-> need to build firebase backend and upload part of the data or full data regularly?
 
 - code optimization
 - Implementing bottom naviagtion, drawer, room for favorite
