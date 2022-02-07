@@ -5,8 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 import net.alanproject.domain.model.params.ListParams
 import net.alanproject.domain.model.response.list.Game
@@ -62,41 +61,22 @@ class MainViewModel @Inject constructor(
         Timber.d("onLoadGames in ViewModel")
         try {
             viewModelScope.launch {
-                val trendingDeferred = async { fetchResource(trendingGamesState, TRENDING_PARAMS) }
+                joinAll(
+                    launch { fetchResource(trendingGamesState, TRENDING_PARAMS) },
+                    launch { fetchResource(upcomingGamesState, UPCOMING_PARAMS) },
+                    launch { fetchResource(releaseGamesState, RELEASE_PARAMS) },
+                    launch { fetchResource(totalRankGamesState, RANK_PARAMS) },
+                    //Generes
+                    launch { fetchResource(actionGamesState, ACTION_PARAMS) },
+                    launch { fetchResource(strategyGamesState, STRATEGY_PARAMS) },
+                    launch { fetchResource(puzzleGamesState, PUZZLE_PARAMS) },
+                    launch { fetchResource(racingGamesState, RACING_PARAMS) },
 
-                val upcomingDeferred = async { fetchResource(upcomingGamesState, UPCOMING_PARAMS) }
-                val newReleaseDeferred =
-                    async { fetchResource(releaseGamesState, RELEASE_PARAMS) }
-
-                val rankDeferred = async {
-                    fetchResource(totalRankGamesState, RANK_PARAMS)
-                }
-
-                //Generes
-                val actionDeferred = async { fetchResource(actionGamesState, ACTION_PARAMS) }
-                val strategyDeferred = async { fetchResource(strategyGamesState, STRATEGY_PARAMS) }
-                val puzzleDeferred = async { fetchResource(puzzleGamesState, PUZZLE_PARAMS) }
-                val racingDeferred = async { fetchResource(racingGamesState, RACING_PARAMS) }
-
-                //PlatformTemp
-                val pcDeferred = async { fetchResource(pcGamesState, PC_PARAMS) }
-                val psDeferred = async { fetchResource(psGamesState, PS_PARAMS) }
-                val xboxDeferred = async { fetchResource(xboxGamesState, XBOX_PARAMS) }
-                val mobileDeferred = async { fetchResource(mobileGamesState, MOBILE_PARAMS) }
-
-                awaitAll(
-                    trendingDeferred,
-                    rankDeferred,
-                    upcomingDeferred,
-                    newReleaseDeferred,
-                    actionDeferred,
-                    strategyDeferred,
-                    puzzleDeferred,
-                    racingDeferred,
-                    pcDeferred,
-                    psDeferred,
-                    xboxDeferred,
-                    mobileDeferred
+                    //PlatformTemp
+                    launch { fetchResource(pcGamesState, PC_PARAMS) },
+                    launch { fetchResource(psGamesState, PS_PARAMS) },
+                    launch { fetchResource(xboxGamesState, XBOX_PARAMS) },
+                    launch { fetchResource(mobileGamesState, MOBILE_PARAMS) }
                 )
             }
         } catch (exception: Exception) {
@@ -106,7 +86,7 @@ class MainViewModel @Inject constructor(
 
     private suspend fun fetchResource(
         games: MutableState<List<Game>>,
-        params:ListParams
+        params: ListParams
 
     ) {
         Timber.d("fetchResource in MainViewModel")
