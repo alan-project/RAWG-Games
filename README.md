@@ -1,13 +1,13 @@
-### Alan's ongoing personal project #3 (WIP)<br><br><br><br><br>
-
-<p align="center"> 
-<img src="/preview/preview2.gif"align="right" width="30%"/>
-<img src="/preview/preview1.gif"align="right" width="30%"/>
-</pr>
-
+### Alan's ongoing personal project #3 (WIP)<br>
 ### - Target date (release)
 Feb 19, 2022
 </br>
+<p align="center"> 
+<img src="/preview/preview2.gif"align="center" width="30%"/>
+<img src="/preview/preview1.gif"align="center" width="30%"/>
+</pr>
+</br>
+
 ### - teck stack
 - Clean architecture with mvvm pattern</br>
 - Kotlin</br>
@@ -21,7 +21,14 @@ Feb 19, 2022
 -> need to build firebase backend and upload part of the data or full data regularly?
 
 - code optimization
-- Implementing bottom naviagtion, drawer, room for favorite
+
+### - Further development
+- bottom naviagtion
+- drawer
+- room for favorite
+- Comment(review) feature
+- Callendar(TBD)
+
 
 
 
