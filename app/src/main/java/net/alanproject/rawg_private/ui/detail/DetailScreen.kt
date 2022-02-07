@@ -259,7 +259,7 @@ fun HorizontalThumbnailPager(
                     pagerState.animateScrollToPage(newPosition)
                 }*/
 
-                HorizontalPager(count = Int.MAX_VALUE, /*state = pagerState,*/35contentPadding = PaddingValues(end = 64.dp),) { cnt ->
+                HorizontalPager(count = Int.MAX_VALUE, /*state = pagerState,*/contentPadding = PaddingValues(end = 64.dp),) { cnt ->
 
                     val count = cnt % maxCntNum!!
                     Timber.d("screenShotErr: ${screenshots.results!![count].image}")
