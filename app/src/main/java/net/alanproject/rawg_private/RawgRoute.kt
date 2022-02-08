@@ -1,7 +1,9 @@
 package net.alanproject.rawg_private
 
+import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,33 +12,44 @@ import androidx.navigation.navArgument
 import com.google.gson.Gson
 import net.alanproject.domain.model.params.ListParams
 import net.alanproject.rawg_private.ui.detail.DetailScreen
+import net.alanproject.rawg_private.ui.favorite.FavoriteScreen
 import net.alanproject.rawg_private.ui.list.ListScreen
 import net.alanproject.rawg_private.ui.main.MainScreen
 import net.alanproject.rawg_private.ui.main.MainViewModel
+import net.alanproject.rawg_private.ui.navigation.BottomNavigationBar
+import net.alanproject.rawg_private.ui.navigation.NavigationItem
 import timber.log.Timber
 
 @Composable
-fun RawgApp() {
-
-    Navigation()
-
+fun TopScreen(){
+    val navController = rememberNavController()
+    Scaffold(
+    bottomBar = { BottomNavigationBar(navController)}
+    ){
+        Navigation(navController)
+    }
 }
 
 @Composable
-fun Navigation(){
+fun Navigation(navController:NavHostController){
 
     Timber.d("[LoadingError] Navigation is called")
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = "main") {
+
+    NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
 
         //navGraphBuilder to control how to build the navigation Graph
         //and navGraph is a map of screens
-        composable(route = "main") {
-
+        composable(NavigationItem.Home.route) {
             MainScreen(navController)
         }
 
-        //pass parameter
+        composable(NavigationItem.Favorite.route) {
+            FavoriteScreen()
+        }
+        composable(NavigationItem.List.route) {
+            ListScreen(navController = navController)
+        }
+
         composable(
             route = "list/{params}",
             arguments = listOf(navArgument("params") { type = NavType.StringType })
@@ -57,5 +70,9 @@ fun Navigation(){
 
             DetailScreen(navBackStackEntry.arguments!!.getInt("gameId"), navController)
         }
+
+
+
+
     }
 }

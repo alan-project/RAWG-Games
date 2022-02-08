@@ -27,6 +27,7 @@ import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.params.ListParams
 import net.alanproject.domain.model.response.list.Game
 import net.alanproject.rawg_private.R
+import net.alanproject.rawg_private.common.Constants.Companion.DEFAULT_PARAMS
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Grey200
@@ -38,7 +39,7 @@ import net.alanproject.rawg_private.ui.widget.RatingText
 import timber.log.Timber
 
 @Composable
-fun ListScreen(listParams: ListParams, navController: NavHostController?) {
+fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostController?) {
     Timber.d("[LoadingError] ListScreen is called")
     Timber.d("listParams: $listParams")
     val viewModel = hiltViewModel<ListViewModel>()

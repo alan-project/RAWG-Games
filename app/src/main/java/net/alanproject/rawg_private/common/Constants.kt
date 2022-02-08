@@ -28,7 +28,12 @@ class Constants{
 
 
 
-
+        val DEFAULT_PARAMS: ListParams = ListParams(
+            period = RANK_PERIOD,
+            genres = null,
+            ordering = "-added",
+            isFromMain = false
+        )
 
         val TRENDING_PARAMS: ListParams = ListParams(
             period = TRENDING_PERIOD,
