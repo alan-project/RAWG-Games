@@ -40,6 +40,7 @@ fun Navigation(navController:NavHostController){
         //navGraphBuilder to control how to build the navigation Graph
         //and navGraph is a map of screens
         composable(NavigationItem.Home.route) {
+
             MainScreen(navController)
         }
 
