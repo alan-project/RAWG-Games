@@ -6,7 +6,9 @@ import net.alanproject.domain.model.response.list.Response
 import net.alanproject.domain.model.response.screenshots.Screenshots
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RemoteSourceImpl @Inject constructor(
     private val api: RawgApi
 ) : RemoteSource {

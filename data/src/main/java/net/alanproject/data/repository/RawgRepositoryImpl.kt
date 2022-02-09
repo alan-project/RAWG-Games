@@ -7,7 +7,9 @@ import net.alanproject.domain.model.response.screenshots.Screenshots
 import net.alanproject.domain.repository.RawgRepository
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class RawgRepositoryImpl @Inject constructor(
     private val remoteSource: RemoteSource
 ) : RawgRepository {
