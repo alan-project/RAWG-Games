@@ -13,6 +13,8 @@ import net.alanproject.domain.util.Resource
 import net.alanproject.rawg_private.common.PAGE_SIZE
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 @HiltViewModel
 class ListViewModel @Inject constructor(
