@@ -7,7 +7,9 @@ import net.alanproject.domain.usecases.GetGames
 import net.alanproject.domain.util.Resource
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class GetGamesUsecase @Inject constructor(
     private val rawgRepository: RawgRepository
 ) : GetGames {
