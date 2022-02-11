@@ -104,7 +104,7 @@ fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostCo
 fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?) {
     val game = games[rowIndex]
     GameItem(game) {
-        navController?.navigate("detail/${game.id}")
+        navController?.navigate("detail/${game.id}/hide")
     }
 }
 

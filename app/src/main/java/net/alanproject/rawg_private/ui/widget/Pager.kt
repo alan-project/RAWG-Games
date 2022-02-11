@@ -50,7 +50,7 @@ fun HorizontalGamePager(
             ) {
 
             val clickAction: () -> Unit =
-                { navController?.navigate("detail/${games[count].id}") }
+                { navController?.navigate("detail/${games[count].id}/hide") }
             Card(
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier
