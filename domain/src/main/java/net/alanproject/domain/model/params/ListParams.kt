@@ -8,8 +8,9 @@ data class ListParams(
     val genres: String? = null,
     val ordering: String? = "-added",
     val platforms: String? = null,
-
-    val isFromMain: Boolean = false
+    val isFromMain: Boolean = false,
+    val mainTitle:String? = null,
+    val subTitle:String? = null
 
 )
 

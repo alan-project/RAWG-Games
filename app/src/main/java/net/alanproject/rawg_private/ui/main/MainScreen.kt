@@ -6,8 +6,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -245,7 +243,7 @@ private fun PopularGamesByGenre(
         .wrapContentHeight()
         .padding(4.dp)
     if (!actionGames.isNullOrEmpty() || !strategyGames.isNullOrEmpty() || !puzzleGames.isNullOrEmpty() || !racingGames.isNullOrEmpty()) {
-        MainTitleText(text) { navController?.navigate("rank/3") }
+        MainTitleText(text) {  }
 
         Surface(
             color = Charcoal500,
@@ -255,6 +253,7 @@ private fun PopularGamesByGenre(
                 if (!actionGames.isNullOrEmpty()) {
                     SubTitleText(title = "Action / Adventure / RPG") {
                         val jsonString = listParamsToJsonString(ACTION_PARAMS)
+                        Timber.d("jsonString[Action]: $jsonString")
                         navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(actionGames, navController, modifier, gameCnt)
@@ -307,12 +306,6 @@ private fun PopularGamesByPlatform(
 
 //    if (!pcGames.isNullOrEmpty() || !psGames.isNullOrEmpty() || !xboxGames.isNullOrEmpty() || !mobileGames.isNullOrEmpty()) {
     if (!pcGames.isNullOrEmpty() && !psGames.isNullOrEmpty() && !xboxGames.isNullOrEmpty() && !mobileGames.isNullOrEmpty()) {
-
-        Timber.d("pcGames: ${pcGames.first().name}")
-        Timber.d("psGames: ${psGames.first().name}")
-        Timber.d("xboxGames: ${xboxGames.first().name}")
-        Timber.d("mobileGames: ${mobileGames.first().name}")
-
         MainTitleText(text) { }
 
         Surface(
@@ -323,6 +316,7 @@ private fun PopularGamesByPlatform(
                 if (!pcGames.isNullOrEmpty()) {
                     SubTitleText(title = "PC") {
                         val jsonString = listParamsToJsonString(PC_PARAMS)
+                        Timber.d("jsonString[PC]: $jsonString")
                         navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(pcGames, navController, modifier, gameCnt)
