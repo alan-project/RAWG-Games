@@ -3,9 +3,9 @@
 Feb 19, 2022
 </br>
 <p align="center"> 
-<img src="/preview/main.gif"align="center" width="20%"/>      
-<img src="/preview/list.gif"align="center" width="20%"/>       
-<img src="/preview/detail.gif"align="center" width="20%"/>
+<img src="/preview/main.gif"align="center" width="30%"/>      
+<img src="/preview/list.gif"align="center" width="30%"/>       
+<img src="/preview/detail.gif"align="center" width="30%"/>
 
 
 </pr>
