@@ -116,12 +116,12 @@ fun RankTitle(listParams: ListParams) {
         Column(modifier = Modifier.padding(start= 16.dp)) {
             Text(
                 text = listParams.mainTitle.orEmpty(),
-                style = TextStyle(color = Color.White, fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                style = TextStyle(color = Yellow200, fontSize = 16.sp, fontWeight = FontWeight.Bold),
                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
             )
             Text(
                 text = listParams.subTitle.orEmpty(),
-                style = TextStyle(color = Color.Gray, fontSize = 14.sp),
+                style = TextStyle(color = Color.White, fontSize = 14.sp),
                 modifier = Modifier.padding(bottom = 8.dp, end = 8.dp)
             )
         }
