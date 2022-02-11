@@ -54,14 +54,7 @@ fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostCo
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
-    Scaffold(topBar = {
-        AppBar(
-            title = "Game List",
-            icon = Icons.Default.Home
-        ) {
-            //do nothing
-        }
-    }) {
+    Scaffold{
         Surface(
             color = MaterialTheme.colors.background,
             modifier = Modifier.fillMaxSize()
@@ -115,6 +108,7 @@ fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?
     }
 }
 
+/*
 @Composable
 fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
     TopAppBar(
@@ -130,6 +124,7 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
         title = { Text(title) }
     )
 }
+*/
 
 @Composable
 fun GameItem(game: Game, clickAction: () -> Unit) {

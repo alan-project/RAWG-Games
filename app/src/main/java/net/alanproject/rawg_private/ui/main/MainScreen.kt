@@ -79,7 +79,7 @@ fun MainScreen(
     Timber.d("onLoadGames in View")
     viewModel.onLoadGames()
 
-    Scaffold(topBar = { AppBar() }) {
+    Scaffold {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -160,7 +160,7 @@ private fun Ranking(
     text: String
 ) {
     if (!rankGames.isNullOrEmpty()) {
-        MainTitleText(text) { navController?.navigate("list/2") }
+        MainTitleText(text) { navController?.navigate("rank/2") }
         RankGames(rankGames, navController)
     }
 }
@@ -200,7 +200,7 @@ private fun HotGames(
         .padding(4.dp)
 
     if (!releaseGames.isNullOrEmpty() || !upcomingGames.isNullOrEmpty()) {
-        MainTitleText(text) { navController?.navigate("list/1") }
+        MainTitleText(text) { navController?.navigate("rank/1") }
     }
 
     Surface(
@@ -213,7 +213,7 @@ private fun HotGames(
                     Timber.d("[LoadingError] navigate 1")
 
                     val jsonString = listParamsToJsonString(RELEASE_PARAMS)
-                    navController?.navigate("list/$jsonString")
+                    navController?.navigate("rank/$jsonString/hide")
                 }
                 HorizontalList(releaseGames, navController, modifier, gameCnt)
             }
@@ -221,7 +221,7 @@ private fun HotGames(
                 SubTitleText(title = "Upcoming Games") {
                     Timber.d("[LoadingError] navigate 2")
                     val jsonString = listParamsToJsonString(UPCOMING_PARAMS)
-                    navController?.navigate("list/$jsonString")
+                    navController?.navigate("rank/$jsonString/hide")
                 }
                 HorizontalList(upcomingGames, navController, modifier, gameCnt)
             }
@@ -245,7 +245,7 @@ private fun PopularGamesByGenre(
         .wrapContentHeight()
         .padding(4.dp)
     if (!actionGames.isNullOrEmpty() || !strategyGames.isNullOrEmpty() || !puzzleGames.isNullOrEmpty() || !racingGames.isNullOrEmpty()) {
-        MainTitleText(text) { navController?.navigate("list/3") }
+        MainTitleText(text) { navController?.navigate("rank/3") }
 
         Surface(
             color = Charcoal500,
@@ -255,14 +255,14 @@ private fun PopularGamesByGenre(
                 if (!actionGames.isNullOrEmpty()) {
                     SubTitleText(title = "Action / Adventure / RPG") {
                         val jsonString = listParamsToJsonString(ACTION_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(actionGames, navController, modifier, gameCnt)
                 }
                 if (!strategyGames.isNullOrEmpty()) {
                     SubTitleText(title = "Strategy / Simulation") {
                         val jsonString = listParamsToJsonString(STRATEGY_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(strategyGames, navController, modifier, gameCnt)
                 }
@@ -270,7 +270,7 @@ private fun PopularGamesByGenre(
 
                     SubTitleText(title = "Puzzle / Arcade") {
                         val jsonString = listParamsToJsonString(PUZZLE_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(puzzleGames, navController, modifier, gameCnt)
                 }
@@ -278,7 +278,7 @@ private fun PopularGamesByGenre(
                 if (!racingGames.isNullOrEmpty()) {
                     SubTitleText(title = "Racing / Sports") {
                         val jsonString = listParamsToJsonString(RACING_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(racingGames, navController, modifier, gameCnt)
                 }
@@ -323,14 +323,14 @@ private fun PopularGamesByPlatform(
                 if (!pcGames.isNullOrEmpty()) {
                     SubTitleText(title = "PC") {
                         val jsonString = listParamsToJsonString(PC_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(pcGames, navController, modifier, gameCnt)
                 }
                 if (!psGames.isNullOrEmpty()) {
                     SubTitleText(title = "PlayStation") {
                         val jsonString = listParamsToJsonString(PS_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(psGames, navController, modifier, gameCnt)
                 }
@@ -338,7 +338,7 @@ private fun PopularGamesByPlatform(
                 if (!xboxGames.isNullOrEmpty()) {
                     SubTitleText(title = "Xbox") {
                         val jsonString = listParamsToJsonString(XBOX_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(xboxGames, navController, modifier, gameCnt)
                 }
@@ -346,7 +346,7 @@ private fun PopularGamesByPlatform(
 
                     SubTitleText(title = "Mobile") {
                         val jsonString = listParamsToJsonString(MOBILE_PARAMS)
-                        navController?.navigate("list/$jsonString")
+                        navController?.navigate("rank/$jsonString/hide")
                     }
                     HorizontalList(mobileGames, navController, modifier, gameCnt)
                 }
@@ -400,7 +400,7 @@ private fun RankGame(
             .fillMaxWidth()
             .padding(top = 6.dp, bottom = 6.dp)
             .clickable(onClick = {
-                navController?.navigate("detail/${game.id}")
+                navController?.navigate("detail/${game.id}/hide")
             })
     ) {
         Row(
@@ -449,7 +449,7 @@ fun HorizontalList(
     LazyRow {
         items(displayedGames) { game ->
             val clickAction: () -> Unit = {
-                navController?.navigate("detail/${game.id}")
+                navController?.navigate("detail/${game.id}/hide")
             }
             Card(
 
@@ -595,6 +595,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
         )
     }
 }
+/*
 
 @Composable
 fun AppBar() {
@@ -611,6 +612,7 @@ fun AppBar() {
 }
 
 
+*/
 
 
 
