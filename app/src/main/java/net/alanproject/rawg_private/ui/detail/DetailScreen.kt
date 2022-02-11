@@ -55,15 +55,7 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
-    Scaffold(topBar = {
-        AppBar(
-            title = "Users profile details",
-            icon = Icons.Default.ArrowBack
-        ) {
-            //pop most current composable
-            navController?.navigateUp()
-        }
-    }) {
+    Scaffold {
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -305,6 +297,7 @@ fun HorizontalThumbnailPager(
     }
 
 }
+/*
 
 @Composable
 fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
@@ -321,3 +314,4 @@ fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
         title = { Text(title) }
     )
 }
+*/

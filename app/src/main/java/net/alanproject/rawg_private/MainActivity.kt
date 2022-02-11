@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import dagger.hilt.android.AndroidEntryPoint
+import net.alanproject.rawg_private.ui.navigation.nav_graph.SetupNavGraph
 import net.alanproject.rawg_private.ui.theme.Rawg_privateTheme
-import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -16,8 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Rawg_privateTheme {
                 Surface(color = MaterialTheme.colors.background) {
-                    Timber.d("[LoadingError] MainActivity is called")
-                    TopScreen()
+                    SetupNavGraph()
                 }
             }
         }
