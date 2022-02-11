@@ -61,7 +61,7 @@ fun Navigation(navController: NavHostController) {
                 )
         ) { navBackStackEntry ->
 
-            DetailScreen(navBackStackEntry.arguments!!.getInt("gameId"), navController)
+            DetailScreen(navBackStackEntry.arguments?.getInt("gameId")?:0, navController)
         }
 
 
