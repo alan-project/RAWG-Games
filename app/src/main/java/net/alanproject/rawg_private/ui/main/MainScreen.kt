@@ -89,115 +89,139 @@ fun MainScreen(
 
         ) {
             //Trending Games
-            TrendingGames(
-                trendingGames,
-                navController,
-                text = stringResource(R.string.main_title_trending)
-            )
+            if (!trendingGames.isNullOrEmpty()) {
+                TrendingGames(
+                    trendingGames,
+                    navController,
+                    text = stringResource(R.string.main_title_trending)
+                )
+            }
 
             //Hot Games
-            MainTitleText(title = stringResource(R.string.main_title_hot)) {}
-            Surface(
-                color = Charcoal500,
-                elevation = 8.dp,
+            if (!releaseGames.isNullOrEmpty()
+                || !upcomingGames.isNullOrEmpty()
             ) {
-                Column {
-                    HorizontalListWithTitle(
-                        games = releaseGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_release),
-                        params = RELEASE_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = upcomingGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_upcoming),
-                        params = UPCOMING_PARAMS,
-                        gameCnt = 20
-                    )
+                MainTitleText(title = stringResource(R.string.main_title_hot)) {}
+                Surface(
+                    color = Charcoal500,
+                    elevation = 8.dp,
+                ) {
+                    Column {
+                        HorizontalListWithTitle(
+                            games = releaseGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_release),
+                            params = RELEASE_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = upcomingGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_upcoming),
+                            params = UPCOMING_PARAMS,
+                            gameCnt = 20
+                        )
+                    }
                 }
             }
 
+
             //Total Rankings
-            Ranking(totalRankGames, navController, text = stringResource(R.string.main_title_rank))
+            if (!totalRankGames.isNullOrEmpty()) {
+                Ranking(
+                    totalRankGames,
+                    navController,
+                    text = stringResource(R.string.main_title_rank)
+                )
+            }
 
             //By Generes
-            MainTitleText(title = stringResource(R.string.main_title_bygenres)) {}
-            Surface(
-                color = Charcoal500,
-                elevation = 8.dp,
+            if (!actionGames.isNullOrEmpty()
+                || !strategyGames.isNullOrEmpty()
+                || !puzzleGames.isNullOrEmpty()
+                || !racingGames.isNullOrEmpty()
             ) {
-                Column {
-                    HorizontalListWithTitle(
-                        games = actionGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_action),
-                        params = ACTION_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = strategyGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_strategy),
-                        params = STRATEGY_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = puzzleGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_puzzle),
-                        params = PUZZLE_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = racingGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_racing),
-                        params = RACING_PARAMS,
-                        gameCnt = 20
-                    )
+                MainTitleText(title = stringResource(R.string.main_title_bygenres)) {}
+                Surface(
+                    color = Charcoal500,
+                    elevation = 8.dp,
+                ) {
+                    Column {
+                        HorizontalListWithTitle(
+                            games = actionGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_action),
+                            params = ACTION_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = strategyGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_strategy),
+                            params = STRATEGY_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = puzzleGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_puzzle),
+                            params = PUZZLE_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = racingGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_racing),
+                            params = RACING_PARAMS,
+                            gameCnt = 20
+                        )
+                    }
                 }
             }
 
             //By Consoles
-            MainTitleText(title = stringResource(R.string.main_title_byconsoles)) {}
-            Surface(
-                color = Charcoal500,
-                elevation = 8.dp,
+            if (!pcGames.isNullOrEmpty()
+                || !psGames.isNullOrEmpty()
+                || !xboxGames.isNullOrEmpty()
+                || !mobileGames.isNullOrEmpty()
             ) {
-                Column {
-                    HorizontalListWithTitle(
-                        games = pcGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_pc),
-                        params = PC_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = psGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_playstation),
-                        params = PS_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = xboxGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_xbox),
-                        params = XBOX_PARAMS,
-                        gameCnt = 20
-                    )
-                    HorizontalListWithTitle(
-                        games = mobileGames,
-                        navController = navController,
-                        subTitle = stringResource(R.string.sub_title_mobile),
-                        params = MOBILE_PARAMS,
-                        gameCnt = 20
-                    )
+                MainTitleText(title = stringResource(R.string.main_title_byconsoles)) {}
+                Surface(
+                    color = Charcoal500,
+                    elevation = 8.dp,
+                ) {
+                    Column {
+                        HorizontalListWithTitle(
+                            games = pcGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_pc),
+                            params = PC_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = psGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_playstation),
+                            params = PS_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = xboxGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_xbox),
+                            params = XBOX_PARAMS,
+                            gameCnt = 20
+                        )
+                        HorizontalListWithTitle(
+                            games = mobileGames,
+                            navController = navController,
+                            subTitle = stringResource(R.string.sub_title_mobile),
+                            params = MOBILE_PARAMS,
+                            gameCnt = 20
+                        )
+                    }
                 }
             }
-
         }
         Box(
             contentAlignment = Alignment.Center,
@@ -212,9 +236,7 @@ fun MainScreen(
                 }
             }
         }
-
     }
-
 }
 
 @Composable
@@ -385,7 +407,7 @@ fun MainTitleText(title: String, clickAction: () -> Unit) {
     Text(
         text = title,
         style = TextStyle(fontSize = 20.sp, color = Yellow200, fontWeight = FontWeight.Bold),
-        modifier = Modifier.padding(top = 20.dp, bottom = 20.dp)
+        modifier = Modifier.padding(top = 24.dp, bottom = 24.dp,start = 8.dp)
     )
 }
 
