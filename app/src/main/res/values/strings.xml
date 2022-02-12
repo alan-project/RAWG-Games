@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">rawg_private</string>
+    <string name="main_title_trending"><![CDATA[New & Trending]]></string>
+    <string name="main_title_hot">What\'s Hot Now</string>
+    <string name="sub_title_release">New Release</string>
+    <string name="sub_title_upcoming">Upcoming Games</string>
+    <string name="main_title_rank">Total Game Ranking</string>
+    <string name="main_title_bygenres">Popular by Genres</string>
+    <string name="sub_title_action">Action / Adventure / RPG</string>
+    <string name="sub_title_strategy">Strategy / Simulation</string>
+    <string name="sub_title_puzzle">Puzzle / Arcade</string>
+    <string name="sub_title_racing">Racing / Sports</string>
+    <string name="main_title_byconsoles">Popular by Consoles</string>
+    <string name="sub_title_pc">PC</string>
+    <string name="sub_title_playstation">PlayStation</string>
+    <string name="sub_title_xbox">Xbox</string>
+    <string name="sub_title_mobile">Android / IOS</string>
+    <string name="see_more">SEE MORE</string>
+    <string name="detail_platforms">Platforms</string>
+    <string name="detail_genre">Genre</string>
+    <string name="detail_release_date">Release date</string>
+    <string name="detail_developer">Developer</string>
+    <string name="detail_publisher">Publisher</string>
+    <string name="detail_age_rating">Age rating</string>
+    <string name="detail_tags">Tags</string>
+    <string name="detail_title_about">About</string>
+    <string name="detail_title_screenshota">Screenshots</string>
 </resources>

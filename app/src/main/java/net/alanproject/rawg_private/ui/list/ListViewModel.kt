@@ -16,6 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
+
 @HiltViewModel
 class ListViewModel @Inject constructor(
     private val getGames: GetGames,
@@ -33,44 +34,41 @@ class ListViewModel @Inject constructor(
     fun onLoadGames(listParams: ListParams) {
 
         try {
-            if(!isLoading.value){
+            if (!isLoading.value) {
 
                 viewModelScope.launch {
                     fetchResource(gamesState, listParams)
                 }
             }
         } catch (exception: Exception) {
-            Timber.d("throwable: $exception")
+            Timber.e("throwable: $exception")
         }
     }
 
     private suspend fun fetchResource(games: MutableState<List<Game>>, listParams: ListParams) {
         Timber.d("fetchResource in ListViewModel")
-        Timber.d("[LoadingError] curPage: $curPage")
         isLoading.value = true
         val result = getGames.get(page = curPage, listParams)
         when (result) {
             is Resource.Success -> {
-                Timber.d("[LoadingError] Success")
                 Timber.d("fetchResource: Success")
                 endReached.value = curPage * PAGE_SIZE >= result.data!!.count
 
-                cachedGames.addAll(result.data?.results?: listOf())
+                cachedGames.addAll(result.data?.results ?: listOf())
                 games.value = cachedGames
 
-                curPage ++
+                curPage++
                 Timber.d("curPage increase: $curPage")
                 loadError.value = ""
                 isLoading.value = false
 
             }
             is Resource.Error -> {
-                Timber.d("[LoadingError] Error")
-                Timber.d("fetchResource: Error ${result.message}")
+                Timber.e("fetchResource: Error ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }
-            else ->{
+            else -> {
                 Timber.d("[LoadingError] else")
             }
         }

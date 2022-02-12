@@ -3,10 +3,12 @@ package net.alanproject.rawg_private.ui.widget
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -85,10 +87,10 @@ fun MetaScoreText(
 @Composable
 fun ExpandableText(
     text: String,
-    ) {
+) {
 
     var showMore by remember { mutableStateOf(false) }
-    Column(modifier = Modifier.padding(start = 20.dp, end=20.dp)) {
+    Column(modifier = Modifier.padding(start = 20.dp, end = 20.dp)) {
         Column(modifier = Modifier
             .animateContentSize(animationSpec = tween(100))
             .clickable(
@@ -115,7 +117,7 @@ fun ExpandableText(
                             text = "LESS",
                             color = Color.Black,
                             fontSize = 8.sp,
-                            modifier = Modifier.padding(start=2.dp, end=2.dp)
+                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         )
                     }
                 }
@@ -140,7 +142,7 @@ fun ExpandableText(
                             text = "MORE",
                             color = Color.Black,
                             fontSize = 8.sp,
-                            modifier = Modifier.padding(start=2.dp, end=2.dp)
+                            modifier = Modifier.padding(start = 2.dp, end = 2.dp)
                         )
                     }
                 }

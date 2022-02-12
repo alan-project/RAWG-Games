@@ -13,14 +13,14 @@ import net.alanproject.domain.usecases.impl.GetScreenshotsUsecase
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class Usecases{
+abstract class Usecases {
 
     @Binds
-    abstract fun bindGetGames(getGames: GetGamesUsecase):GetGames
+    abstract fun bindGetGames(getGames: GetGamesUsecase): GetGames
 
     @Binds
-    abstract fun bindGetGame(getGame: GetGameUsecase):GetGame
+    abstract fun bindGetGame(getGame: GetGameUsecase): GetGame
 
     @Binds
-    abstract fun bindGetScreenshots(getScreenshots: GetScreenshotsUsecase):GetScreenshots
+    abstract fun bindGetScreenshots(getScreenshots: GetScreenshotsUsecase): GetScreenshots
 }

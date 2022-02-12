@@ -6,7 +6,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
-fun dateParsing(past:Boolean, period:Long):String {
+fun dateParsing(past: Boolean, period: Long): String {
 
     val today = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         LocalDate.now()
@@ -19,9 +19,9 @@ fun dateParsing(past:Boolean, period:Long):String {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     Timber.d("2) currentTime:  ${today.format(formatter)}")
 
-    return if(past){
+    return if (past) {
         "${today.minusDays(period)},$today"
-    }else{
+    } else {
         "${today.plusDays(1)},${today.plusDays(period)}"
     }
 }

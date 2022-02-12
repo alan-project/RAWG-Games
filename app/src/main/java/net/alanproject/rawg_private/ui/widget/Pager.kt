@@ -30,7 +30,7 @@ fun HorizontalGamePager(
     games: List<Game>,
     navController: NavHostController?
 ) {
-    val maxCntNum = if(games.size <5 ) games.size else 5
+    val maxCntNum = if (games.size < 5) games.size else 5
 
     val pagerState = rememberPagerState()
     LaunchedEffect(pagerState.currentPage) {
@@ -50,7 +50,7 @@ fun HorizontalGamePager(
             ) {
 
             val clickAction: () -> Unit =
-                { navController?.navigate("detail/${games[count].id}") }
+                { navController?.navigate("detail/${games[count].id}/hide") }
             Card(
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier

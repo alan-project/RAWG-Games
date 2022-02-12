@@ -78,9 +78,9 @@ data class GameDetail(
     val saturatedColor: String = "",
     @SerializedName("dominant_color")
     val dominantColor: String = "",
+    val platforms: List<EachPlatformInfo> = listOf(),
     @SerializedName("parent_platforms")
     val parentPlatforms: List<ParentPlatform> = listOf(),
-    val platforms: List<EachPlatformInfo> = listOf(),
     val stores: List<Store> = listOf(),
     val developers: List<Developer> = listOf(),
     val genres: List<Genre> = listOf(),

@@ -16,6 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 
+
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val getGame: GetGame,
@@ -28,7 +29,7 @@ class DetailViewModel @Inject constructor(
     var loadError = mutableStateOf("")
     var isLoading = mutableStateOf(false)
 
-    fun onLoadGame(gameId:Int){
+    fun onLoadGame(gameId: Int) {
         try {
 
             viewModelScope.launch {
@@ -39,7 +40,7 @@ class DetailViewModel @Inject constructor(
             }
 
         } catch (exception: Exception) {
-            Timber.d("throwable: $exception")
+            Timber.e("throwable: $exception")
         }
     }
 
@@ -48,7 +49,7 @@ class DetailViewModel @Inject constructor(
         val result = getGame.get(gameId)
         when (result) {
             is Resource.Success -> {
-                gameState.value = result.data?: GameDetail()
+                gameState.value = result.data ?: GameDetail()
                 loadError.value = ""
                 isLoading.value = false
 
@@ -60,19 +61,22 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchGameScreenShots(screenshotState: MutableState<Screenshots>, gameId: Int) {
+    private suspend fun fetchGameScreenShots(
+        screenshotState: MutableState<Screenshots>,
+        gameId: Int
+    ) {
         isLoading.value = true
         val result = getScreenshots.get(gameId)
         when (result) {
             is Resource.Success -> {
-                screenshotState.value = result.data?: Screenshots()
+                screenshotState.value = result.data ?: Screenshots()
                 Timber.d("screenShotErr: screenshotState.value ${screenshotState.value}")
                 loadError.value = ""
                 isLoading.value = false
 
             }
             is Resource.Error -> {
-                Timber.d("screenShotErr: result.message ${result.message}")
+                Timber.e("screenShotErr: result.message ${result.message}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }
