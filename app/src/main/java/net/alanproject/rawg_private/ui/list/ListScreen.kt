@@ -24,7 +24,6 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.params.ListParams
 import net.alanproject.domain.model.response.list.Game
-import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.Constants.Companion.DEFAULT_PARAMS
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -38,7 +37,6 @@ import timber.log.Timber
 
 @Composable
 fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostController?) {
-    Timber.d("[LoadingError] ListScreen is called")
     Timber.d("listParams: $listParams")
     val viewModel = hiltViewModel<ListViewModel>()
 
@@ -58,7 +56,7 @@ fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostCo
             modifier = Modifier.fillMaxSize()
 
         ) {
-            Column() {
+            Column {
                 //Title Start
                 if (listParams.isFromMain) {
                     RankTitle(listParams)
@@ -69,14 +67,13 @@ fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostCo
                     val itemCount = games.size
 
 
-                    items(itemCount) { it ->
+                    items(itemCount) {
 
                         //List via MainScreen will show only 20 items(No pagination)
                         if (!listParams.isFromMain) {
                             if (it >= itemCount - 1 && !endReached && !isLoading) {
 
                                 LaunchedEffect(key1 = true) {
-                                    Timber.d("[LoadingError] onLoadGames in LaunchedEffect")
                                     viewModel.onLoadGames(listParams)
                                 }
                             }
@@ -113,10 +110,14 @@ fun RankTitle(listParams: ListParams) {
             .height(100.dp),
         elevation = 4.dp
     ) {
-        Column(modifier = Modifier.padding(start= 16.dp)) {
+        Column(modifier = Modifier.padding(start = 16.dp)) {
             Text(
                 text = listParams.mainTitle.orEmpty(),
-                style = TextStyle(color = Yellow200, fontSize = 16.sp, fontWeight = FontWeight.Bold),
+                style = TextStyle(
+                    color = Yellow200,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
             )
             Text(
@@ -168,13 +169,11 @@ fun GameItem(game: Game, clickAction: () -> Unit) {
                 style = TextStyle(color = Color.White, fontSize = 16.sp),
             )
         }
-
     }
 }
 
 @Composable
 fun GameThumbnail(pictureUrl: String?, modifier: Modifier) {
-
 
     Image(
         painter = rememberImagePainter(
@@ -184,15 +183,12 @@ fun GameThumbnail(pictureUrl: String?, modifier: Modifier) {
         contentDescription = "game picture description",
         contentScale = ContentScale.Crop
     )
-
 }
 
 
 @Composable
 fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
 
-    val painterRating = rememberImagePainter(R.drawable.ic_rating)
-    val painterMeta = rememberImagePainter(R.drawable.ic_meta_score)
     Column(
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.Start,
@@ -220,7 +216,7 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
 //            modifier = modifier,
             maxLines = 1
         )
-        Icons(game)
+        Icons(game.platforms)
     }
 
 }
