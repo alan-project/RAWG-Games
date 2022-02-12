@@ -56,11 +56,13 @@ fun Navigation(navController: NavHostController) {
             route = "detail/{gameId}/{bottomNav}",
             arguments = listOf(
                 navArgument("gameId") { type = NavType.IntType },
+
                 navArgument("bottomNav") { type = NavType.StringType }
             )
         ) { navBackStackEntry ->
 
             DetailScreen(navBackStackEntry.arguments?.getInt("gameId") ?: 0, navController)
         }
+
     }
 }

@@ -25,6 +25,8 @@ import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.XBOX_PARAMS
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 
 @HiltViewModel

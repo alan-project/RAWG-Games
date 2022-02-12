@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import coil.compose.rememberImagePainter
 import net.alanproject.domain.model.params.ListParams
 import net.alanproject.domain.model.response.list.Game
+
 import net.alanproject.rawg_private.common.Constants.Companion.DEFAULT_PARAMS
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
@@ -37,6 +38,7 @@ import timber.log.Timber
 
 @Composable
 fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostController?) {
+
     Timber.d("listParams: $listParams")
     val viewModel = hiltViewModel<ListViewModel>()
 
@@ -50,7 +52,9 @@ fun ListScreen(listParams: ListParams = DEFAULT_PARAMS, navController: NavHostCo
     val loadError by remember { viewModel.loadError }
     val isLoading by remember { viewModel.isLoading }
 
+
     Scaffold {
+
         Surface(
             color = MaterialTheme.colors.background,
             modifier = Modifier.fillMaxSize()
@@ -130,6 +134,7 @@ fun RankTitle(listParams: ListParams) {
 
 }
 
+/*
 @Composable
 fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?) {
     val game = games[rowIndex]
@@ -137,6 +142,7 @@ fun GamesRow(rowIndex: Int, games: List<Game>, navController: NavHostController?
         navController?.navigate("detail/${game.id}/hide")
     }
 }
+*/
 
 @Composable
 fun GameItem(game: Game, clickAction: () -> Unit) {

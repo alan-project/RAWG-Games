@@ -13,6 +13,8 @@ import net.alanproject.domain.usecases.GetScreenshots
 import net.alanproject.domain.util.Resource
 import timber.log.Timber
 import javax.inject.Inject
+import javax.inject.Singleton
+
 
 
 @HiltViewModel

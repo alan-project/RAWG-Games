@@ -235,10 +235,13 @@ private fun Ranking(
     text: String
 ) {
     if (!rankGames.isNullOrEmpty()) {
+
         MainTitleText(text) { }
+
         Surface(
             elevation = 8.dp
         ) {
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -246,6 +249,7 @@ private fun Ranking(
             ) {
                 rankGames.forEach { game ->
                     RankGame(navController, game)
+
                 }
             }
         }
@@ -267,12 +271,14 @@ private fun HorizontalListWithTitle(
         .wrapContentHeight()
         .padding(4.dp)
 
+
     if (!games.isNullOrEmpty()) {
 
         SubTitleText(title = subTitle) {
 
             val jsonString = listParamsToJsonString(params)
             navController?.navigate("rank/$jsonString/hide")
+
         }
         HorizontalList(games, navController, modifier, gameCnt)
     }
@@ -497,5 +503,4 @@ fun GameDescription(game: Game, modifier: Modifier, style: TextStyle) {
         )
     }
 }
-
 

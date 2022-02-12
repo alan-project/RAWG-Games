@@ -285,11 +285,13 @@ fun HorizontalThumbnailPager(
                     pagerState.animateScrollToPage(newPosition)
                 }*/
 
+
                 HorizontalPager(
                     count = Int.MAX_VALUE,
                     /*state = pagerState,*/
                     contentPadding = PaddingValues(end = 64.dp),
                 ) { cnt ->
+
 
                     val count = cnt % maxCntNum!!
                     Surface(
@@ -329,4 +331,7 @@ fun HorizontalThumbnailPager(
             }
         }
     }
+
+
 }
+
