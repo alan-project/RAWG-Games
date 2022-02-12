@@ -10,6 +10,8 @@
 .DS_Store
 /build
 /captures
+/preview
+README.md
 .externalNativeBuild
 .cxx
 local.properties
