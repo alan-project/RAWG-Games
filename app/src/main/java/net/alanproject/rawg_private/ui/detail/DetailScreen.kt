@@ -35,9 +35,7 @@ import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Yellow200
-import net.alanproject.rawg_private.ui.widget.ExpandableText
-import net.alanproject.rawg_private.ui.widget.Icons
-import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
+import net.alanproject.rawg_private.ui.widget.*
 import timber.log.Timber
 
 @Composable
@@ -199,17 +197,17 @@ fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
             contentScale = ContentScale.Crop,
             colorFilter = ColorFilter.colorMatrix(grayScaleMatrix)
         )
-        Box(
-            contentAlignment = Alignment.TopStart,
-            modifier = Modifier.fillMaxSize()
+        Column(
+            modifier = Modifier.padding(start = 16.dp)
         ) {
+
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Card(
                     shape = RoundedCornerShape(4.dp),
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(start = 16.dp, top = 8.dp, end = 8.dp),
+                        .padding(top = 8.dp, end = 8.dp),
                     backgroundColor = Color.White
 
                 ) {
@@ -237,12 +235,24 @@ fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
                     fontWeight = ExtraBold
                 ),
                 modifier = Modifier
-                    .padding(16.dp)
                     .width(300.dp)
                     .padding(top = 8.dp)
             )
 
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 4.dp)
+            ) {
+                AddedText(game.added)
+                RatingText(game.rating)
+                MetaScoreText(game.metacritic)
+
+            }
+
         }
+
+
     }
 }
 
