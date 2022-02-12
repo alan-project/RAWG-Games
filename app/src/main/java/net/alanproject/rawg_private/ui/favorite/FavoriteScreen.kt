@@ -11,7 +11,7 @@ import androidx.compose.ui.text.TextStyle
 
 @Composable
 fun FavoriteScreen() {
-    Box(contentAlignment = Alignment.Center,modifier = Modifier.fillMaxSize()) {
-        Text(text = "FAVORITE SCREEN",style = TextStyle(color = Color.White))
+    Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+        Text(text = "FAVORITE SCREEN", style = TextStyle(color = Color.White))
     }
 }

@@ -25,7 +25,6 @@ import net.alanproject.rawg_private.common.Constants.Companion.UPCOMING_PARAMS
 import net.alanproject.rawg_private.common.Constants.Companion.XBOX_PARAMS
 import timber.log.Timber
 import javax.inject.Inject
-import javax.inject.Singleton
 
 
 @HiltViewModel
@@ -82,7 +81,7 @@ class MainViewModel @Inject constructor(
                 )
             }
         } catch (exception: Exception) {
-            Timber.d("throwable: $exception")
+            Timber.e("throwable: $exception")
         }
     }
 
@@ -92,7 +91,6 @@ class MainViewModel @Inject constructor(
 
     ) {
         Timber.d("fetchResource in MainViewModel")
-        Timber.d("[Error] params: ${params.platforms}")
         isLoading.value = true
         val result = getGames.get(params = params)
 
@@ -106,7 +104,7 @@ class MainViewModel @Inject constructor(
 
             }
             is Resource.Error -> {
-                Timber.d("fetchResource: Error ${result.message?.first()}")
+                Timber.e("fetchResource: Error ${result.message?.first()}")
                 loadError.value = result.message!!
                 isLoading.value = false
             }

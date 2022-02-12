@@ -1,24 +1,20 @@
 package net.alanproject.rawg_private.ui.detail
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.ExtraBold
@@ -30,17 +26,17 @@ import coil.compose.rememberImagePainter
 import coil.transform.RoundedCornersTransformation
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.delay
 import net.alanproject.domain.model.response.custom.Specification
 import net.alanproject.domain.model.response.custom.mapToSpecification
 import net.alanproject.domain.model.response.detail.GameDetail
+import net.alanproject.domain.model.response.detail.mapToEachPlatform
 import net.alanproject.domain.model.response.screenshots.Screenshots
+import net.alanproject.rawg_private.R
 import net.alanproject.rawg_private.common.RetrySection
 import net.alanproject.rawg_private.ui.theme.Charcoal500
 import net.alanproject.rawg_private.ui.theme.Yellow200
 import net.alanproject.rawg_private.ui.widget.ExpandableText
-import net.alanproject.rawg_private.ui.widget.Icons2
+import net.alanproject.rawg_private.ui.widget.Icons
 import net.alanproject.rawg_private.ui.widget.grayScaleMatrix
 import timber.log.Timber
 
@@ -97,27 +93,51 @@ fun DetailScreen(gameId: Int, navController: NavHostController?) {
 fun Specification(game: GameDetail) {
 
     val spec: Specification = mapToSpecification(game)
-    Column() {
+    Column {
         val twoColumnModifier = Modifier
             .padding(top = 20.dp, start = 20.dp)
             .width(180.dp)
 
         Row(modifier = Modifier.padding(top = 8.dp)) {
-            VerticalColumn("Platforms", spec.platforms, modifier = twoColumnModifier)
-            VerticalColumn("Genre", spec.genres, modifier = twoColumnModifier)
+            VerticalColumn(
+                stringResource(R.string.detail_platforms),
+                spec.platforms,
+                modifier = twoColumnModifier
+            )
+            VerticalColumn(
+                stringResource(R.string.detail_genre),
+                spec.genres,
+                modifier = twoColumnModifier
+            )
         }
         Row(modifier = Modifier.padding(top = 8.dp)) {
-            VerticalColumn("Release date", spec.releaseDate, modifier = twoColumnModifier)
-            VerticalColumn("Developer", spec.developer, modifier = twoColumnModifier)
+            VerticalColumn(
+                stringResource(R.string.detail_release_date),
+                spec.releaseDate,
+                modifier = twoColumnModifier
+            )
+            VerticalColumn(
+                stringResource(R.string.detail_developer),
+                spec.developer,
+                modifier = twoColumnModifier
+            )
         }
 
         Row(modifier = Modifier.padding(top = 8.dp)) {
-            VerticalColumn("Publisher", spec.publisher, modifier = twoColumnModifier)
-            VerticalColumn("Age rating", spec.ageRating, modifier = twoColumnModifier)
+            VerticalColumn(
+                stringResource(R.string.detail_publisher),
+                spec.publisher,
+                modifier = twoColumnModifier
+            )
+            VerticalColumn(
+                stringResource(R.string.detail_age_rating),
+                spec.ageRating,
+                modifier = twoColumnModifier
+            )
         }
 
         VerticalColumn(
-            title = "Tags",
+            title = stringResource(R.string.detail_tags),
             items = spec.tags,
             modifier = Modifier.padding(20.dp)
         )
@@ -142,9 +162,9 @@ fun VerticalColumn(title: String, items: String, modifier: Modifier = Modifier) 
 @Composable
 fun About(description: String) {
     Timber.d("description: $description")
-    Column() {
+    Column {
         Text(
-            text = "About",
+            text = stringResource(R.string.detail_title_about),
             style = TextStyle(color = Color.White, fontWeight = Bold, fontSize = 24.sp),
             modifier = Modifier.padding(start = 20.dp, top = 8.dp, bottom = 8.dp)
         )
@@ -204,9 +224,11 @@ fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
                             .padding(1.dp)
                     )
                 }
-                Icons2(game)
-            }
 
+                Icons(game.platforms.map {
+                    it.mapToEachPlatform()
+                })
+            }
 
             Text(
                 text = game.nameOriginal,
@@ -229,16 +251,18 @@ fun TopContent(game: GameDetail, modifier: Modifier = Modifier) {
 fun HorizontalThumbnailPager(
     screenshots: Screenshots
 ) {
-    if(!screenshots.results.isNullOrEmpty() && screenshots.count !=0 ){
-        Column() {
+    if (!screenshots.results.isNullOrEmpty() && screenshots.count != 0) {
+        Column {
             Text(
-                text = "Screenshots",
+                text = stringResource(R.string.detail_title_screenshota),
                 style = TextStyle(color = Color.White, fontWeight = Bold, fontSize = 24.sp),
                 modifier = Modifier.padding(start = 20.dp, top = 8.dp, bottom = 8.dp)
             )
-            Box(modifier = Modifier
-                .height(180.dp)
-                .fillMaxWidth()) {
+            Box(
+                modifier = Modifier
+                    .height(180.dp)
+                    .fillMaxWidth()
+            ) {
                 val maxCntNum = screenshots.count
                 Timber.d("screenshots.results.size: $maxCntNum")
 
@@ -251,10 +275,13 @@ fun HorizontalThumbnailPager(
                     pagerState.animateScrollToPage(newPosition)
                 }*/
 
-                HorizontalPager(count = Int.MAX_VALUE, /*state = pagerState,*/contentPadding = PaddingValues(end = 64.dp),) { cnt ->
+                HorizontalPager(
+                    count = Int.MAX_VALUE,
+                    /*state = pagerState,*/
+                    contentPadding = PaddingValues(end = 64.dp),
+                ) { cnt ->
 
                     val count = cnt % maxCntNum!!
-                    Timber.d("screenShotErr: ${screenshots.results!![count].image}")
                     Surface(
                         color = Charcoal500,
                         elevation = 8.dp,
@@ -291,27 +318,5 @@ fun HorizontalThumbnailPager(
                 }
             }
         }
-
-
-
     }
-
 }
-/*
-
-@Composable
-fun AppBar(title: String, icon: ImageVector, iconClickAction: () -> Unit) {
-    TopAppBar(
-        navigationIcon = {
-            Icon(
-                imageVector = icon,
-                contentDescription = "",
-                modifier = Modifier
-                    .padding(horizontal = 12.dp)
-                    .clickable(onClick = { iconClickAction.invoke() })
-            )
-        },
-        title = { Text(title) }
-    )
-}
-*/
