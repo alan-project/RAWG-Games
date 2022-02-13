@@ -2,7 +2,7 @@
 <h1 align="center">RAWG Games</h1>
 
 <p align="center">  
-This is demo application based on modern Android development with Hilt, Coroutines, Flow, Jetpack (compose, navigation), and Material Design based on MVVM architecture.
+This is the demo application based on modern Android development with Hilt, Coroutines, Flow, Jetpack (compose, navigation), and Material Design based on MVVM architecture.
 </p></br>
 
 ## Screen Shot
@@ -37,7 +37,7 @@ This is demo application based on modern Android development with Hilt, Coroutin
 
 ## Open API
 RAWG Games using the [RAWG API](https://rawg.io/apidocs) for constructing RESTful API.
-PokeAPI provides a RESTful API interface to highly detailed objects built from thousands of lines of data related to Pokémon.
+RAWG API provides not only provides game information classified by genre and platform, but also provides plenty of game data including vendors and ratings.
 </br>
 
 ## About the application
