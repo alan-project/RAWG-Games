@@ -37,11 +37,11 @@ RAWG-Games demonstrates modern Android development with Hilt, Coroutines, Flow, 
 
 ## Open API
 RAWG Games using the [RAWG API](https://rawg.io/apidocs) for constructing RESTful API.
-RAWG API provides not only provides game information classified by genre and platform, but also provides plenty of game data including vendors and ratings.
+RAWG API provides not only game information classified by genre and platform, but also plenty of game data including vendors and ratings.
 </br>
 
 ## About the application
-The original plan was to release an app that introduces game information and shares reviews based on jetpack compose. However, in my personal opinion, I felt it was still a bit early to apply compose to apps intended for official release rather than demo apps. I still have to use ExpreimentalApi, and I've realized that there were many cases where problems were solved with workarounds rather than best practices in terms of UI implementation. Threrfore, I've decided to implement whole features on the other project using existing XML way.
+The original plan was to release an app introducing game information and sharing reviews based on jetpack compose. However, in my personal opinion, I felt it was still a bit early to apply compose to apps intended for official release rather than demo apps. I still have to use ExpreimentalApi, and I've realized that there were many cases where problems were solved with workarounds rather than best practices in terms of UI implementation. Threrfore, I've decided to implement whole features on the other project using existing XML way.
 </br>
 
 ## Further development
