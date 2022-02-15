@@ -2,7 +2,7 @@
 <h1 align="center">RAWG Games</h1>
 
 <p align="center">  
-This is the demo application based on modern Android development with Hilt, Coroutines, Flow, Jetpack (compose, navigation), and Material Design based on MVVM architecture.
+RAWG-Games demonstrates modern Android development with Hilt, Coroutines, Flow, Jetpack (compose, navigation), and Material Design based on MVVM architecture.
 </p></br>
 
 ## Screen Shot
